@@ -4,6 +4,24 @@ Newest entries on top. Every meaningful change to data, taxonomy, or methodology
 
 ---
 
+## 2026-05-04 — CSV-first focused supplier graph
+
+- Switched the explorer to load the existing CSV research database first, with sample data only as a fallback.
+- Replaced the wide root expansion with a compact supply-chain stage spine and focused supplier-depth graph around the selected node.
+- Added right-panel ranked research sections for top U.S.-listed companies, IPO/SPAC watchlist mentions, and non-investable bottleneck dependencies.
+
+---
+
+## 2026-05-04 — Interactive explorer app scaffold
+
+- Added React + TypeScript + Vite app around the existing research repo files.
+- Added React Flow graph explorer with ELK layout, search, filters, collapsed branch expansion, detail panel, and company routes.
+- Added typed sample data and PapaParse CSV adapters for the existing `data/*.csv` files.
+- Added app run instructions to `README.md`.
+- Preserved existing CSV, docs, taxonomy, Mermaid, and validator files.
+
+---
+
 ## 2026-05-04 — Completion and validation pass
 
 - Added missing `data/mineral_supplier_mapping.csv` and `data/open_questions.csv`.

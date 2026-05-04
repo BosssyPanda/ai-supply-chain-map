@@ -139,6 +139,33 @@ The script checks:
 
 ---
 
+## Interactive web app
+
+This repo also includes a React + TypeScript explorer app built with Vite, React Flow, ELK.js, Tailwind CSS, PapaParse, and Lucide icons.
+
+Run it locally:
+
+```bash
+npm install --cache /tmp/codex-npm-cache
+npm run dev
+```
+
+Then open the local URL printed by Vite, usually:
+
+```text
+http://127.0.0.1:5173/
+```
+
+Production build:
+
+```bash
+npm run build
+```
+
+The app now loads the existing `data/*.csv` research files first, then layers app-only stage groupings on top so the graph stays readable. Curated typed sample data remains available only as a fallback/demo path if CSV loading fails.
+
+---
+
 ## What is uncertain or intentionally excluded
 
 - **Power demand at the data center level by company** — disclosed inconsistently; treated as best-effort.
