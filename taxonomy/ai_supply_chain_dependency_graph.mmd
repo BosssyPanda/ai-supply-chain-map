@@ -1,0 +1,180 @@
+%%{init: {
+  "theme": "base",
+  "themeVariables": {
+    "primaryColor": "#f8fafc",
+    "primaryBorderColor": "#334155",
+    "primaryTextColor": "#0f172a",
+    "lineColor": "#475569",
+    "fontSize": "14px"
+  }
+}}%%
+flowchart LR
+
+  APPS["AI applications"]
+  MODELS["Foundation models"]
+  TRAIN["Training and inference platforms"]
+  CLOUD["Hyperscalers and neoclouds"]
+
+  subgraph COMPUTE["Compute Stack"]
+    GPU["GPUs and AI accelerators"]
+    ASIC["Custom ASICs"]
+    SERVER["AI servers and racks"]
+    NETWORK["Scale-out networking"]
+    OPTICS["Optical interconnects"]
+    STORAGE["Training data storage"]
+  end
+
+  subgraph SEMI["Semiconductor Stack"]
+    DESIGN["Chip design"]
+    EDA["EDA and semiconductor IP"]
+    FOUNDRY["Leading-edge foundry"]
+    PACKAGING["Advanced packaging / CoWoS"]
+    HBM["HBM and DRAM"]
+    EQUIP["Wafer-fab equipment"]
+    LITHO["EUV / DUV lithography"]
+    CHEM["Specialty chemicals and photoresists"]
+    GAS["Electronic gases"]
+  end
+
+  subgraph DC["Data Center Physical Stack"]
+    DCO["Data-center operators"]
+    BUILD["Construction and fitout"]
+    INTERNAL_POWER["Inside-the-fence power"]
+    UPS["UPS systems"]
+    COOLING["Cooling and liquid cooling"]
+    WATER["Water and treatment"]
+    LAND["Land and real estate"]
+  end
+
+  subgraph POWER["Power and Grid Stack"]
+    INTERCONNECT["Grid interconnection"]
+    GRID_EQUIP["Transformers / switchgear / substations"]
+    GENERATION["Electricity generation"]
+    NUCLEAR["Nuclear power and fuel"]
+    GAS_POWER["Natural gas power"]
+    RENEW["Renewables"]
+    ESS["Energy storage"]
+    FUEL["Uranium / gas / diesel fuel chains"]
+  end
+
+  subgraph ROOTS["Root Inputs and Process Dependencies"]
+    COPPER["Copper"]
+    ALUMINUM["Aluminum"]
+    GOES["Grain-oriented electrical steel"]
+    HPQ["High-purity quartz"]
+    GALLIUM["Gallium"]
+    GERMANIUM["Germanium"]
+    RARE_EARTHS["Rare earths and magnets"]
+    LITHIUM["Lithium"]
+    GRAPHITE["Graphite"]
+    NEON["Neon / krypton / xenon"]
+    HELIUM["Helium"]
+    FLUORINE["Fluorspar / fluorine chain"]
+    LABOR["Specialized labor"]
+    PERMITS["Permits and local politics"]
+    POLICY["Export controls and subsidies"]
+    FINANCE["Debt / leases / project finance"]
+    LOGISTICS["Logistics and shipping"]
+  end
+
+  APPS --> MODELS --> TRAIN --> CLOUD
+  CLOUD --> GPU
+  CLOUD --> ASIC
+  CLOUD --> DCO
+
+  GPU --> SERVER
+  ASIC --> SERVER
+  SERVER --> NETWORK --> OPTICS
+  SERVER --> STORAGE
+
+  GPU --> HBM
+  ASIC --> HBM
+  GPU --> FOUNDRY
+  ASIC --> FOUNDRY
+  GPU --> PACKAGING
+  ASIC --> PACKAGING
+  DESIGN --> EDA
+  GPU --> DESIGN
+  ASIC --> DESIGN
+
+  FOUNDRY --> EQUIP
+  FOUNDRY --> LITHO
+  FOUNDRY --> CHEM
+  FOUNDRY --> GAS
+  PACKAGING --> CHEM
+  PACKAGING --> EQUIP
+  HBM --> FOUNDRY
+  HBM --> PACKAGING
+  LITHO --> HPQ
+  LITHO --> NEON
+  LITHO --> HELIUM
+  LITHO --> POLICY
+  CHEM --> FLUORINE
+  CHEM --> GALLIUM
+  CHEM --> GERMANIUM
+  GAS --> NEON
+  GAS --> HELIUM
+  FOUNDRY --> HPQ
+
+  DCO --> BUILD
+  DCO --> INTERNAL_POWER --> UPS
+  DCO --> COOLING --> WATER
+  DCO --> LAND
+  DCO --> INTERCONNECT
+  DCO --> GENERATION
+  DCO --> FINANCE
+  BUILD --> LABOR
+  BUILD --> LOGISTICS
+  BUILD --> COPPER
+  BUILD --> ALUMINUM
+  INTERNAL_POWER --> COPPER
+  INTERNAL_POWER --> ALUMINUM
+  UPS --> LITHIUM
+  UPS --> GRAPHITE
+
+  INTERCONNECT --> GRID_EQUIP
+  GRID_EQUIP --> GOES
+  GRID_EQUIP --> COPPER
+  GRID_EQUIP --> ALUMINUM
+  GRID_EQUIP --> PERMITS
+  GENERATION --> NUCLEAR --> FUEL
+  GENERATION --> GAS_POWER --> FUEL
+  GENERATION --> RENEW --> RARE_EARTHS
+  GENERATION --> ESS --> LITHIUM
+  ESS --> GRAPHITE
+  GAS_POWER --> COPPER
+
+  POLICY -.-> FOUNDRY
+  POLICY -.-> GPU
+  POLICY -.-> GALLIUM
+  POLICY -.-> GERMANIUM
+  POLICY -.-> RARE_EARTHS
+  PERMITS -.-> DCO
+  FINANCE -.-> CLOUD
+  LOGISTICS -.-> EQUIP
+
+  classDef applications fill:#fde2e4,stroke:#c14953,stroke-width:1px,color:#000;
+  classDef models fill:#fff1c1,stroke:#b07d00,stroke-width:1px,color:#000;
+  classDef cloud fill:#dbe7ff,stroke:#1d4ed8,stroke-width:1px,color:#000;
+  classDef compute fill:#caf0f8,stroke:#0277bd,stroke-width:1px,color:#000;
+  classDef memory fill:#bde0fe,stroke:#0353a4,stroke-width:1px,color:#000;
+  classDef networking fill:#d3f9d8,stroke:#2b8a3e,stroke-width:1px,color:#000;
+  classDef datacenter fill:#e2eafc,stroke:#3a86ff,stroke-width:1px,color:#000;
+  classDef power fill:#ffe5b4,stroke:#d97706,stroke-width:1px,color:#000;
+  classDef equipment fill:#e0c3fc,stroke:#5a189a,stroke-width:1px,color:#000;
+  classDef chemicals fill:#cffafe,stroke:#0e7490,stroke-width:1px,color:#000;
+  classDef minerals fill:#f1d3b3,stroke:#7c2d12,stroke-width:1px,color:#000;
+  classDef policyfinance fill:#e9ecef,stroke:#495057,stroke-width:1px,color:#000;
+
+  class APPS applications;
+  class MODELS,TRAIN models;
+  class CLOUD cloud;
+  class GPU,ASIC,SERVER compute;
+  class HBM memory;
+  class NETWORK,OPTICS,STORAGE networking;
+  class DCO,BUILD,INTERNAL_POWER,UPS,COOLING,WATER,LAND datacenter;
+  class INTERCONNECT,GRID_EQUIP,GENERATION,NUCLEAR,GAS_POWER,RENEW,ESS,FUEL power;
+  class DESIGN,EDA,FOUNDRY,PACKAGING,EQUIP,LITHO equipment;
+  class CHEM,GAS chemicals;
+  class COPPER,ALUMINUM,GOES,HPQ,GALLIUM,GERMANIUM,RARE_EARTHS,LITHIUM,GRAPHITE,NEON,HELIUM,FLUORINE minerals;
+  class LABOR,PERMITS,POLICY,FINANCE,LOGISTICS policyfinance;

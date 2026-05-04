@@ -1,0 +1,100 @@
+source_id,title,publisher,url,date_accessed,source_type,reliability_score,notes
+SRC_USGS_MCS_2025,Mineral Commodity Summaries 2025,U.S. Geological Survey,https://pubs.usgs.gov/periodicals/mcs2025/,2026-05-04,government_report,high,Annual authoritative source for U.S. import dependencies and global production by mineral.
+SRC_USGS_GALLIUM,USGS Gallium MCS chapter,U.S. Geological Survey,https://pubs.usgs.gov/periodicals/mcs2025/mcs2025-gallium.pdf,2026-05-04,government_report,high,Gallium production and trade.
+SRC_USGS_GERMANIUM,USGS Germanium MCS chapter,U.S. Geological Survey,https://pubs.usgs.gov/periodicals/mcs2025/mcs2025-germanium.pdf,2026-05-04,government_report,high,Germanium production and trade.
+SRC_USGS_RARE_EARTHS,USGS Rare Earths MCS chapter,U.S. Geological Survey,https://pubs.usgs.gov/periodicals/mcs2025/mcs2025-rare-earths.pdf,2026-05-04,government_report,high,Rare-earths supply chain.
+SRC_USGS_HELIUM,USGS Helium MCS chapter,U.S. Geological Survey,https://pubs.usgs.gov/periodicals/mcs2025/mcs2025-helium.pdf,2026-05-04,government_report,high,Helium supply.
+SRC_USGS_TUNGSTEN,USGS Tungsten MCS chapter,U.S. Geological Survey,https://pubs.usgs.gov/periodicals/mcs2025/mcs2025-tungsten.pdf,2026-05-04,government_report,high,Tungsten supply chain.
+SRC_USGS_COPPER,USGS Copper MCS chapter,U.S. Geological Survey,https://pubs.usgs.gov/periodicals/mcs2025/mcs2025-copper.pdf,2026-05-04,government_report,high,Copper production and dependency.
+SRC_USGS_LITHIUM,USGS Lithium MCS chapter,U.S. Geological Survey,https://pubs.usgs.gov/periodicals/mcs2025/mcs2025-lithium.pdf,2026-05-04,government_report,high,Lithium supply chain.
+SRC_USGS_GRAPHITE,USGS Graphite MCS chapter,U.S. Geological Survey,https://pubs.usgs.gov/periodicals/mcs2025/mcs2025-graphite.pdf,2026-05-04,government_report,high,Natural and synthetic graphite.
+SRC_DOE_GRID,DOE Queued Up: Characteristics of Power Plants Seeking Transmission Interconnection,Lawrence Berkeley National Lab / DOE,https://emp.lbl.gov/queues,2026-05-04,government_report,high,Annual interconnection-queue analysis.
+SRC_DOE_LP_TRANSFORMER,DOE Large Power Transformers and the U.S. Electric Grid,U.S. Department of Energy,https://www.energy.gov/sites/default/files/2014/04/f15/LPTStudyUpdate-040914.pdf,2026-05-04,government_report,high,LPT lead-time and import-dependency analysis.
+SRC_IEA_AI_ENERGY_2024,IEA Electricity 2024 / AI energy demand commentary,International Energy Agency,https://www.iea.org/reports/electricity-2024,2026-05-04,industry_report,high,Aggregate AI / data-center power-demand outlook.
+SRC_NVDA_10K,NVIDIA Form 10-K,NVIDIA Corporation,https://investor.nvidia.com,2026-05-04,sec_filing,high,Data-center segment revenue and customer concentration disclosures.
+SRC_AMD_10K,AMD Form 10-K,Advanced Micro Devices,https://ir.amd.com,2026-05-04,sec_filing,high,MI-series accelerators and data-center segment.
+SRC_AVGO_10K,Broadcom Form 10-K,Broadcom Inc.,https://investors.broadcom.com,2026-05-04,sec_filing,high,Hyperscaler ASIC and networking exposure.
+SRC_MRVL_10K,Marvell Form 10-K,Marvell Technology,https://investor.marvell.com,2026-05-04,sec_filing,high,Custom silicon for hyperscalers; data-center segment.
+SRC_TSM_20F,TSMC Form 20-F,Taiwan Semiconductor Manufacturing Co.,https://investor.tsmc.com,2026-05-04,sec_filing,high,Process-node mix and CoWoS capacity disclosures.
+SRC_INTC_10K,Intel Form 10-K,Intel Corporation,https://www.intc.com,2026-05-04,sec_filing,high,Foundry segment progress.
+SRC_ASML_AR,ASML Annual Report,ASML Holding NV,https://www.asml.com/en/investors,2026-05-04,sec_filing,high,EUV and DUV system shipments and backlog.
+SRC_AMAT_10K,Applied Materials Form 10-K,Applied Materials Inc.,https://www.appliedmaterials.com/us/en/investors.html,2026-05-04,sec_filing,high,Equipment segment by step.
+SRC_LRCX_10K,Lam Research Form 10-K,Lam Research Corporation,https://investor.lamresearch.com,2026-05-04,sec_filing,high,Etch / deposition / clean exposure.
+SRC_KLAC_10K,KLA Form 10-K,KLA Corporation,https://ir.kla.com,2026-05-04,sec_filing,high,Process-control and inspection share.
+SRC_MU_10K,Micron Form 10-K,Micron Technology,https://investors.micron.com,2026-05-04,sec_filing,high,HBM and DRAM/NAND segment disclosures.
+SRC_ARM_20F,Arm Holdings Form 20-F,Arm Holdings plc,https://investors.arm.com,2026-05-04,sec_filing,high,Royalty exposure to AI compute.
+SRC_SNPS_10K,Synopsys Form 10-K,Synopsys Inc.,https://investor.synopsys.com,2026-05-04,sec_filing,high,EDA and IP segment.
+SRC_CDNS_10K,Cadence Form 10-K,Cadence Design Systems,https://www.cadence.com/en_US/home/company/investor-relations.html,2026-05-04,sec_filing,high,EDA and verification.
+SRC_VRT_10K,Vertiv Form 10-K,Vertiv Holdings,https://investors.vertiv.com,2026-05-04,sec_filing,high,Data-center power and cooling.
+SRC_GEV_10K,GE Vernova Form 10-K,GE Vernova,https://www.gevernova.com/investors,2026-05-04,sec_filing,high,Gas turbines and grid equipment backlog.
+SRC_ETN_10K,Eaton Form 10-K,Eaton Corporation plc,https://www.eaton.com/us/en-us/company/investor-relations.html,2026-05-04,sec_filing,high,Electrical equipment segment.
+SRC_HUBB_10K,Hubbell Form 10-K,Hubbell Incorporated,https://investor.hubbell.com,2026-05-04,sec_filing,high,Utility solutions / transformers.
+SRC_POWL_10K,Powell Industries Form 10-K,Powell Industries,https://ir.powellind.com,2026-05-04,sec_filing,high,Switchgear and E-houses.
+SRC_PWR_10K,Quanta Services Form 10-K,Quanta Services,https://investors.quantaservices.com,2026-05-04,sec_filing,high,Electric power infrastructure construction.
+SRC_MTZ_10K,MasTec Form 10-K,MasTec Inc.,https://investors.mastec.com,2026-05-04,sec_filing,high,Communications / power infrastructure.
+SRC_FIX_10K,Comfort Systems USA Form 10-K,Comfort Systems USA,https://investor.comfortsystemsusa.com,2026-05-04,sec_filing,high,Mechanical contracting incl. data-center fitout.
+SRC_EME_10K,EMCOR Form 10-K,EMCOR Group,https://investor.emcorgroup.com,2026-05-04,sec_filing,high,Electrical / mechanical contracting.
+SRC_CCJ_AR,Cameco Annual Report,Cameco Corporation,https://www.cameco.com/invest,2026-05-04,sec_filing,high,Uranium production and supply contracts.
+SRC_CEG_10K,Constellation Energy Form 10-K,Constellation Energy Corp.,https://investors.constellationenergy.com,2026-05-04,sec_filing,high,Nuclear fleet and data-center PPAs.
+SRC_VST_10K,Vistra Form 10-K,Vistra Corp,https://investor.vistracorp.com,2026-05-04,sec_filing,high,Generation portfolio incl. nuclear.
+SRC_TLN_10K,Talen Energy Form 10-K,Talen Energy Corporation,https://ir.talenenergy.com,2026-05-04,sec_filing,high,Susquehanna nuclear; AWS PPA.
+SRC_BWXT_10K,BWX Technologies Form 10-K,BWX Technologies,https://investors.bwxt.com,2026-05-04,sec_filing,high,Naval / SMR fuel.
+SRC_LEU_10K,Centrus Energy Form 10-K,Centrus Energy,https://investors.centrusenergy.com,2026-05-04,sec_filing,high,HALEU enrichment.
+SRC_LIN_10K,Linde Form 10-K,Linde plc,https://investors.linde.com,2026-05-04,sec_filing,high,Industrial gases.
+SRC_APD_10K,Air Products Form 10-K,Air Products and Chemicals,https://investors.airproducts.com,2026-05-04,sec_filing,high,Industrial gases.
+SRC_ENTG_10K,Entegris Form 10-K,Entegris Inc.,https://investor.entegris.com,2026-05-04,sec_filing,high,Specialty chemicals and materials handling.
+SRC_MKSI_10K,MKS Instruments Form 10-K,MKS Instruments,https://ir.mksinst.com,2026-05-04,sec_filing,high,Vacuum and gas-handling subsystems.
+SRC_FCX_10K,Freeport-McMoRan Form 10-K,Freeport-McMoRan,https://investors.fcx.com,2026-05-04,sec_filing,high,Copper / molybdenum.
+SRC_SCCO_10K,Southern Copper Form 10-K,Southern Copper Corp.,https://www.southerncoppercorp.com,2026-05-04,sec_filing,high,Copper.
+SRC_MP_10K,MP Materials Form 10-K,MP Materials,https://investors.mpmaterials.com,2026-05-04,sec_filing,high,U.S. rare-earth mining and magnet capacity.
+SRC_ALB_10K,Albemarle Form 10-K,Albemarle Corp.,https://investors.albemarle.com,2026-05-04,sec_filing,high,Lithium.
+SRC_EQIX_10K,Equinix Form 10-K,Equinix Inc.,https://investors.equinix.com,2026-05-04,sec_filing,high,Retail colo.
+SRC_DLR_10K,Digital Realty Form 10-K,Digital Realty Trust,https://investor.digitalrealty.com,2026-05-04,sec_filing,high,Wholesale data centers.
+SRC_ANET_10K,Arista Networks Form 10-K,Arista Networks,https://investors.arista.com,2026-05-04,sec_filing,high,Cloud / AI networking.
+SRC_COHR_10K,Coherent Form 10-K,Coherent Corp.,https://investors.coherent.com,2026-05-04,sec_filing,high,Optical transceivers and components.
+SRC_LITE_10K,Lumentum Form 10-K,Lumentum Holdings,https://investor.lumentum.com,2026-05-04,sec_filing,high,Optical components.
+SRC_SMCI_10K,Super Micro Computer Form 10-K,Super Micro Computer,https://ir.supermicro.com,2026-05-04,sec_filing,high,AI server systems.
+SRC_DELL_10K,Dell Technologies Form 10-K,Dell Technologies,https://investors.delltechnologies.com,2026-05-04,sec_filing,high,Server and storage segment.
+SRC_HPE_10K,HPE Form 10-K,Hewlett Packard Enterprise,https://investors.hpe.com,2026-05-04,sec_filing,high,Server / GreenLake / supercomputing.
+SRC_CRWV_S1,CoreWeave S-1 / 10-K,CoreWeave Inc.,https://www.sec.gov/cgi-bin/browse-edgar,2026-05-04,sec_filing,high,Newly public neocloud.
+SRC_NBIS_F1,Nebius F-1 / 20-F,Nebius Group N.V.,https://www.sec.gov/cgi-bin/browse-edgar,2026-05-04,sec_filing,high,Yandex spinoff; GPU cloud.
+SRC_SEMI_INDUSTRY,SEMI World Fab Forecast,SEMI,https://www.semi.org,2026-05-04,industry_report,medium,Industry trade group capacity tracking.
+SRC_TRENDFORCE_HBM,TrendForce HBM market reports,TrendForce Corp.,https://www.trendforce.com,2026-05-04,industry_report,medium,Quarterly HBM market-share commentary.
+SRC_BLOOMBERG_DC_POWER,Bloomberg coverage of data-center power deals,Bloomberg,https://www.bloomberg.com,2026-05-04,journalism,medium,Various articles on hyperscaler PPAs.
+SRC_REUTERS_GALLIUM,Reuters coverage of China gallium / germanium export controls,Reuters,https://www.reuters.com,2026-05-04,journalism,medium,Multiple reports on 2023-2025 export-control regime.
+SRC_FT_AI_INFRA,Financial Times AI infrastructure coverage,Financial Times,https://www.ft.com,2026-05-04,journalism,medium,General reporting on hyperscaler capex and data-center buildout.
+SRC_CHIPS_ACT,CHIPS and Science Act of 2022,U.S. Government,https://www.congress.gov/bill/117th-congress/house-bill/4346,2026-05-04,government_report,high,Statutory text and Commerce Department awards.
+SRC_OECD_SEMI_INDEX,OECD Government Support to the Semiconductor Industry,OECD,https://www.oecd.org,2026-05-04,industry_report,medium,Cross-country comparison of semi subsidies.
+SRC_SK_HYNIX_PR,SK hynix corporate press releases,SK hynix Inc.,https://www.skhynix.com,2026-05-04,company_pr,medium,HBM3e qualification and capacity announcements.
+SRC_SAMSUNG_PR,Samsung Semiconductor press releases,Samsung Electronics,https://semiconductor.samsung.com,2026-05-04,company_pr,medium,Memory roadmap announcements.
+SRC_TEL_AR,Tokyo Electron Annual Report,Tokyo Electron Ltd.,https://www.tel.com/ir,2026-05-04,sec_filing,high,Equipment segment by step.
+SRC_DISCO_AR,Disco Annual Report,Disco Corporation,https://www.disco.co.jp,2026-05-04,sec_filing,high,Wafer dicing / grinding monopoly position.
+SRC_PJM_QUEUE,PJM Interconnection Queue,PJM Interconnection LLC,https://www.pjm.com,2026-05-04,industry_report,high,Public interconnection-queue data.
+SRC_ERCOT_LOAD,ERCOT Long-Term Load Forecast,ERCOT,https://www.ercot.com,2026-05-04,industry_report,high,Public load-forecast data including data-center growth.
+SRC_BIS_EXPORT_CTRL,BIS Export Controls,U.S. Bureau of Industry and Security,https://www.bis.doc.gov,2026-05-04,government_report,high,Semiconductor and AI export-control regulations.
+SRC_PLAB_10K,Photronics Form 10-K,Photronics Inc.,https://investor.photronics.com,2026-05-04,sec_filing,high,Photomasks for U.S. logic and memory.
+SRC_AMKR_10K,Amkor Form 10-K,Amkor Technology,https://ir.amkor.com,2026-05-04,sec_filing,high,OSAT / advanced packaging.
+SRC_NVMI_20F,Nova Form 20-F,Nova Ltd,https://investors.novami.com,2026-05-04,sec_filing,high,Metrology adjacent to KLA.
+SRC_ONTO_10K,Onto Innovation Form 10-K,Onto Innovation,https://investors.ontoinnovation.com,2026-05-04,sec_filing,high,Optical metrology.
+SRC_ACMR_10K,ACM Research Form 10-K,ACM Research,https://ir.acmrcsh.com,2026-05-04,sec_filing,high,Wet / clean equipment.
+SRC_ACLS_10K,Axcelis Form 10-K,Axcelis Technologies,https://investor.axcelis.com,2026-05-04,sec_filing,high,Ion implantation.
+SRC_TER_10K,Teradyne Form 10-K,Teradyne Inc.,https://investor.teradyne.com,2026-05-04,sec_filing,high,Semi test equipment.
+SRC_FN_10K,Fabrinet Form 10-K,Fabrinet,https://investor.fabrinet.com,2026-05-04,sec_filing,high,Optical contract manufacturing.
+SRC_ALAB_10K,Astera Labs Form 10-K,Astera Labs Inc.,https://investors.asteralabs.com,2026-05-04,sec_filing,high,PCIe / CXL / Ethernet connectivity for AI servers.
+SRC_OKLO_10K,Oklo Form 10-K,Oklo Inc.,https://investors.oklo.com,2026-05-04,sec_filing,medium,Pre-revenue SMR developer.
+SRC_SMR_10K,NuScale Power Form 10-K,NuScale Power Corporation,https://ir.nuscalepower.com,2026-05-04,sec_filing,medium,Pre-revenue SMR developer.
+SRC_UEC_10K,Uranium Energy Form 10-K,Uranium Energy Corp.,https://www.uraniumenergy.com,2026-05-04,sec_filing,high,U.S. ISR uranium production.
+SRC_UUUU_10K,Energy Fuels Form 10-K,Energy Fuels Inc.,https://www.energyfuels.com,2026-05-04,sec_filing,high,Uranium plus rare-earths.
+SRC_TECK_AR,Teck Resources Annual Report,Teck Resources Limited,https://www.teck.com,2026-05-04,sec_filing,high,Copper / zinc.
+SRC_BHP_AR,BHP Annual Report,BHP Group,https://www.bhp.com,2026-05-04,sec_filing,high,Copper / iron / nickel.
+SRC_RIO_AR,Rio Tinto Annual Report,Rio Tinto plc,https://www.riotinto.com,2026-05-04,sec_filing,high,Copper / aluminum / iron.
+SRC_VALE_AR,Vale Annual Report,Vale S.A.,https://www.vale.com,2026-05-04,sec_filing,high,Iron / nickel.
+SRC_SQM_AR,SQM Annual Report,Sociedad Quimica y Minera de Chile,https://ir.sqm.com,2026-05-04,sec_filing,high,Lithium and iodine.
+SRC_LAC_10K,Lithium Americas Form 10-K,Lithium Americas Corp.,https://lithiumamericas.com,2026-05-04,sec_filing,high,Thacker Pass.
+SRC_AA_10K,Alcoa Form 10-K,Alcoa Corporation,https://investors.alcoa.com,2026-05-04,sec_filing,high,Aluminum smelting and bauxite.
+SRC_NUE_10K,Nucor Form 10-K,Nucor Corporation,https://www.nucor.com/investors,2026-05-04,sec_filing,high,Steel.
+SRC_CLF_10K,Cleveland-Cliffs Form 10-K,Cleveland-Cliffs Inc.,https://investors.clevelandcliffs.com,2026-05-04,sec_filing,high,Iron and electrical steel.
+SRC_STLD_10K,Steel Dynamics Form 10-K,Steel Dynamics,https://ir.steeldynamics.com,2026-05-04,sec_filing,high,Steel.
+SRC_WDC_10K,Western Digital Form 10-K,Western Digital Corporation,https://wdc.gcs-web.com/sec-filings,2026-05-04,sec_filing,high,HDD and storage platform disclosures.
+SRC_HPE_JUNIPER_CLOSE,HPE closes acquisition of Juniper Networks,Hewlett Packard Enterprise / Juniper Networks,https://newsroom.juniper.net/news/news-details/2025/Hewlett-Packard-Enterprise-closes-acquisition-of-Juniper-Networks-to-offer-industry-leading-comprehensive-cloud-native-AI-driven-portfolio-2025-l2J7S6lSO5/default.aspx,2026-05-04,company_pr,high,Confirms Juniper acquisition closed and JNPR ceased NYSE trading on July 2 2025.
+SRC_USAR_SPAC_CLOSE,USA Rare Earth and Inflection Point Acquisition Corp. II announce closing of business combination,Nasdaq / GlobeNewswire,https://www.nasdaq.com/press-release/usa-rare-earth-and-inflection-point-acquisition-corp-ii-announce-closing-business,2026-05-04,company_pr,high,Confirms USA Rare Earth began trading on Nasdaq under ticker USAR after SPAC closing.

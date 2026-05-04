@@ -1,0 +1,5 @@
+.DS_Store
+build/
+*.svg
+*.png
+__pycache__/

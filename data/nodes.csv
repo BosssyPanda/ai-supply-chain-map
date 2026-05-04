@@ -1,0 +1,143 @@
+node_id,parent_node_id,level,name,node_type,description,why_it_matters,depends_on,dependency_type,bottleneck_level,substitutability,time_horizon,confidence,notes
+L0_AI_ECOSYSTEM,,0,AI Ecosystem,domain,The AI ecosystem from end users down to root inputs.,Top-level container.,,,low,high,long,high,
+L1_APPLICATIONS,L0_AI_ECOSYSTEM,1,AI applications & end-user demand,domain,Visible AI products consumed by end users and enterprises.,Where revenue enters the system.,L1_MODELS,requires_software,low,high,short,high,Demand layer.
+L1_MODELS,L0_AI_ECOSYSTEM,1,Foundation models & developers,domain,Frontier and open-weight model labs.,Translates compute into product.,L1_TRAIN_INFER_PLATFORMS;L1_HYPERSCALERS;L1_NEOCLOUDS;L1_DATA_LICENSING,requires_service;requires_service;requires_service;requires_input,medium,medium,short,high,Mostly private at frontier.
+L1_TRAIN_INFER_PLATFORMS,L0_AI_ECOSYSTEM,1,Training & inference platforms,subdomain,Software stacks and managed services that run model workloads.,Performance/cost of every model run.,L1_COMPUTE;L1_NETWORKING,requires_equipment;requires_equipment,low,high,short,high,
+L1_HYPERSCALERS,L0_AI_ECOSYSTEM,1,Cloud hyperscalers,domain,AWS / Azure / GCP / OCI and global peers.,Largest single buyers of GPUs and physical infra.,L1_DC_OPS;L1_COMPUTE;L1_GENERATION,requires_equipment;requires_equipment;requires_power,medium,medium,short,high,
+L1_NEOCLOUDS,L0_AI_ECOSYSTEM,1,GPU cloud / neocloud providers,domain,GPU-rental specialists.,Faster ramp than hyperscaler self-build.,L1_COMPUTE;L1_DC_OPS;L1_GENERATION,requires_equipment;requires_equipment;requires_power,medium,medium,short,high,
+L1_COMPUTE,L0_AI_ECOSYSTEM,1,AI accelerators & processors,domain,GPU/TPU/ASIC/CPU/FPGA/DPU.,Center of the chip supply chain.,L1_FAB;L1_PACKAGING;L1_MEMORY;L1_NETWORKING;L1_SEMI_DESIGN;L1_EDA;L1_SEMI_IP,requires_service;requires_service;requires_input;requires_input;requires_service;requires_software;requires_software,severe,low,medium,high,
+L2_AI_ACCELERATORS,L1_COMPUTE,2,AI accelerators,subdomain,GPUs/TPUs/ASICs purpose-built for AI.,The single largest dollar item in AI infra.,L1_FAB;L1_PACKAGING;L1_MEMORY,requires_service;requires_service;requires_input,severe,low,medium,high,
+L3_GPU,L2_AI_ACCELERATORS,3,GPU,component,Graphics processing units used for training and inference.,Dominant accelerator class.,L4_HBM;L1_FAB;L1_PACKAGING,requires_input;requires_service;requires_service,severe,low,medium,high,NVDA dominant; AMD second source.
+L3_HYPERSCALER_ASIC,L2_AI_ACCELERATORS,3,Hyperscaler custom ASIC,component,TPU; Trainium/Inferentia; MTIA; Maia; Axion; etc.,Captive demand for foundry / packaging / HBM.,L4_HBM;L1_FAB;L1_PACKAGING,requires_input;requires_service;requires_service,high,medium,medium,medium,Designed in-house with AVGO / MRVL partnership.
+L3_AI_STARTUP_ASIC,L2_AI_ACCELERATORS,3,AI startup ASICs,component,Cerebras WSE; Groq LPU; SambaNova; Tenstorrent; Etched.,Alternate compute architectures.,L1_FAB;L1_PACKAGING,requires_service;requires_service,high,medium,medium,medium,Mostly private companies.
+L3_FPGA,L2_AI_ACCELERATORS,3,FPGA,component,Reconfigurable logic; some inference workloads.,Niche AI inference.,L1_FAB,requires_service,medium,medium,medium,medium,AMD/Xilinx; Lattice; Achronix-private.
+L2_CPU,L1_COMPUTE,2,CPU,subdomain,Server-class processors used as host CPUs.,Pairs with every GPU; Arm-server class growing.,L1_FAB,requires_service,medium,medium,medium,high,INTC / AMD; Arm-class growing.
+L2_DPU,L1_COMPUTE,2,DPU/SmartNIC,subdomain,Data processing units offloading networking and security.,Required for hyperscaler-class fabrics.,L1_FAB,requires_service,medium,medium,medium,medium,NVDA Mellanox; AMD Pensando; Marvell.
+L1_SEMI_DESIGN,L0_AI_ECOSYSTEM,1,Semiconductor design,domain,Fabless and IDM design shops.,Translates demand into chip designs.,L1_EDA;L1_SEMI_IP,requires_software;requires_software,high,medium,medium,high,
+L1_SEMI_IP,L0_AI_ECOSYSTEM,1,Semiconductor IP,domain,Arm; RISC-V; PHY/IP houses.,Licensing toll on most chips.,,,high,medium,medium,high,
+L1_EDA,L0_AI_ECOSYSTEM,1,EDA software,domain,Tools to design and verify chips.,Cannot tape out advanced chips without it.,,,severe,low,medium,high,Synopsys / Cadence / Siemens EDA effective oligopoly.
+L1_FAB,L0_AI_ECOSYSTEM,1,Wafer fabrication & foundries,domain,Leading-edge and specialty fabs.,Largest physical bottleneck for advanced chips.,L1_SEMI_EQUIP;L1_SPECIALTY_CHEM;L1_INDUSTRIAL_GAS;L1_SI_POLYSI,requires_equipment;requires_input;requires_input;requires_input,severe,low,long,high,TSMC dominant.
+L2_LEADING_EDGE_FOUNDRY,L1_FAB,2,Leading-edge foundry,subdomain,5nm and below process nodes.,Where AI chips actually get made.,L1_SEMI_EQUIP;L1_LITHO;L1_SPECIALTY_CHEM,requires_equipment;requires_equipment;requires_input,severe,none,long,high,TSMC and Samsung; Intel Foundry catching up.
+L3_5NM_AND_BELOW,L2_LEADING_EDGE_FOUNDRY,3,5nm class node,component,N5/N4P/N4X-style nodes.,Common substrate for current AI accelerators.,L1_LITHO;L1_PHOTORESIST,requires_equipment;requires_input,severe,none,long,high,
+L3_3NM_AND_BELOW,L2_LEADING_EDGE_FOUNDRY,3,3nm class node,component,N3 family.,Targeted by next-gen AI chips.,L1_LITHO;L1_PHOTORESIST,requires_equipment;requires_input,severe,none,long,high,
+L3_2NM_AND_BELOW,L2_LEADING_EDGE_FOUNDRY,3,2nm class node,component,N2 / 18A / SF2 family with GAA transistors.,Future generation AI accelerators.,L1_LITHO;L1_PHOTORESIST,requires_equipment;requires_input,severe,none,long,medium,Multi-vendor in 2025-2026.
+L2_SPECIALTY_FOUNDRY,L1_FAB,2,Specialty foundry,subdomain,Mature-node and analog/RF foundry capacity.,Power management ICs and analog around AI servers.,L1_SEMI_EQUIP,requires_equipment,medium,medium,medium,high,GFS; UMC-foreign; SMIC restricted.
+L1_PACKAGING,L0_AI_ECOSYSTEM,1,Advanced packaging,domain,2.5D and 3D packaging.,Required to integrate HBM with logic at high bandwidth.,L1_SPECIALTY_CHEM;L1_SEMI_EQUIP,requires_input;requires_equipment,severe,low,medium,high,TSMC CoWoS and SoIC dominant.
+L2_COWOS,L1_PACKAGING,2,CoWoS,subdomain,Chip-on-Wafer-on-Substrate (TSMC).,Used for almost every leading-edge AI accelerator with HBM.,L1_FAB,requires_service,severe,none,medium,high,Internal TSMC capacity is the constraint.
+L2_FOPLP,L1_PACKAGING,2,FOPLP,subdomain,Fan-out panel-level packaging.,Future scaling path for cost.,,,medium,medium,long,medium,Multi-vendor; not yet bottleneck.
+L2_HYBRID_BONDING,L1_PACKAGING,2,Hybrid bonding,subdomain,Direct copper-to-copper bonding for 3D stacks.,Future for higher-density HBM and SoIC.,,,medium,low,long,medium,EVG / SUSS-foreign equipment focus.
+L1_MEMORY,L0_AI_ECOSYSTEM,1,DRAM; HBM; NAND,domain,Memory across DC.,HBM is severely supply-constrained.,L1_FAB;L1_PACKAGING;L1_SEMI_EQUIP,requires_service;requires_service;requires_equipment,severe,low,medium,high,
+L2_HBM,L1_MEMORY,2,HBM,subdomain,High Bandwidth Memory stacked DRAM.,Mandatory for AI accelerator memory bandwidth.,L1_FAB;L2_HYBRID_BONDING,requires_service;requires_service,severe,none,medium,high,SK hynix / Samsung / Micron three-supplier oligopoly.
+L4_HBM,L2_HBM,4,HBM3e/HBM4 stacks,component,Specific HBM generations on AI accelerators.,Per-accelerator capacity unit.,L2_HBM,requires_input,severe,none,medium,high,
+L2_DRAM,L1_MEMORY,2,DRAM,subdomain,Standard DRAM (DDR5).,Server memory; CXL pools growing.,,,medium,medium,short,high,
+L2_NAND,L1_MEMORY,2,NAND,subdomain,Flash storage.,Hot tier of training data.,,,medium,medium,short,high,
+L1_NETWORKING,L0_AI_ECOSYSTEM,1,Networking chips; switches; routers,domain,Switch ASICs; NICs; fabric.,Determines training-cluster scale-out.,,,high,medium,medium,high,
+L2_SWITCH_ASIC,L1_NETWORKING,2,Switch ASIC,subdomain,Tomahawk; Spectrum; Jericho; Tofino-class.,The silicon inside DC switches.,L1_FAB,requires_service,high,medium,medium,high,Broadcom; NVDA Mellanox; Marvell.
+L2_SMARTNIC,L1_NETWORKING,2,SmartNIC / DPU,subdomain,Network adapters with offload.,Required for hyperscaler-class fabrics.,L1_FAB,requires_service,medium,medium,medium,high,
+L2_PCIE_CXL,L1_NETWORKING,2,PCIe / CXL connectivity,subdomain,Host-fabric and memory expansion connectivity.,Connects accelerators to host.,,,medium,medium,medium,medium,Astera Labs; Microchip; Broadcom.
+L1_OPTICAL,L0_AI_ECOSYSTEM,1,Optical interconnects,domain,Pluggable and co-packaged optics.,Enables scale-out at 800G/1.6T.,,,high,medium,medium,high,
+L2_TRANSCEIVERS,L1_OPTICAL,2,Optical transceivers,subdomain,800G/1.6T pluggable optics.,Drives bandwidth growth.,,,high,medium,short,high,Coherent; Lumentum; Innolight (foreign).
+L2_CPO,L1_OPTICAL,2,Co-packaged optics,subdomain,CPO replacing front-panel pluggables.,Future scaling path.,,,medium,low,long,medium,
+L1_SERVERS,L0_AI_ECOSYSTEM,1,Servers; OEM/ODM,domain,System assembly of GPUs/CPUs/NICs.,The unit hyperscalers actually buy.,L1_COMPUTE;L1_NETWORKING;L1_COOLING,requires_input;requires_input;requires_equipment,medium,medium,short,high,
+L1_STORAGE,L0_AI_ECOSYSTEM,1,Storage systems,domain,High-perf storage; flash; HDD.,Training data pipelines.,,,medium,medium,short,high,
+L1_DC_OPS,L0_AI_ECOSYSTEM,1,Data-center operators,domain,Operators of physical DC capacity.,Container of compute.,L1_GENERATION;L1_GRID_INTERCONNECT;L1_DC_CONSTRUCTION,requires_power;requires_permit;requires_service,high,low,long,high,
+L1_DC_REIT,L0_AI_ECOSYSTEM,1,Data-center REITs,domain,Public REITs offering DC exposure.,Investable expression of DC growth.,L1_DC_OPS,complements,medium,medium,medium,high,
+L1_DC_CONSTRUCTION,L0_AI_ECOSYSTEM,1,DC construction & engineering,domain,EPC and specialty trades for DC builds.,Build-out throughput limit.,L1_GRID_EQUIPMENT;L1_LABOR,requires_input;requires_labor,high,low,medium,high,
+L1_DC_POWER_INTERNAL,L0_AI_ECOSYSTEM,1,Power infra inside the DC,domain,Switchgear / busways / PDUs / rack PDUs inside the fence.,Inside-the-fence reliability.,,,medium,medium,medium,high,
+L1_UPS,L0_AI_ECOSYSTEM,1,UPS systems,domain,Battery-backed uninterruptible power.,Ride-through during disturbances.,L1_LITHIUM,requires_input,medium,medium,medium,high,
+L1_GRID_EQUIPMENT,L0_AI_ECOSYSTEM,1,Transformers; switchgear (grid-side),domain,Large- and medium-power transformers and switchgear.,Multi-year lead times.,L5_GRAIN_ORIENTED_STEEL;L1_COPPER,requires_input;requires_input,severe,low,long,high,
+L2_LARGE_POWER_TRANSFORMER,L1_GRID_EQUIPMENT,2,Large power transformer,subdomain,>=100 MVA transformers for substation step-down.,Single largest grid-equipment bottleneck.,L5_GRAIN_ORIENTED_STEEL;L1_COPPER,requires_input;requires_input,severe,none,long,high,LPT lead times 24-48 months.
+L2_MEDIUM_VOLTAGE_TRANS,L1_GRID_EQUIPMENT,2,Medium-voltage transformer,subdomain,Distribution and DC-stepdown transformers.,DC-side step-down.,L5_GRAIN_ORIENTED_STEEL;L1_COPPER,requires_input;requires_input,high,low,medium,high,
+L2_HV_SWITCHGEAR,L1_GRID_EQUIPMENT,2,High-voltage switchgear,subdomain,Substation breakers; GIS.,Required for grid-tie.,,,high,medium,medium,high,Eaton; ABB-foreign; Siemens-foreign.
+L1_GENSETS,L0_AI_ECOSYSTEM,1,Backup generators,domain,Diesel and gas gensets for DC backup.,Last-resort power.,L1_FUEL,requires_input,medium,medium,short,high,Cummins; Caterpillar; Generac.
+L1_COOLING,L0_AI_ECOSYSTEM,1,Cooling & thermal management,domain,All cooling tiers.,Required to dissipate dense heat.,,,high,medium,medium,high,
+L2_AIR_COOLING,L1_COOLING,2,Air cooling,subdomain,CRACs / CRAHs / containment.,Legacy DC standard.,,,low,high,short,high,
+L2_LIQUID_COOLING,L1_COOLING,2,Liquid cooling,subdomain,Direct-to-chip cooling and rear-door heat exchangers.,Required for high-density GPU racks.,,,high,low,short,high,Vertiv; Boyd; Asetek-foreign; CoolIT-private.
+L2_IMMERSION,L1_COOLING,2,Immersion cooling,subdomain,Tank-style single- and two-phase.,Possible standard for very dense racks.,,,medium,medium,long,medium,Mostly private and nascent.
+L1_WATER,L0_AI_ECOSYSTEM,1,Water supply & treatment,domain,Cooling water; greywater; reuse.,Permitting and rights gates new DC builds.,,,medium,medium,medium,high,Xylem; Veralto exposure indirect.
+L1_GRID_INTERCONNECT,L0_AI_ECOSYSTEM,1,Grid interconnection,process,ISO/RTO interconnection processes.,Years-long queues in many regions.,,,severe,none,long,high,Process bottleneck.
+L1_GENERATION,L0_AI_ECOSYSTEM,1,Electricity generation,domain,All sources.,Required for DC operation.,,,severe,medium,long,high,
+L1_NUCLEAR,L0_AI_ECOSYSTEM,1,Nuclear power,domain,Existing LWR fleet plus emerging SMR.,Stable baseload appealing to hyperscalers.,L1_FUEL,requires_input,medium,low,long,high,
+L2_LWR,L1_NUCLEAR,2,Existing LWR fleet,subdomain,Operating large light-water reactors.,Hyperscaler PPAs concentrate here.,,,medium,low,medium,high,CEG / VST / TLN.
+L2_SMR,L1_NUCLEAR,2,SMR / advanced reactors,subdomain,Pre-revenue advanced reactor designs.,Future capacity option.,,,low,medium,long,medium,OKLO / SMR / BWXT pre-revenue.
+L1_GAS_POWER,L0_AI_ECOSYSTEM,1,Natural-gas power,domain,CCGT and peakers.,Fastest add for new MW.,L1_FUEL;L3_GAS_TURBINE,requires_input;requires_equipment,severe,medium,medium,high,
+L3_GAS_TURBINE,L1_GAS_POWER,3,Gas turbine,equipment,Industrial gas turbines.,Multi-year backlogs at OEMs.,,,severe,low,long,high,GE Vernova; Siemens-foreign; Mitsubishi-foreign.
+L1_RENEWABLES,L0_AI_ECOSYSTEM,1,Solar; wind,domain,Renewable generation.,Carbon goals plus marginal capacity.,L1_RARE_EARTHS,requires_input,medium,high,medium,high,
+L1_STORAGE_ESS,L0_AI_ECOSYSTEM,1,Energy storage,domain,Grid-scale BESS.,Bridges intermittent generation.,L1_LITHIUM,requires_input,medium,medium,medium,high,
+L1_T_AND_D,L0_AI_ECOSYSTEM,1,Transmission & distribution equipment,domain,HV cables; substation gear.,Move power from gen to DC.,L1_COPPER;L1_ALUMINUM;L5_GRAIN_ORIENTED_STEEL,requires_input;requires_input;requires_input,severe,low,long,high,
+L1_FUEL,L0_AI_ECOSYSTEM,1,Fuel supply chains,domain,Uranium; natural gas; diesel.,Inputs to generation.,,,high,medium,medium,high,
+L2_URANIUM_FUEL_CYCLE,L1_FUEL,2,Uranium fuel cycle,subdomain,Mining; conversion; enrichment; fabrication.,HALEU is a near-term U.S. bottleneck.,,,high,low,long,high,LEU / BWXT / CCJ ADR.
+L4_URANIUM_MINING,L2_URANIUM_FUEL_CYCLE,4,Uranium mining,component,Conventional and ISR uranium production.,Foundation of the fuel cycle.,,,medium,medium,long,high,CCJ ADR; UEC; UUUU; DNN ADR.
+L4_CONVERSION_ENRICHMENT,L2_URANIUM_FUEL_CYCLE,4,Conversion / enrichment,component,UF6 conversion and gas-centrifuge enrichment.,U.S. capacity scarce; HALEU constrained.,,,severe,none,long,high,LEU; foreign Rosatom dominant.
+L4_FUEL_FABRICATION,L2_URANIUM_FUEL_CYCLE,4,Fuel fabrication,component,Pellets and rod assemblies.,Final step before reactor.,,,high,low,long,high,BWXT / Westinghouse-private / CCJ ADR.
+L1_SEMI_EQUIP,L0_AI_ECOSYSTEM,1,Semiconductor manufacturing equipment,domain,Litho; deposition; etch; metrology; clean; implant; CMP; test.,Without it no fabs.,,,severe,low,medium,high,
+L1_LITHO,L1_SEMI_EQUIP,1,Lithography,subdomain,EUV and DUV exposure systems.,Defines smallest features.,,,severe,none,long,high,ASML monopoly on EUV.
+L3_EUV_SCANNER,L1_LITHO,3,EUV scanner,equipment,NXE/EXE-class extreme-ultraviolet exposure tools.,Sole path to leading-edge logic and DRAM.,L4_EUV_OPTICS;L5_NEON,requires_input;requires_input,severe,none,long,high,Sole vendor: ASML.
+L4_EUV_OPTICS,L3_EUV_SCANNER,4,EUV optics,component,Multi-layer Mo/Si reflective optics.,Single supplier (ZEISS SMT).,,,severe,none,long,high,ZEISS group is private.
+L3_DUV_IMMERSION,L1_LITHO,3,DUV immersion scanner,equipment,193nm immersion exposure tools.,Used at trailing nodes and as ArF backbone.,L5_NEON;L4_PHOTORESIST_DUV,requires_input;requires_input,high,low,long,high,ASML; Canon; Nikon.
+L3_NANOIMPRINT,L1_LITHO,3,Nanoimprint,equipment,Direct-imprint lithography (Canon).,Niche alternative to DUV/EUV.,,,low,medium,long,medium,Foreign-only vendor.
+L1_DEPOSITION,L1_SEMI_EQUIP,1,Deposition,subdomain,CVD; PVD; ALD.,Thin-film growth on every layer.,,,high,low,medium,high,AMAT; LRCX; ASMI-foreign.
+L1_ETCH,L1_SEMI_EQUIP,1,Etch,subdomain,Plasma etch.,Patterning every layer.,,,high,low,medium,high,LRCX; AMAT; TEL-foreign.
+L1_METROLOGY,L1_SEMI_EQUIP,1,Metrology & inspection,subdomain,Optical / e-beam / X-ray inspection.,Yield management for advanced nodes.,,,high,low,medium,high,KLA dominant.
+L1_WAFER_CLEAN,L1_SEMI_EQUIP,1,Wafer cleaning,subdomain,Wet processes between major steps.,Yield criticality at advanced nodes.,L4_HIGH_PURITY_CHEM,requires_input,medium,medium,medium,high,LRCX; SCREEN-foreign; ACMR.
+L1_ION_IMPLANT,L1_SEMI_EQUIP,1,Ion implantation,subdomain,Doping wafers with ions.,Transistor performance.,,,medium,medium,medium,high,AMAT; Axcelis.
+L1_CMP,L1_SEMI_EQUIP,1,CMP / polishing,subdomain,Chemical mechanical planarization.,Required between many layers.,L4_CMP_SLURRY,requires_input,medium,medium,medium,high,AMAT; Ebara-foreign.
+L2_TEST_EQUIP,L1_SEMI_EQUIP,2,Test equipment,subdomain,Wafer probe and final test handlers.,Yield and binning.,,,medium,medium,medium,high,Teradyne; Cohu; Advantest-foreign.
+L2_DICING_GRINDING,L1_SEMI_EQUIP,2,Dicing & grinding,subdomain,Wafer dicing and back-grinding.,Disco monopoly.,,,severe,none,long,high,Disco-foreign monopoly.
+L2_PHOTOMASKS,L1_SEMI_EQUIP,2,Photomasks,subdomain,Reticles for litho.,Required for every layer.,,,high,medium,medium,high,Photronics U.S.-listed; Toppan and DNP foreign.
+L1_SPECIALTY_CHEM,L0_AI_ECOSYSTEM,1,Specialty chemicals,domain,Process chemicals and slurries.,Process-critical inputs.,,,high,medium,medium,high,
+L4_HIGH_PURITY_CHEM,L1_SPECIALTY_CHEM,4,High-purity process chemicals,component,Solvents; etchants; precursors.,Used at every fab step.,,,high,medium,medium,high,Entegris; Linde; Air Products; foreign incumbents.
+L4_CMP_SLURRY,L1_SPECIALTY_CHEM,4,CMP slurry,component,Polishing slurries.,Used between many layers.,,,high,medium,medium,high,DuPont; Cabot; Entegris.
+L1_PHOTORESIST,L0_AI_ECOSYSTEM,1,Photoresists,domain,Light-sensitive films for litho.,EUV resists are bottlenecked.,,,severe,low,long,high,JSR / TOK / Shin-Etsu / Fujifilm.
+L4_PHOTORESIST_EUV,L1_PHOTORESIST,4,EUV photoresist,component,EUV-specific resists.,Mandatory for EUV patterning.,,,severe,none,long,high,No U.S.-listed pure play.
+L4_PHOTORESIST_DUV,L1_PHOTORESIST,4,DUV photoresist,component,ArF / KrF resists.,Used at all advanced and many legacy nodes.,,,high,low,medium,high,Same Japanese-firm dominance.
+L1_INDUSTRIAL_GAS,L0_AI_ECOSYSTEM,1,Industrial gases,domain,Bulk and electronic specialty gases.,Process gases for every step.,,,high,medium,medium,high,
+L2_BULK_GASES,L1_INDUSTRIAL_GAS,2,Bulk gases,subdomain,N2; O2; Ar.,Foundational fab atmosphere.,,,medium,high,short,high,Linde / Air Products / Air Liquide-foreign.
+L2_NOBLE_GASES,L1_INDUSTRIAL_GAS,2,Noble gases,subdomain,Neon; krypton; xenon.,Lithography lasers.,L5_NEON,requires_input,high,low,medium,high,2022 Ukraine shock demonstrated fragility.
+L2_FLUORINATED_GASES,L1_INDUSTRIAL_GAS,2,Fluorinated gases,subdomain,NF3; WF6; HF.,Etch and deposition.,,,high,medium,medium,high,Linde; Air Products; specialty firms.
+L2_HELIUM_GAS,L1_INDUSTRIAL_GAS,2,Helium gas,subdomain,Cryogenic; semis; MRI.,Limited geological sources.,L5_HELIUM,requires_input,high,low,long,high,LIN / APD merchant.
+L1_CLEANROOM,L0_AI_ECOSYSTEM,1,Cleanroom systems,domain,Filtration; HVAC; flooring; gowning.,Without it no working fab.,,,medium,medium,medium,high,Largely private.
+L1_MINERALS,L0_AI_ECOSYSTEM,1,Critical minerals & raw materials,domain,Metals and non-metals as root inputs.,Root layer of supply chain.,,,severe,low,long,high,
+L1_MINING,L1_MINERALS,1,Mining,subdomain,Extractive operations.,Volume layer for many minerals.,,,medium,medium,medium,high,FCX; SCCO; ADRs.
+L1_REFINING,L1_MINERALS,1,Refining & processing,subdomain,Smelting; refining; chemistry.,True bottleneck for many minerals.,,,severe,low,long,high,China-concentrated for many critical minerals.
+L1_RARE_EARTHS,L1_MINERALS,1,Rare earths,subdomain,NdPr; Dy; Tb; Sm.,Magnets; lasers; phosphors.,,,severe,low,long,high,China dominant on refining.
+L5_RARE_EARTHS_MAGNETS,L1_RARE_EARTHS,5,NdFeB magnets,component,Permanent magnets for motors and turbines.,Wind / EV / DC HVAC motors.,,,severe,low,long,high,
+L1_COPPER,L1_MINERALS,1,Copper,subdomain,Metallic copper.,Wiring; busbars; transformer windings.,,,high,medium,long,high,
+L5_COPPER,L1_COPPER,5,Refined copper,mineral,Cathode-grade copper.,Volume bottleneck for grid plus DC.,,,high,medium,long,high,FCX; SCCO; TECK ADR.
+L1_ALUMINUM,L1_MINERALS,1,Aluminum,subdomain,Metallic aluminum.,Cables; structural; heat sinks.,,,medium,high,medium,high,
+L5_ALUMINUM,L1_ALUMINUM,5,Smelted aluminum,mineral,Bauxite-derived aluminum.,Cables and structural.,,,medium,high,medium,high,AA / KALU / CENX.
+L1_SI_POLYSI,L1_MINERALS,1,Silicon / polysilicon,subdomain,Wafer feedstock.,Without polysilicon no wafers.,,,medium,low,medium,high,Wacker / Hemlock / GCL.
+L5_HIGH_PURITY_QUARTZ,L1_SI_POLYSI,5,High-purity quartz,mineral,Quartz crucibles for Cz silicon.,Spruce Pine NC dominant globally.,,,severe,none,long,high,Sibelco / The Quartz Corp private.
+L1_GALLIUM,L1_MINERALS,1,Gallium,subdomain,Gallium metal and compounds.,GaN HEMTs and RF.,,,severe,low,long,high,No U.S.-listed pure play.
+L5_GALLIUM,L1_GALLIUM,5,Refined gallium,mineral,Refined Ga metal.,Subject to China export controls.,,,severe,none,long,high,
+L1_GERMANIUM,L1_MINERALS,1,Germanium,subdomain,Germanium metal and compounds.,Optical fiber and IR optics.,,,severe,low,long,high,No U.S.-listed pure play.
+L5_GERMANIUM,L1_GERMANIUM,5,Refined germanium,mineral,Refined Ge metal.,Subject to China export controls.,,,severe,none,long,high,
+L1_TUNGSTEN,L1_MINERALS,1,Tungsten,subdomain,Refined tungsten.,Contacts and interconnects.,,,high,low,long,high,Mostly foreign / private.
+L5_TUNGSTEN,L1_TUNGSTEN,5,Refined tungsten,mineral,Refined W metal.,Used in advanced-node interconnects.,,,high,low,long,high,
+L1_COBALT,L1_MINERALS,1,Cobalt,subdomain,Refined cobalt.,Batteries and magnets.,,,high,medium,long,high,Mostly foreign-listed.
+L1_NICKEL,L1_MINERALS,1,Nickel,subdomain,Refined nickel.,Batteries and alloys.,,,medium,medium,medium,high,VALE; BHP.
+L1_LITHIUM,L1_MINERALS,1,Lithium,subdomain,Battery-grade lithium.,Cathodes for ESS.,,,medium,medium,medium,high,
+L5_LITHIUM,L1_LITHIUM,5,Battery-grade lithium,mineral,Battery-grade Li2CO3 / LiOH.,DC-adjacent through ESS.,,,medium,medium,medium,high,ALB / SQM / LAC.
+L1_GRAPHITE,L1_MINERALS,1,Graphite,subdomain,Natural and synthetic graphite.,Battery anodes; conductive parts.,,,high,low,long,high,Few clean U.S.-listed names.
+L5_GRAPHITE,L1_GRAPHITE,5,Refined graphite,mineral,Battery-grade graphite.,Battery anodes.,,,high,low,long,high,Mostly Chinese refiners.
+L1_FLUORSPAR,L1_MINERALS,1,Fluorspar / fluorine chain,subdomain,CaF2 mineral and fluorochemistry.,HF; NF3; specialty fluorides.,,,high,low,long,high,Mostly state / foreign.
+L1_HELIUM,L1_MINERALS,1,Helium,subdomain,He gas from natural-gas fields.,Cryogenics; semis; MRI.,,,high,low,long,high,LIN / APD merchant; private E&P.
+L5_HELIUM,L1_HELIUM,5,Refined helium,gas,Pure He gas.,Cryogenics; semis; MRI.,,,high,low,long,high,
+L1_NOBLE_GASES,L1_MINERALS,1,Neon; argon; krypton; xenon,subdomain,Air-separation byproducts.,Lithography lasers and processing.,,,high,low,medium,high,Linde / Air Products dominate merchant market.
+L5_NEON,L1_NOBLE_GASES,5,Refined neon (semiconductor grade),gas,Semi-grade neon.,ArF excimer laser gas.,,,high,low,medium,high,Diversified post 2022.
+L5_KRYPTON,L1_NOBLE_GASES,5,Refined krypton,gas,Semi-grade krypton.,KrF laser gas.,,,medium,medium,medium,high,
+L5_XENON,L1_NOBLE_GASES,5,Refined xenon,gas,Semi-grade xenon.,Etch and ion sources.,,,medium,medium,medium,high,
+L1_QUARTZ,L1_MINERALS,1,High-purity quartz,subdomain,Spruce Pine quartz district.,Quartz crucibles for Cz silicon.,,,severe,none,long,high,Sibelco / The Quartz Corp / Covia private.
+L5_GRAIN_ORIENTED_STEEL,L1_T_AND_D,5,Grain-oriented electrical steel,mineral,Specialty silicon steel for transformer cores.,LPT and MV transformer cores.,,,severe,low,long,high,POSCO; JFE; NSSMC dominant; CLF / NUE marginal.
+L1_LOGISTICS,L0_AI_ECOSYSTEM,1,Logistics & shipping,domain,Air; sea; trucking; warehousing.,Movement of equipment and materials.,,,low,high,short,high,UPS / FDX / GXO.
+L1_REAL_ESTATE,L0_AI_ECOSYSTEM,1,Real estate / land acquisition,domain,DC sites; substations; rights of way.,Site acquisition for new DCs.,,,medium,medium,medium,high,Hyperscalers and DC REITs.
+L1_PERMITTING,L0_AI_ECOSYSTEM,1,Permitting; environmental review; local politics,process,NEPA; state PUCs; local zoning.,Time-cost of new infrastructure.,,,high,low,long,high,Process bottleneck.
+L1_CYBERSEC,L0_AI_ECOSYSTEM,1,Cybersecurity & physical security,domain,Cyber; access control; physical security.,Operational integrity.,,,low,high,short,high,Cybersecurity; physical (ALLE / ADT).
+L1_DATA_LICENSING,L0_AI_ECOSYSTEM,1,Data sourcing; licensing; labeling,domain,Training data and human labelers.,Critical input to model quality.,,,medium,medium,medium,medium,Mostly private (Scale; Surge; Labelbox).
+L1_SYNTHETIC_DATA,L0_AI_ECOSYSTEM,1,Synthetic data & data pipelines,domain,Generated data + ETL.,Augments scarce real data.,,,low,high,short,medium,Mostly private.
+L1_AI_SOFTWARE_STACK,L0_AI_ECOSYSTEM,1,AI software stack & developer tools,domain,Frameworks; serving; toolchains.,Productivity multiplier.,,,low,high,short,high,Largely open or private.
+L1_MLOPS,L0_AI_ECOSYSTEM,1,MLOps & observability,domain,Tracking; monitoring; eval; experiment management.,Operational layer.,,,low,high,short,medium,DDOG-adjacent; mostly private.
+L1_GOVERNANCE,L0_AI_ECOSYSTEM,1,Model safety; evaluation; governance,domain,Eval orgs; safety institutes; auditors.,Regulatory and reputational layer.,,,low,medium,medium,medium,Public-sector and nonprofit weighted.
+L1_FINANCE,L0_AI_ECOSYSTEM,1,Capex; debt; leases; project finance,domain,Banks; alts; insurance.,Funds the capex super-cycle.,,,low,high,short,high,KKR / BX / ARES exposure indirect.
+L1_POLICY,L0_AI_ECOSYSTEM,1,Government policy; export controls; subsidies,process,Industrial policy and trade.,Conditions every dependency.,,,medium,low,long,high,
+L1_LABOR,L0_AI_ECOSYSTEM,1,Specialized talent,process,Fab techs; ML researchers; trades.,Real human ceiling on build-out.,,,high,low,long,high,Process layer.

@@ -1,0 +1,217 @@
+%%{init: {
+  "theme": "base",
+  "themeVariables": {
+    "primaryColor": "#f8fafc",
+    "primaryBorderColor": "#334155",
+    "primaryTextColor": "#0f172a",
+    "lineColor": "#475569",
+    "fontSize": "14px"
+  }
+}}%%
+flowchart TB
+
+  INVESTABLE["U.S.-listed AI infrastructure investable map"]
+
+  subgraph DIRECT["Direct AI Infrastructure"]
+    subgraph GPU_ACCEL["Accelerators and Compute"]
+      NVDA["NVDA - NVIDIA"]
+      AMD["AMD - Advanced Micro Devices"]
+      INTC["INTC - Intel"]
+      AVGO_ASIC["AVGO - Broadcom ASICs"]
+      MRVL_ASIC["MRVL - Marvell ASICs"]
+      ARM["ARM - Arm Holdings"]
+    end
+
+    subgraph CLOUD_PUBLIC["Cloud and GPU Cloud"]
+      MSFT["MSFT - Microsoft Azure"]
+      AMZN["AMZN - AWS"]
+      GOOGL["GOOGL - Google Cloud / TPU"]
+      ORCL["ORCL - Oracle Cloud"]
+      CRWV["CRWV - CoreWeave"]
+      NBIS["NBIS - Nebius"]
+      IREN["IREN - IREN"]
+    end
+
+    subgraph SERVER_STORAGE["Servers and Storage"]
+      DELL["DELL - Dell Technologies"]
+      HPE["HPE - HPE servers and Juniper networking"]
+      SMCI["SMCI - Super Micro Computer"]
+      WDC["WDC - Western Digital"]
+      STX["STX - Seagate"]
+    end
+  end
+
+  subgraph BOTTLENECK["Bottleneck Suppliers"]
+    subgraph SEMI_PUBLIC["Foundry; EDA; Equipment; Materials"]
+      TSM["TSM - TSMC"]
+      ASML["ASML - ASML"]
+      SNPS["SNPS - Synopsys"]
+      CDNS["CDNS - Cadence"]
+      AMAT["AMAT - Applied Materials"]
+      LRCX["LRCX - Lam Research"]
+      KLAC["KLAC - KLA"]
+      MU["MU - Micron"]
+      AMKR["AMKR - Amkor"]
+      ENTG["ENTG - Entegris"]
+      LIN["LIN - Linde"]
+      APD["APD - Air Products"]
+    end
+
+    subgraph NETWORK_PUBLIC["Networking and Optical"]
+      ANET["ANET - Arista"]
+      CSCO["CSCO - Cisco"]
+      AVGO_NET["AVGO - Broadcom switching"]
+      MRVL_NET["MRVL - Marvell DSPs"]
+      COHR["COHR - Coherent"]
+      LITE["LITE - Lumentum"]
+      FN["FN - Fabrinet"]
+      ALAB["ALAB - Astera Labs"]
+    end
+
+    subgraph GRID_PUBLIC["Grid; Power; Cooling"]
+      VRT["VRT - Vertiv"]
+      ETN["ETN - Eaton"]
+      GEV["GEV - GE Vernova"]
+      HUBB["HUBB - Hubbell"]
+      POWL["POWL - Powell"]
+      CMI["CMI - Cummins"]
+      CAT["CAT - Caterpillar"]
+      TT["TT - Trane"]
+      JCI["JCI - Johnson Controls"]
+      MOD["MOD - Modine"]
+    end
+  end
+
+  subgraph INDIRECT["Indirect Picks and Infrastructure Enablers"]
+    subgraph DC_PUBLIC["Data Centers and Construction"]
+      EQIX["EQIX - Equinix"]
+      DLR["DLR - Digital Realty"]
+      IRM["IRM - Iron Mountain"]
+      PWR["PWR - Quanta Services"]
+      MTZ["MTZ - MasTec"]
+      FIX["FIX - Comfort Systems"]
+      EME["EME - EMCOR"]
+    end
+
+    subgraph POWER_PUBLIC["Generation and Fuel"]
+      CEG["CEG - Constellation"]
+      VST["VST - Vistra"]
+      TLN["TLN - Talen"]
+      BWXT["BWXT - BWX Technologies"]
+      LEU["LEU - Centrus"]
+      CCJ["CCJ - Cameco"]
+      UEC["UEC - Uranium Energy"]
+      UUUU["UUUU - Energy Fuels"]
+      NEE["NEE - NextEra"]
+      FSLR["FSLR - First Solar"]
+      FLNC["FLNC - Fluence"]
+    end
+
+    subgraph FINANCE_SOFT["Finance; Security; Software"]
+      KKR["KKR - KKR"]
+      BX["BX - Blackstone"]
+      ARES["ARES - Ares"]
+      CRWD["CRWD - CrowdStrike"]
+      PANW["PANW - Palo Alto Networks"]
+      PLTR["PLTR - Palantir"]
+      SNOW["SNOW - Snowflake"]
+      DDOG["DDOG - Datadog"]
+    end
+  end
+
+  subgraph WEAK["Weak or Diluted Public Proxies"]
+    subgraph MINERAL_PUBLIC["Minerals and Materials"]
+      FCX["FCX - Freeport-McMoRan"]
+      SCCO["SCCO - Southern Copper"]
+      TECK["TECK - Teck"]
+      BHP["BHP - BHP"]
+      RIO["RIO - Rio Tinto"]
+      AA["AA - Alcoa"]
+      MP["MP - MP Materials"]
+      USAR["USAR - USA Rare Earth"]
+      ALB["ALB - Albemarle"]
+      SQM["SQM - SQM"]
+      LAC["LAC - Lithium Americas"]
+      CLF["CLF - Cleveland-Cliffs"]
+    end
+
+    GAP_GA["No clean U.S.-listed gallium pure play"]
+    GAP_GE["No clean U.S.-listed germanium pure play"]
+    GAP_HPQ["No clean U.S.-listed high-purity quartz pure play"]
+    GAP_RESIST["No clean U.S.-listed EUV photoresist pure play"]
+    GAP_EUV_OPTICS["No public ZEISS / EUV optics exposure"]
+  end
+
+  INVESTABLE --> DIRECT
+  INVESTABLE --> BOTTLENECK
+  INVESTABLE --> INDIRECT
+  INVESTABLE --> WEAK
+
+  NVDA --> TSM
+  NVDA --> MU
+  NVDA --> AMKR
+  NVDA --> ANET
+  AMD --> TSM
+  AVGO_ASIC --> TSM
+  MRVL_ASIC --> TSM
+  MSFT --> CRWV
+  MSFT --> CEG
+  AMZN --> CRWV
+  GOOGL --> GEV
+  ORCL --> CRWV
+
+  TSM --> ASML
+  TSM --> AMAT
+  TSM --> LRCX
+  TSM --> KLAC
+  ASML --> GAP_EUV_OPTICS
+  ASML --> GAP_RESIST
+  ASML --> GAP_HPQ
+  MU --> ASML
+  MU --> ENTG
+  AMAT --> ENTG
+  LRCX --> ENTG
+  KLAC --> LIN
+  ENTG --> GAP_GA
+  ENTG --> GAP_GE
+
+  DELL --> VRT
+  HPE --> VRT
+  SMCI --> VRT
+  EQIX --> ETN
+  DLR --> ETN
+  VRT --> MOD
+  ETN --> HUBB
+  GEV --> CEG
+  GEV --> VST
+  HUBB --> CLF
+  POWL --> FCX
+  CMI --> CAT
+
+  CEG --> LEU
+  CEG --> CCJ
+  BWXT --> LEU
+  LEU --> UEC
+  UUUU --> MP
+  NEE --> FSLR
+  FLNC --> ALB
+  FLNC --> SQM
+  FLNC --> LAC
+
+  FCX --> COPPER_ROOT["Copper dependency"]
+  MP --> REE_ROOT["Rare-earth magnet dependency"]
+  AA --> AL_ROOT["Aluminum dependency"]
+  CLF --> GOES_ROOT["Transformer steel dependency"]
+
+  classDef direct fill:#caf0f8,stroke:#0277bd,stroke-width:1px,color:#000;
+  classDef bottleneck fill:#fff1c1,stroke:#b07d00,stroke-width:1px,color:#000;
+  classDef indirect fill:#e2eafc,stroke:#3a86ff,stroke-width:1px,color:#000;
+  classDef weak fill:#f1d3b3,stroke:#7c2d12,stroke-width:1px,color:#000;
+  classDef gap fill:#f8d7da,stroke:#842029,stroke-width:2px,color:#000;
+
+  class INVESTABLE direct;
+  class NVDA,AMD,INTC,AVGO_ASIC,MRVL_ASIC,ARM,MSFT,AMZN,GOOGL,ORCL,CRWV,NBIS,IREN,DELL,HPE,SMCI,WDC,STX direct;
+  class TSM,ASML,SNPS,CDNS,AMAT,LRCX,KLAC,MU,AMKR,ENTG,LIN,APD,ANET,CSCO,AVGO_NET,MRVL_NET,COHR,LITE,FN,ALAB,VRT,ETN,GEV,HUBB,POWL,CMI,CAT,TT,JCI,MOD bottleneck;
+  class EQIX,DLR,IRM,PWR,MTZ,FIX,EME,CEG,VST,TLN,BWXT,LEU,CCJ,UEC,UUUU,NEE,FSLR,FLNC,KKR,BX,ARES,CRWD,PANW,PLTR,SNOW,DDOG indirect;
+  class FCX,SCCO,TECK,BHP,RIO,AA,MP,USAR,ALB,SQM,LAC,CLF,COPPER_ROOT,REE_ROOT,AL_ROOT,GOES_ROOT weak;
+  class GAP_GA,GAP_GE,GAP_HPQ,GAP_RESIST,GAP_EUV_OPTICS gap;

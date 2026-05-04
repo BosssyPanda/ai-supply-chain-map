@@ -1,0 +1,79 @@
+category_id,parent_category_id,level,name,description,why_it_matters,bottleneck_level,notes
+L0_AI_ECOSYSTEM,,0,AI Ecosystem,Top-level: visible AI applications and the demand they create.,Drives all downstream demand for compute and physical infrastructure.,low,Demand layer; not itself a bottleneck.
+L1_APPLICATIONS,L0_AI_ECOSYSTEM,1,AI applications & end-user demand,Consumer chatbots; copilots; agents; vertical AI apps.,Where revenue enters the system.,low,Mostly demand-side; not supply-constrained.
+L1_MODELS,L0_AI_ECOSYSTEM,1,Foundation models & model developers,Frontier and open-weight model labs and their successors.,Translates compute into product.,medium,Concentration of capability among a few labs.
+L1_TRAIN_INFER_PLATFORMS,L0_AI_ECOSYSTEM,1,Training & inference platforms,Software platforms (Triton; vLLM; TensorRT-LLM; Mosaic),Performance and cost of every model run.,low,Mostly software; cheap to substitute in principle.
+L1_HYPERSCALERS,L0_AI_ECOSYSTEM,1,Cloud hyperscalers,AWS; Azure; GCP; OCI; Tencent; Alibaba.,Largest single buyers of GPU and physical infra.,medium,Concentration risk; massive capex.
+L1_NEOCLOUDS,L0_AI_ECOSYSTEM,1,GPU cloud / neocloud providers,CoreWeave; Lambda; Crusoe; Nebius; Voltage Park.,Faster expansion path than hyperscaler self-build for some customers.,medium,Heavy GPU concentration risk.
+L1_COMPUTE,L0_AI_ECOSYSTEM,1,AI accelerators & processors,GPUs; TPUs; custom ASICs; CPUs; FPGAs; DPUs.,Center of the chip-supply chain.,severe,NVDA dominant on GPU; bottlenecks downstream.
+L1_SEMI_DESIGN,L0_AI_ECOSYSTEM,1,Semiconductor design,Fabless designers and IDMs that design AI chips.,Translates demand into physical chip designs.,high,Few players at leading edge.
+L1_SEMI_IP,L0_AI_ECOSYSTEM,1,Semiconductor IP,Arm; RISC-V vendors; PHY/IP houses (Synopsys/Cadence IP).,IP licensing is a structural toll.,high,Arm near-monopoly on mobile-class compute IP.
+L1_EDA,L0_AI_ECOSYSTEM,1,EDA software,Design tools to make chips physically realizable.,Cannot tape out a leading-edge chip without it.,severe,Effective duopoly Synopsys / Cadence (plus Siemens EDA).
+L1_FAB,L0_AI_ECOSYSTEM,1,Wafer fabrication & foundries,Leading-edge and specialty foundries.,Single-largest physical bottleneck for advanced chips.,severe,TSMC dominant at leading edge.
+L1_PACKAGING,L0_AI_ECOSYSTEM,1,Advanced packaging,CoWoS; FOPLP; hybrid bonding; SoIC.,Required to integrate HBM with logic.,severe,TSMC CoWoS supply-constrained.
+L1_MEMORY,L0_AI_ECOSYSTEM,1,DRAM; HBM; NAND,Memory used in AI training and inference.,HBM is severely supply-constrained.,severe,Three-supplier oligopoly (SK hynix; Samsung; Micron).
+L1_NETWORKING,L0_AI_ECOSYSTEM,1,Networking chips; switches; routers,Switch ASICs; NICs; data-center fabric.,Determines training cluster scale-out.,high,Broadcom / NVDA / Marvell concentration.
+L1_OPTICAL,L0_AI_ECOSYSTEM,1,Optical interconnects,800G/1.6T transceivers; co-packaged optics.,Required for scale-up beyond rack.,high,Coherent / Lumentum / Fabrinet at the center.
+L1_SERVERS,L0_AI_ECOSYSTEM,1,Servers; OEM/ODM,System integration of GPUs/CPUs/NICs/cooling.,The unit hyperscalers actually buy.,medium,Many integrators; ODMs concentrated in Taiwan.
+L1_STORAGE,L0_AI_ECOSYSTEM,1,Storage systems,High-performance storage; flash; HDD.,Training data pipelines and checkpointing.,medium,WDC / STX / NetApp; flash is more bottlenecked.
+L1_DC_OPS,L0_AI_ECOSYSTEM,1,Data-center operators,Hyperscale and colocation operators.,The physical container of compute.,high,Power and land are gating factors.
+L1_DC_REIT,L0_AI_ECOSYSTEM,1,Data-center REITs,EQIX; DLR; Iron Mountain.,Public-equity expression of physical DC growth.,medium,Power-constrained in many metros.
+L1_DC_CONSTRUCTION,L0_AI_ECOSYSTEM,1,DC construction & engineering,Specialty contractors and EPC firms.,Build-out throughput limit.,high,Labor and equipment-supply constrained.
+L1_DC_POWER_INTERNAL,L0_AI_ECOSYSTEM,1,Power infra inside the DC,Switchgear; busways; PDUs; rack PDUs.,Inside-the-fence reliability.,medium,Generally well-supplied; specialty pieces tight.
+L1_UPS,L0_AI_ECOSYSTEM,1,UPS systems,Lithium-ion or lead-acid backup.,Ride-through during grid disturbances.,medium,Vertiv / Eaton / Schneider; battery-supply linked.
+L1_GRID_EQUIPMENT,L0_AI_ECOSYSTEM,1,Transformers; switchgear (grid-side),Large and medium power transformers.,Lead times now multi-year for large units.,severe,Foreign supply concentrated; U.S. capacity scarce.
+L1_GENSETS,L0_AI_ECOSYSTEM,1,Backup generators,Diesel and natural-gas gensets.,Last-resort power.,medium,Cummins / Caterpillar / Generac; lead-time elevated.
+L1_COOLING,L0_AI_ECOSYSTEM,1,Cooling & thermal management,Air; precision; rear-door; liquid; immersion.,Required to dissipate dense GPU heat.,high,Liquid cooling supply constrained.
+L1_LIQUID_COOLING,L0_AI_ECOSYSTEM,1,Liquid cooling,Direct-to-chip and rear-door heat exchanger.,New rack densities require it.,high,Vertiv / Boyd / private CoolIT / Asetek (foreign).
+L1_IMMERSION,L0_AI_ECOSYSTEM,1,Immersion cooling,Single- and two-phase immersion tanks.,Possible future standard for very dense racks.,medium,Mostly private / nascent at scale.
+L1_WATER,L0_AI_ECOSYSTEM,1,Water supply & treatment,Cooling water; greywater; reclamation.,Water rights are a permitting issue.,medium,Xylem / Veralto exposure indirect.
+L1_GRID_INTERCONNECT,L0_AI_ECOSYSTEM,1,Grid interconnection,ISO/RTO interconnection processes.,Multi-year queues in PJM / ERCOT-N / CAISO.,severe,Process bottleneck not a company bottleneck.
+L1_GENERATION,L0_AI_ECOSYSTEM,1,Electricity generation,All sources of generation.,Required for DC operation.,severe,Constraint depends on region.
+L1_NUCLEAR,L0_AI_ECOSYSTEM,1,Nuclear power,Large LWRs and emerging SMRs.,Stable baseload appealing to hyperscalers.,medium,SMRs pre-revenue; LWR fleet finite.
+L1_GAS_POWER,L0_AI_ECOSYSTEM,1,Natural-gas power,CCGT and peaker units.,Fastest add for new MW; turbine-supply constrained.,severe,GE Vernova / Mitsubishi / Siemens turbines on backlog.
+L1_RENEWABLES,L0_AI_ECOSYSTEM,1,Solar; wind,Renewables for hyperscaler PPAs.,Carbon goals plus marginal capacity.,medium,Mostly intermittent; pairs with storage.
+L1_STORAGE_ESS,L0_AI_ECOSYSTEM,1,Energy storage,Grid-scale BESS.,Bridges intermittent generation.,medium,Lithium dependency.
+L1_T_AND_D,L0_AI_ECOSYSTEM,1,Transmission & distribution equipment,High-voltage cables; substations; switchgear.,Get power from generation to DC.,severe,Long lead times across most categories.
+L1_FUEL,L0_AI_ECOSYSTEM,1,Fuel supply chains,Uranium; natural gas; diesel.,Fuels the generation layer.,high,Uranium and HALEU are notable choke points.
+L1_SEMI_EQUIP,L0_AI_ECOSYSTEM,1,Semiconductor manufacturing equipment,Litho; deposition; etch; clean; metrology; implant.,Without it no fabs.,severe,Concentrated vendor base.
+L1_LITHO,L0_AI_ECOSYSTEM,1,Lithography,EUV and DUV exposure systems.,Defines smallest features.,severe,ASML monopoly on EUV.
+L1_DEPOSITION,L0_AI_ECOSYSTEM,1,Deposition,CVD; PVD; ALD.,Thin films on every layer.,high,AMAT / LRCX / ASMI.
+L1_ETCH,L0_AI_ECOSYSTEM,1,Etch,Removing material with controlled chemistry.,Patterning every layer.,high,LRCX / TEL / AMAT.
+L1_METROLOGY,L0_AI_ECOSYSTEM,1,Metrology & inspection,Optical; e-beam; X-ray inspection.,Yield management.,high,KLA dominant.
+L1_WAFER_CLEAN,L0_AI_ECOSYSTEM,1,Wafer cleaning,Wet processes between major steps.,Yield criticality at advanced nodes.,medium,LRCX; SCREEN-foreign; ACMR.
+L1_ION_IMPLANT,L0_AI_ECOSYSTEM,1,Ion implantation,Doping wafers with ions.,Transistor performance.,medium,AMAT / Axcelis.
+L1_CMP,L0_AI_ECOSYSTEM,1,CMP / polishing,Chemical mechanical planarization.,Required between many layers.,medium,AMAT / Ebara-foreign.
+L1_SPECIALTY_CHEM,L0_AI_ECOSYSTEM,1,Specialty chemicals,High-purity chemicals and slurries.,Process-critical.,high,Entegris; DuPont; Cabot; foreign incumbents.
+L1_PHOTORESIST,L0_AI_ECOSYSTEM,1,Photoresists,Light-sensitive films.,EUV resists are bottlenecked.,severe,Japan-dominant; not U.S.-listed.
+L1_INDUSTRIAL_GAS,L0_AI_ECOSYSTEM,1,Industrial gases,Bulk plus electronic specialty gases.,Process gases for every step.,high,Linde / Air Products dominate merchant.
+L1_CLEANROOM,L0_AI_ECOSYSTEM,1,Cleanroom systems,Filtration; HVAC; flooring; gowning.,Without it no working fab.,medium,Largely private specialty firms.
+L1_MINERALS,L0_AI_ECOSYSTEM,1,Critical minerals & raw materials,Metals; non-metals; gases.,Root inputs to chips and DCs.,severe,Dependency on foreign refiners.
+L1_MINING,L0_AI_ECOSYSTEM,1,Mining,Extractive operations.,Volume layer for copper; aluminum; lithium etc.,medium,FCX / SCCO / ADRs.
+L1_REFINING,L0_AI_ECOSYSTEM,1,Refining & processing,Smelting; refining; chemistry.,True bottleneck for many minerals.,severe,China-concentrated for many critical minerals.
+L1_RARE_EARTHS,L0_AI_ECOSYSTEM,1,Rare earths,NdPr; Dy; Tb; Sm.,Magnets; lasers; phosphors.,severe,China-dominant refining.
+L1_COPPER,L0_AI_ECOSYSTEM,1,Copper,Wiring; busbars; transformer windings.,Volume bottleneck for grid + DC.,high,FCX / SCCO / TECK ADR.
+L1_ALUMINUM,L0_AI_ECOSYSTEM,1,Aluminum,Cables; structural; heat sinks.,Cheaper substitute for some Cu uses.,medium,AA / KALU / CENX.
+L1_SI_POLYSI,L0_AI_ECOSYSTEM,1,Silicon / polysilicon,Wafer feedstock and PV feedstock.,Without polysilicon no wafers.,medium,Wacker / Hemlock / GCL; not directly U.S.-listed.
+L1_GALLIUM,L0_AI_ECOSYSTEM,1,Gallium,GaN HEMTs; RF; LEDs; some power.,Subject to China export controls.,severe,No U.S.-listed pure play.
+L1_GERMANIUM,L0_AI_ECOSYSTEM,1,Germanium,Optical fiber; IR optics; some compound semis.,Subject to China export controls.,severe,No U.S.-listed pure play.
+L1_TUNGSTEN,L0_AI_ECOSYSTEM,1,Tungsten,Contacts; interconnects in advanced nodes.,Tightening supply.,high,Mostly foreign / private.
+L1_COBALT,L0_AI_ECOSYSTEM,1,Cobalt,Batteries; magnets.,Geopolitical concentration.,high,Mostly foreign-listed.
+L1_NICKEL,L0_AI_ECOSYSTEM,1,Nickel,Batteries; alloys.,High volumes for ESS.,medium,VALE / BHP.
+L1_LITHIUM,L0_AI_ECOSYSTEM,1,Lithium,Battery cathodes for ESS.,DC-adjacent through ESS.,medium,ALB / SQM / LAC.
+L1_GRAPHITE,L0_AI_ECOSYSTEM,1,Graphite,Battery anodes; conductive parts.,China-dominant.,high,Few clean U.S.-listed names.
+L1_FLUORSPAR,L0_AI_ECOSYSTEM,1,Fluorspar / fluorine chain,HF; NF3; specialty fluorides.,Process gas chain.,high,Mostly state / foreign upstream.
+L1_HELIUM,L0_AI_ECOSYSTEM,1,Helium,Cryogenics; semis; MRI.,Limited geological sources.,high,LIN / APD merchant; private E&P.
+L1_NOBLE_GASES,L0_AI_ECOSYSTEM,1,Neon; argon; krypton; xenon,Lithography lasers; processing.,Neon shock 2022 demonstrated fragility.,high,LIN / APD merchant; supply diversifying post-2022.
+L1_QUARTZ,L0_AI_ECOSYSTEM,1,High-purity quartz,Quartz crucibles for Cz silicon.,Spruce Pine NC dominant globally.,severe,Sibelco / The Quartz Corp private.
+L1_LOGISTICS,L0_AI_ECOSYSTEM,1,Logistics & shipping,Air; sea; trucking; warehousing.,Movement of equipment and materials.,low,UPS / FDX / GXO.
+L1_REAL_ESTATE,L0_AI_ECOSYSTEM,1,Real estate / land acquisition,DC sites; substations.,Site acquisition for new DCs.,medium,Hyperscalers and DC REITs.
+L1_PERMITTING,L0_AI_ECOSYSTEM,1,Permitting; environmental review; local politics,NEPA; state PUCs; municipalities.,Time-cost of new infrastructure.,high,Process bottleneck not a company bottleneck.
+L1_CYBERSEC,L0_AI_ECOSYSTEM,1,Cybersecurity & physical security,Cyber; access control; physical security.,Operational integrity.,low,Many U.S.-listed cyber names.
+L1_DATA_LICENSING,L0_AI_ECOSYSTEM,1,Data sourcing; licensing; labeling,Training data and human labelers.,Critical input to model quality.,medium,Mostly private (Scale; Surge; Labelbox).
+L1_SYNTHETIC_DATA,L0_AI_ECOSYSTEM,1,Synthetic data & data pipelines,Generated data + ETL.,Augments scarce real data.,low,Mostly private.
+L1_AI_SOFTWARE_STACK,L0_AI_ECOSYSTEM,1,AI software stack & developer tools,Frameworks; serving; toolchains.,Productivity multiplier.,low,Largely open or private.
+L1_MLOPS,L0_AI_ECOSYSTEM,1,MLOps & observability,Tracking; monitoring; eval; experiment management.,Operational layer.,low,Mostly private; DDOG-adjacent.
+L1_GOVERNANCE,L0_AI_ECOSYSTEM,1,Model safety; evaluation; governance,Eval orgs; safety institutes; auditors.,Regulatory and reputational layer.,low,Public-sector and nonprofit weighted.
+L1_FINANCE,L0_AI_ECOSYSTEM,1,Capex; debt; leases; project finance,Banks; alts; insurance.,Funds the capex super-cycle.,low,KKR / BX / ARES exposure indirect.
+L1_POLICY,L0_AI_ECOSYSTEM,1,Government policy; export controls; subsidies,Industrial policy and trade.,Conditions every dependency.,medium,Not investable directly.
+L1_LABOR,L0_AI_ECOSYSTEM,1,Specialized talent,Fab techs; ML researchers; trades.,Real human ceiling on build-out.,high,Process layer not a company.

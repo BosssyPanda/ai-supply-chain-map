@@ -1,0 +1,114 @@
+source_node_id,target_node_id,relationship_type,relationship_description,criticality,confidence,source_id
+L1_APPLICATIONS,L1_MODELS,requires_software,AI applications run on top of foundation models.,high,high,SRC_FT_AI_INFRA
+L1_MODELS,L1_TRAIN_INFER_PLATFORMS,requires_software,Models are trained and served via inference platforms.,high,high,SRC_FT_AI_INFRA
+L1_MODELS,L1_HYPERSCALERS,requires_service,Frontier model labs rent capacity from hyperscalers.,severe,high,SRC_FT_AI_INFRA
+L1_MODELS,L1_NEOCLOUDS,requires_service,Some labs use specialized GPU clouds.,high,high,SRC_CRWV_S1
+L1_MODELS,L1_DATA_LICENSING,requires_input,Models depend on licensed and labeled training data.,high,medium,SRC_FT_AI_INFRA
+L1_HYPERSCALERS,L1_DC_OPS,requires_service,Hyperscalers operate or lease physical DCs.,severe,high,SRC_EQIX_10K
+L1_HYPERSCALERS,L1_COMPUTE,requires_equipment,Hyperscalers procure GPUs and ASICs at scale.,severe,high,SRC_NVDA_10K
+L1_HYPERSCALERS,L1_GENERATION,requires_power,Hyperscalers contract massive PPAs.,severe,high,SRC_BLOOMBERG_DC_POWER
+L1_NEOCLOUDS,L1_COMPUTE,requires_equipment,Neoclouds buy GPUs for rental.,severe,high,SRC_CRWV_S1
+L1_NEOCLOUDS,L1_DC_OPS,requires_service,Neoclouds lease space from DC REITs and hyperscale builders.,severe,high,SRC_CRWV_S1
+L1_COMPUTE,L1_FAB,requires_service,All AI accelerators are made in fabs.,severe,high,SRC_TSM_20F
+L1_COMPUTE,L1_PACKAGING,requires_service,AI accelerators with HBM require advanced packaging.,severe,high,SRC_TSM_20F
+L1_COMPUTE,L1_MEMORY,requires_input,AI accelerators integrate HBM memory.,severe,high,SRC_TRENDFORCE_HBM
+L1_COMPUTE,L1_NETWORKING,requires_input,AI accelerators integrate networking silicon.,high,high,SRC_AVGO_10K
+L1_COMPUTE,L1_SEMI_DESIGN,requires_service,AI accelerators are designed by fabless / IDM teams.,severe,high,SRC_NVDA_10K
+L1_COMPUTE,L1_EDA,requires_software,Chip design requires EDA tools.,severe,high,SRC_SNPS_10K
+L1_COMPUTE,L1_SEMI_IP,requires_software,Chip design relies on licensed IP cores.,high,high,SRC_ARM_20F
+L2_AI_ACCELERATORS,L1_FAB,requires_service,Accelerators require leading-edge fabrication.,severe,high,SRC_TSM_20F
+L3_GPU,L4_HBM,requires_input,Modern data-center GPUs integrate HBM stacks.,severe,high,SRC_NVDA_10K
+L3_GPU,L2_LEADING_EDGE_FOUNDRY,requires_service,GPUs are made on 5nm and below.,severe,high,SRC_TSM_20F
+L3_GPU,L2_COWOS,requires_service,Leading GPUs are CoWoS packaged.,severe,high,SRC_TSM_20F
+L3_HYPERSCALER_ASIC,L4_HBM,requires_input,Hyperscaler ASICs use HBM for memory bandwidth.,severe,high,SRC_AVGO_10K
+L3_HYPERSCALER_ASIC,L2_COWOS,requires_service,Hyperscaler ASICs use advanced packaging.,severe,high,SRC_AVGO_10K
+L1_FAB,L1_SEMI_EQUIP,requires_equipment,Fabs require capital equipment for every step.,severe,high,SRC_AMAT_10K
+L1_FAB,L1_SPECIALTY_CHEM,requires_input,Fabs consume tons of high-purity chemicals.,high,high,SRC_ENTG_10K
+L1_FAB,L1_INDUSTRIAL_GAS,requires_input,Fabs consume bulk and specialty gases.,high,high,SRC_LIN_10K
+L1_FAB,L1_SI_POLYSI,requires_input,Fabs run on silicon wafers from polysilicon feedstock.,high,high,SRC_USGS_MCS_2025
+L1_FAB,L1_PHOTORESIST,requires_input,Fabs depend on photoresists for patterning.,severe,high,SRC_SEMI_INDUSTRY
+L1_FAB,L1_NOBLE_GASES,requires_input,Fabs depend on neon and other noble gases.,high,high,SRC_REUTERS_GALLIUM
+L1_FAB,L1_GENERATION,requires_power,Fabs consume hundreds of MW each.,severe,high,SRC_IEA_AI_ENERGY_2024
+L1_FAB,L1_WATER,requires_water,Fabs require ultra-pure water at scale.,high,high,SRC_USGS_MCS_2025
+L2_LEADING_EDGE_FOUNDRY,L1_LITHO,requires_equipment,Leading-edge nodes require EUV.,severe,high,SRC_ASML_AR
+L2_LEADING_EDGE_FOUNDRY,L1_PHOTORESIST,requires_input,Leading-edge nodes require advanced resists.,severe,high,SRC_SEMI_INDUSTRY
+L2_LEADING_EDGE_FOUNDRY,L1_DEPOSITION,requires_equipment,Leading-edge nodes require advanced deposition.,severe,high,SRC_AMAT_10K
+L2_LEADING_EDGE_FOUNDRY,L1_ETCH,requires_equipment,Leading-edge nodes require advanced etch.,severe,high,SRC_LRCX_10K
+L2_LEADING_EDGE_FOUNDRY,L1_METROLOGY,requires_equipment,Yield management requires advanced metrology.,severe,high,SRC_KLAC_10K
+L1_PACKAGING,L1_FAB,requires_service,Advanced packaging is wafer-level fabrication.,severe,high,SRC_TSM_20F
+L1_PACKAGING,L1_SEMI_EQUIP,requires_equipment,Packaging requires bonders; dicers; grinders.,severe,high,SRC_DISCO_AR
+L2_COWOS,L1_FAB,requires_service,CoWoS is performed in TSMC fabs.,severe,high,SRC_TSM_20F
+L2_HBM,L1_FAB,requires_service,HBM stacks are DRAM dies fabbed at advanced nodes.,severe,high,SRC_MU_10K
+L2_HBM,L1_PACKAGING,requires_service,HBM requires precise stacking and bonding.,severe,high,SRC_TRENDFORCE_HBM
+L2_HBM,L2_HYBRID_BONDING,requires_equipment,Future HBM generations rely on hybrid bonding.,high,medium,SRC_TRENDFORCE_HBM
+L1_LITHO,L1_NOBLE_GASES,requires_input,DUV / EUV light sources use neon and other noble gases.,high,high,SRC_REUTERS_GALLIUM
+L3_EUV_SCANNER,L4_EUV_OPTICS,requires_input,EUV scanners require ZEISS reflective optics.,severe,high,SRC_ASML_AR
+L3_EUV_SCANNER,L5_NEON,requires_input,EUV laser-produced-plasma sources use noble gases.,high,medium,SRC_REUTERS_GALLIUM
+L3_DUV_IMMERSION,L5_NEON,requires_input,ArF excimer lasers require neon as buffer / discharge gas.,high,high,SRC_REUTERS_GALLIUM
+L3_DUV_IMMERSION,L4_PHOTORESIST_DUV,requires_input,DUV scanners pattern through DUV photoresist.,high,high,SRC_SEMI_INDUSTRY
+L1_MEMORY,L1_FAB,requires_service,DRAM and NAND are made in fabs.,severe,high,SRC_MU_10K
+L1_MEMORY,L1_SEMI_EQUIP,requires_equipment,Memory fabs use the same equipment vendors.,severe,high,SRC_LRCX_10K
+L1_MEMORY,L1_LITHO,requires_equipment,Modern DRAM uses EUV at advanced layers.,severe,high,SRC_ASML_AR
+L1_NETWORKING,L1_FAB,requires_service,Switch ASICs are fabbed at leading edges.,high,high,SRC_AVGO_10K
+L1_OPTICAL,L1_FAB,requires_service,Optical engines require advanced silicon photonics.,medium,high,SRC_COHR_10K
+L1_OPTICAL,L1_SI_POLYSI,requires_input,Silicon photonics uses silicon wafers.,medium,medium,SRC_USGS_MCS_2025
+L1_SERVERS,L1_COMPUTE,requires_input,Servers integrate accelerators.,severe,high,SRC_SMCI_10K
+L1_SERVERS,L1_NETWORKING,requires_input,Servers integrate NICs and switches.,high,high,SRC_SMCI_10K
+L1_SERVERS,L1_COOLING,requires_equipment,AI servers integrate liquid cooling and heat sinks.,high,high,SRC_VRT_10K
+L1_DC_OPS,L1_GENERATION,requires_power,DC operations require power.,severe,high,SRC_IEA_AI_ENERGY_2024
+L1_DC_OPS,L1_GRID_INTERCONNECT,requires_permit,DCs connect via interconnection processes.,severe,high,SRC_DOE_GRID
+L1_DC_OPS,L1_DC_CONSTRUCTION,requires_service,DC builds need specialty contractors.,severe,high,SRC_PWR_10K
+L1_DC_OPS,L1_REAL_ESTATE,requires_input,DCs need land and rights of way.,high,high,SRC_EQIX_10K
+L1_DC_OPS,L1_PERMITTING,requires_permit,DC siting needs permits.,high,high,SRC_FT_AI_INFRA
+L1_DC_OPS,L1_WATER,requires_water,DC cooling consumes water.,high,high,SRC_FT_AI_INFRA
+L1_DC_OPS,L1_LABOR,requires_labor,DCs need specialized operations staff.,medium,high,SRC_FT_AI_INFRA
+L1_DC_CONSTRUCTION,L1_GRID_EQUIPMENT,requires_input,DC builds require transformers and switchgear.,severe,high,SRC_DOE_LP_TRANSFORMER
+L1_DC_CONSTRUCTION,L1_LABOR,requires_labor,Specialty trades constrain build pace.,high,high,SRC_FT_AI_INFRA
+L1_DC_POWER_INTERNAL,L1_COPPER,requires_input,Internal DC power gear consumes copper.,high,high,SRC_USGS_COPPER
+L1_DC_POWER_INTERNAL,L5_GRAIN_ORIENTED_STEEL,requires_input,Inside-the-fence transformers use GOES.,high,high,SRC_DOE_LP_TRANSFORMER
+L1_UPS,L1_LITHIUM,requires_input,Modern lithium UPS systems use battery cells.,medium,high,SRC_VRT_10K
+L1_GRID_EQUIPMENT,L5_GRAIN_ORIENTED_STEEL,requires_input,Transformers use grain-oriented electrical steel cores.,severe,high,SRC_DOE_LP_TRANSFORMER
+L1_GRID_EQUIPMENT,L1_COPPER,requires_input,Transformer windings use copper.,severe,high,SRC_USGS_COPPER
+L1_GRID_EQUIPMENT,L1_ALUMINUM,requires_input,Some transformer windings and cables use aluminum.,medium,high,SRC_USGS_COPPER
+L1_T_AND_D,L1_COPPER,requires_input,Transmission and distribution wiring consumes large copper volumes.,severe,high,SRC_USGS_COPPER
+L1_T_AND_D,L1_ALUMINUM,requires_input,HV transmission cables use aluminum.,high,high,SRC_USGS_COPPER
+L1_T_AND_D,L5_GRAIN_ORIENTED_STEEL,requires_input,Substation transformers use GOES.,severe,high,SRC_DOE_LP_TRANSFORMER
+L1_GENSETS,L1_FUEL,requires_input,Backup gensets use diesel or natural gas.,medium,high,SRC_NVDA_10K
+L1_COOLING,L1_WATER,requires_water,Cooling tower and adiabatic cooling use water.,high,high,SRC_VRT_10K
+L2_LIQUID_COOLING,L1_COPPER,requires_input,Liquid cold plates use copper-based heat exchangers.,medium,high,SRC_USGS_COPPER
+L1_GENERATION,L1_FUEL,requires_input,Thermal generation requires fuel.,severe,high,SRC_IEA_AI_ENERGY_2024
+L1_NUCLEAR,L2_URANIUM_FUEL_CYCLE,requires_input,Nuclear plants require enriched uranium fuel.,severe,high,SRC_CCJ_AR
+L2_LWR,L4_FUEL_FABRICATION,requires_input,LWRs receive fabricated fuel assemblies.,high,high,SRC_BWXT_10K
+L2_SMR,L4_CONVERSION_ENRICHMENT,requires_input,SMRs require HALEU enrichment.,severe,high,SRC_LEU_10K
+L4_CONVERSION_ENRICHMENT,L4_URANIUM_MINING,requires_input,Conversion / enrichment depends on mined uranium.,high,high,SRC_CCJ_AR
+L1_GAS_POWER,L3_GAS_TURBINE,requires_equipment,Gas-fired plants depend on industrial gas turbines.,severe,high,SRC_GEV_10K
+L1_GAS_POWER,L1_FUEL,requires_input,Gas-fired plants depend on natural gas.,severe,high,SRC_IEA_AI_ENERGY_2024
+L1_RENEWABLES,L1_RARE_EARTHS,requires_input,Wind turbines use NdFeB magnets in some designs.,medium,high,SRC_USGS_RARE_EARTHS
+L1_STORAGE_ESS,L1_LITHIUM,requires_input,BESS uses lithium battery cells.,high,high,SRC_USGS_LITHIUM
+L1_STORAGE_ESS,L1_NICKEL,requires_input,Some battery chemistries use nickel.,medium,high,SRC_USGS_MCS_2025
+L1_STORAGE_ESS,L1_COBALT,requires_input,Some battery chemistries use cobalt.,medium,medium,SRC_USGS_MCS_2025
+L1_STORAGE_ESS,L1_GRAPHITE,requires_input,Battery anodes use graphite.,high,high,SRC_USGS_GRAPHITE
+L1_FAB,L1_GALLIUM,requires_input,Some power semiconductors use gallium-based materials.,medium,medium,SRC_USGS_GALLIUM
+L1_FAB,L1_GERMANIUM,requires_input,Some compound semis use germanium.,medium,medium,SRC_USGS_GERMANIUM
+L1_FAB,L1_TUNGSTEN,requires_input,Advanced-node interconnects use tungsten.,high,high,SRC_USGS_TUNGSTEN
+L1_FAB,L1_HELIUM,requires_input,Fabs use helium for cooling and atmosphere control.,high,high,SRC_USGS_HELIUM
+L1_FAB,L1_QUARTZ,requires_input,Cz silicon pulling uses high-purity quartz crucibles.,severe,high,SRC_USGS_MCS_2025
+L1_FAB,L1_FLUORSPAR,requires_input,Fluorochemistry inputs trace back to fluorspar.,high,medium,SRC_USGS_MCS_2025
+L1_PHOTORESIST,L1_INDUSTRIAL_GAS,requires_input,Resist chemistry uses specialty fluorinated and other gases.,medium,medium,SRC_USGS_MCS_2025
+L1_INDUSTRIAL_GAS,L5_NEON,requires_input,Merchant noble-gas supply includes neon.,high,high,SRC_REUTERS_GALLIUM
+L1_INDUSTRIAL_GAS,L5_HELIUM,requires_input,Merchant gas supply includes helium.,high,high,SRC_USGS_HELIUM
+L1_RARE_EARTHS,L5_RARE_EARTHS_MAGNETS,requires_input,NdFeB magnets are made from rare-earth oxides.,high,high,SRC_USGS_RARE_EARTHS
+L1_REFINING,L1_RARE_EARTHS,requires_service,Rare-earth refining is concentrated in China.,severe,high,SRC_USGS_RARE_EARTHS
+L1_REFINING,L1_GALLIUM,requires_service,Gallium refining is China-dominant.,severe,high,SRC_USGS_GALLIUM
+L1_REFINING,L1_GERMANIUM,requires_service,Germanium refining is China-dominant.,severe,high,SRC_USGS_GERMANIUM
+L1_REFINING,L1_TUNGSTEN,requires_service,Tungsten refining is China-dominant.,high,high,SRC_USGS_TUNGSTEN
+L1_REFINING,L1_GRAPHITE,requires_service,Graphite refining is China-dominant.,high,high,SRC_USGS_GRAPHITE
+L1_DC_CONSTRUCTION,L1_GRID_INTERCONNECT,requires_permit,Construction depends on cleared interconnection.,severe,high,SRC_DOE_GRID
+L1_DC_OPS,L1_FINANCE,requires_capital,DC builds require multi-billion-dollar project finance.,medium,high,SRC_FT_AI_INFRA
+L1_HYPERSCALERS,L1_FINANCE,requires_capital,Hyperscaler capex programs require leases and debt.,medium,high,SRC_FT_AI_INFRA
+L1_GENERATION,L1_LABOR,requires_labor,Power-plant builds need specialty labor.,medium,high,SRC_FT_AI_INFRA
+L1_NUCLEAR,L1_LABOR,requires_labor,Nuclear ops require specialized engineering and operators.,high,high,SRC_FT_AI_INFRA
+L1_GAS_POWER,L1_PERMITTING,requires_permit,Gas plants face air-permit and ISO clearance.,high,high,SRC_DOE_GRID
+L1_FAB,L1_LABOR,requires_labor,Fabs need experienced process engineers and technicians.,high,high,SRC_OECD_SEMI_INDEX
+L1_COMPUTE,L1_POLICY,requires_permit,AI export controls condition who can buy advanced chips.,high,high,SRC_BIS_EXPORT_CTRL
+L1_FAB,L1_POLICY,requires_permit,Fab subsidies and export controls condition the network.,high,high,SRC_CHIPS_ACT

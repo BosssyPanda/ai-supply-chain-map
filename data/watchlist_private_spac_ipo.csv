@@ -1,0 +1,39 @@
+company_id,name,current_status,rumored_or_announced_public_path,related_supply_chain_node,why_it_matters,estimated_maturity,risks,source_id,confidence
+WL_CEREBRAS,Cerebras Systems,private,S-1 filed Sep 2024; deal review delayed; relisting timeline uncertain,L3_AI_STARTUP_ASIC,Wafer-scale AI accelerator (CS-3); G42 customer concentration disclosed.,medium,CFIUS / customer concentration; market reception of wafer-scale architecture.,SRC_FT_AI_INFRA,medium
+WL_GROQ,Groq Inc.,private,Multiple late-stage rounds; IPO discussed but no S-1 filed,L3_AI_STARTUP_ASIC,LPU inference chips; 2024-2025 funding round reportedly at >$2B valuation.,medium,Capacity ramp; competition vs hyperscaler ASICs.,SRC_FT_AI_INFRA,low
+WL_SAMBANOVA,SambaNova Systems,private,IPO discussed but no S-1 filed,L3_AI_STARTUP_ASIC,RDU AI accelerator; enterprise-deployed dataflow architecture.,medium,Subscale; competition from hyperscaler ASICs and NVDA.,SRC_FT_AI_INFRA,low
+WL_TENSTORRENT,Tenstorrent,private,IPO speculation only,L3_AI_STARTUP_ASIC,RISC-V AI accelerators; Jim Keller-led; multiple sovereign-AI design wins.,medium,Capital intensity; competition.,SRC_FT_AI_INFRA,low
+WL_ETCHED,Etched,private,IPO speculation only,L3_AI_STARTUP_ASIC,Transformer-fixed Sohu inference accelerator; pre-revenue.,long,Pre-product execution.,SRC_FT_AI_INFRA,low
+WL_RAIN,Rain AI,private,IPO speculation only,L3_AI_STARTUP_ASIC,Brain-inspired AI accelerator startup.,long,Pre-product.,SRC_FT_AI_INFRA,low
+WL_OPENAI,OpenAI,private,Long-term IPO speculation; current corporate restructure to PBC,L1_MODELS,Sets the demand curve for compute and energy.,long,Governance restructuring; OAI investor agreements.,SRC_FT_AI_INFRA,medium
+WL_ANTHROPIC,Anthropic,private,IPO speculation; AMZN equity stake,L1_MODELS,Major Claude family; significant compute commitments.,long,Funding; safety / regulatory.,SRC_FT_AI_INFRA,low
+WL_XAI,xAI,private,IPO speculation only,L1_MODELS,Memphis Colossus build is a major incremental compute and power demand driver.,long,Funding; political risk.,SRC_FT_AI_INFRA,low
+WL_DBRX,Databricks,private,Direct listing or IPO discussed,L1_AI_SOFTWARE_STACK,Lakehouse plus Mosaic ML platform.,medium,Cloud spend cycle; valuation.,SRC_FT_AI_INFRA,medium
+WL_SCALE_AI,Scale AI,private,IPO speculation; Meta investment in 2024,L1_DATA_LICENSING,Largest data labeling firm tied to frontier labs.,medium,Customer concentration with frontier labs.,SRC_FT_AI_INFRA,low
+WL_SURGE,Surge AI,private,IPO speculation only,L1_DATA_LICENSING,High-quality labeling competitor to Scale.,long,Same as Scale.,SRC_FT_AI_INFRA,low
+WL_FIGURE,Figure AI,private,IPO speculation only,L1_AI_SOFTWARE_STACK,Humanoid robotics; AI infrastructure dependent.,long,Pre-revenue; capital intensity.,SRC_FT_AI_INFRA,low
+WL_LAMBDA_LABS,Lambda Labs,private,IPO speculation only,L1_NEOCLOUDS,GPU cloud and on-prem AI provider.,medium,Subscale vs. CoreWeave.,SRC_CRWV_S1,low
+WL_CRUSOE,Crusoe Energy,private,Multiple late-stage rounds; IPO speculation,L1_NEOCLOUDS,Stranded-gas-to-DC power model; major Stargate participant.,medium,Capital intensity; counterparties.,SRC_FT_AI_INFRA,medium
+WL_VOLTAGE_PARK,Voltage Park,private,IPO speculation only,L1_NEOCLOUDS,GPU cloud (Jed McCaleb backed),long,Subscale.,SRC_CRWV_S1,low
+WL_TOGETHER_AI,Together AI,private,IPO speculation only,L1_TRAIN_INFER_PLATFORMS,Open-model inference / fine-tuning platform.,medium,Crowded inference market.,SRC_FT_AI_INFRA,low
+WL_FIREWORKS,Fireworks AI,private,IPO speculation only,L1_TRAIN_INFER_PLATFORMS,Open-model inference platform.,medium,Same.,SRC_FT_AI_INFRA,low
+WL_COOLIT,CoolIT Systems,private,Acquired by KKR / IPO speculation,L2_LIQUID_COOLING,Direct-to-chip liquid-cooling specialist.,medium,Capital allocation by sponsor.,SRC_VRT_10K,low
+WL_LIQUIDSTACK,LiquidStack,private,IPO speculation only,L2_IMMERSION,Two-phase immersion cooling specialist.,long,Pre-scale market.,SRC_VRT_10K,low
+WL_SUBMER,Submer Technologies,private,IPO speculation only,L2_IMMERSION,Single-phase immersion cooling.,long,Pre-scale.,SRC_VRT_10K,low
+WL_HOLTEC,Holtec International,private,SPAC interest; IPO speculation,L2_SMR,SMR-300 design plus spent-fuel storage.,long,Pre-revenue SMR.,SRC_BWXT_10K,low
+WL_TERRAPOWER,TerraPower,private,IPO speculation only,L2_SMR,Natrium reactor; Bill Gates-backed.,long,Pre-revenue.,SRC_BWXT_10K,low
+WL_X_ENERGY,X-Energy,private,Ares Acquisition Corp II SPAC merger announced 2023; deal terminated; current path private,L2_SMR,Xe-100 HTGR; Amazon investor.,long,Restart of public path.,SRC_BWXT_10K,low
+WL_KAIROS,Kairos Power,private,IPO speculation only,L2_SMR,Fluoride-salt cooled reactor; Google PPA announced.,long,Pre-revenue.,SRC_BWXT_10K,low
+WL_HELION,Helion Energy,private,Long-term speculation,L1_GENERATION,Fusion startup; Microsoft offtake.,long,Pre-revenue fusion.,SRC_BWXT_10K,low
+WL_COMMONWEALTH_FUSION,Commonwealth Fusion Systems,private,IPO speculation,L1_GENERATION,Fusion startup.,long,Pre-revenue fusion.,SRC_BWXT_10K,low
+WL_FORM_ENERGY,Form Energy,private,IPO speculation,L1_STORAGE_ESS,Iron-air long-duration storage.,medium,Demonstration phase.,SRC_VRT_10K,low
+WL_SILA,Sila Nanotechnologies,private,IPO speculation,L1_STORAGE_ESS,Silicon-anode battery materials.,medium,Manufacturing scaling.,SRC_VRT_10K,low
+WL_SHEPARDSON,Shepardson power assets / Stargate,private,JV / project-finance vehicle,L1_DC_OPS,Stargate JV: OpenAI / SoftBank / Oracle / MGX hyperscale-DC build,medium,Project-finance and policy execution.,SRC_FT_AI_INFRA,low
+WL_NB_ENERGY,Nano Nuclear / NANO Nuclear Energy (NNE),public,now_public,L2_SMR,Microreactor concept,medium,Pre-revenue,SRC_BWXT_10K,low
+WL_BLOOM_ENERGY,Bloom Energy (BE),public,now_public,L1_GENERATION,Solid-oxide fuel cells for DC primary power,short,Already public — included for cross-reference,SRC_VRT_10K,medium
+WL_ASTERA_LABS_PRE,Astera Labs (ALAB),public,now_public,L2_PCIE_CXL,IPO completed 2024,short,Already public — included for cross-reference,SRC_ALAB_10K,high
+WL_COREWEAVE_PRE,CoreWeave (CRWV),public,now_public,L1_NEOCLOUDS,IPO completed 2025,short,Already public — included for cross-reference,SRC_CRWV_S1,high
+WL_NEBIUS_PRE,Nebius Group (NBIS),public,now_public,L1_NEOCLOUDS,Yandex spinoff trading on NASDAQ,short,Already public — included for cross-reference,SRC_NBIS_F1,high
+WL_USAR_PRE,USA Rare Earth (USAR),public,now_public,L1_RARE_EARTHS,De-SPAC closed in 2025,short,Already public — included for cross-reference,SRC_MP_10K,medium
+WL_OKLO_PRE,Oklo Inc. (OKLO),public,now_public,L2_SMR,De-SPAC with AltC Acquisition Corp closed 2024,short,Already public — included for cross-reference,SRC_OKLO_10K,medium
+WL_NUSCALE_PRE,NuScale Power (SMR),public,now_public,L2_SMR,De-SPAC closed 2022,short,Already public — included for cross-reference,SRC_SMR_10K,medium

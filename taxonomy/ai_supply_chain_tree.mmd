@@ -1,0 +1,244 @@
+%%{init: {
+  "theme": "base",
+  "themeVariables": {
+    "primaryColor": "#f8fafc",
+    "primaryBorderColor": "#334155",
+    "primaryTextColor": "#0f172a",
+    "lineColor": "#475569",
+    "fontSize": "14px"
+  }
+}}%%
+flowchart TB
+
+  ROOT["L0 AI Ecosystem"]
+
+  subgraph DEMAND["Demand and Model Layer"]
+    L1_APPLICATIONS["AI applications and end-user demand"]
+    L1_MODELS["Foundation models and model developers"]
+    L1_TRAIN["Training and inference platforms"]
+    L1_AI_SOFTWARE["AI software stack and developer tools"]
+    L1_DATA["Data sourcing; licensing; labeling"]
+  end
+
+  subgraph CLOUD["Cloud and Compute Buyers"]
+    L1_HYPERSCALERS["Cloud hyperscalers"]
+    L1_NEOCLOUDS["GPU cloud / neocloud providers"]
+    L1_DC_OPS["Data-center operators"]
+    L1_DC_REIT["Data-center REITs"]
+  end
+
+  subgraph COMPUTE["Compute and Chips"]
+    L1_COMPUTE["AI accelerators and processors"]
+    L2_AI_ACCELERATORS["AI accelerators"]
+    L3_GPU["GPU"]
+    L3_HYPERSCALER_ASIC["Hyperscaler custom ASIC"]
+    L3_AI_STARTUP_ASIC["AI startup ASICs"]
+    L2_CPU["Server CPU"]
+    L2_DPU["DPU / SmartNIC"]
+  end
+
+  subgraph CHIP_STACK["Semiconductor Design Through Manufacturing"]
+    L1_SEMI_DESIGN["Semiconductor design"]
+    L1_SEMI_IP["Semiconductor IP"]
+    L1_EDA["EDA software"]
+    L1_FAB["Wafer fabrication and foundries"]
+    L2_LEADING_EDGE_FOUNDRY["Leading-edge foundry"]
+    L1_PACKAGING["Advanced packaging"]
+    L2_COWOS["CoWoS / 2.5D packaging"]
+    L1_MEMORY["DRAM / HBM / NAND"]
+    L2_HBM["HBM"]
+    L4_HBM["HBM3e / HBM4 stacks"]
+  end
+
+  subgraph EQUIP["Semiconductor Equipment and Process Inputs"]
+    L1_SEMI_EQUIP["Semiconductor manufacturing equipment"]
+    L1_LITHO["Lithography"]
+    L3_EUV_SCANNER["EUV scanner"]
+    L4_EUV_OPTICS["EUV optics"]
+    L1_DEPOSITION["Deposition"]
+    L1_ETCH["Etch"]
+    L1_METROLOGY["Metrology and inspection"]
+    L1_WAFER_CLEAN["Wafer cleaning"]
+    L1_ION_IMPLANT["Ion implantation"]
+    L1_CMP["CMP / polishing"]
+    L1_SPECIALTY_CHEM["Specialty chemicals"]
+    L1_PHOTORESIST["Photoresists"]
+    L1_INDUSTRIAL_GAS["Industrial gases"]
+    L1_CLEANROOM["Cleanroom systems"]
+  end
+
+  subgraph NETWORK["Networking; Optical; Servers; Storage"]
+    L1_NETWORKING["Networking chips; switches; routers"]
+    L2_SWITCH_ASIC["Switch ASIC"]
+    L1_OPTICAL["Optical interconnects"]
+    L2_TRANSCEIVERS["800G / 1.6T transceivers"]
+    L1_SERVERS["Servers and OEM/ODM"]
+    L1_STORAGE["Storage systems"]
+  end
+
+  subgraph DATA_CENTER["Data Center Physical Build"]
+    L1_DC_CONSTRUCTION["Data-center construction and engineering"]
+    L1_DC_POWER_INTERNAL["Power infrastructure inside data centers"]
+    L1_UPS["UPS systems"]
+    L1_GENSETS["Backup generators"]
+    L1_COOLING["Cooling and thermal management"]
+    L2_LIQUID_COOLING["Liquid cooling"]
+    L2_IMMERSION["Immersion cooling"]
+    L1_WATER["Water supply and treatment"]
+    L1_REAL_ESTATE["Real estate and land acquisition"]
+  end
+
+  subgraph POWER_GRID["Power and Grid"]
+    L1_GRID_INTERCONNECT["Grid interconnection"]
+    L1_GENERATION["Electricity generation"]
+    L1_NUCLEAR["Nuclear power"]
+    L2_URANIUM_FUEL["Uranium fuel cycle"]
+    L1_GAS_POWER["Natural gas power"]
+    L3_GAS_TURBINE["Gas turbine"]
+    L1_RENEWABLES["Renewables"]
+    L1_STORAGE_ESS["Energy storage"]
+    L1_T_AND_D["Transmission and distribution equipment"]
+    L1_GRID_EQUIPMENT["Transformers and switchgear"]
+    L2_LPT["Large power transformer"]
+  end
+
+  subgraph MATERIALS["Critical Minerals and Root Inputs"]
+    L1_MINERALS["Critical minerals and raw materials"]
+    L1_MINING["Mining"]
+    L1_REFINING["Refining and processing"]
+    L5_COPPER["Refined copper"]
+    L5_ALUMINUM["Smelted aluminum"]
+    L5_GALLIUM["Refined gallium"]
+    L5_GERMANIUM["Refined germanium"]
+    L5_NEON["Semiconductor-grade neon"]
+    L5_HELIUM["Refined helium"]
+    L5_HIGH_PURITY_QUARTZ["High-purity quartz"]
+    L5_RARE_EARTHS_MAGNETS["NdFeB magnets"]
+    L5_GRAPHITE["Refined graphite"]
+    L5_LITHIUM["Battery-grade lithium"]
+    L5_GRAIN_ORIENTED_STEEL["Grain-oriented electrical steel"]
+    L5_TUNGSTEN["Refined tungsten"]
+    L5_URANIUM["Uranium"]
+  end
+
+  subgraph ENABLERS["Policy; Finance; Logistics; Labor"]
+    L1_LOGISTICS["Logistics and shipping"]
+    L1_FINANCE["Capex; debt; leases; project finance"]
+    L1_POLICY["Government policy; export controls; subsidies"]
+    L1_PERMITTING["Permitting and local politics"]
+    L1_LABOR["Specialized talent"]
+    L1_CYBERSEC["Cybersecurity and physical security"]
+  end
+
+  ROOT --> L1_APPLICATIONS
+  ROOT --> L1_MODELS
+  ROOT --> L1_HYPERSCALERS
+  ROOT --> L1_COMPUTE
+  ROOT --> L1_FAB
+  ROOT --> L1_DC_OPS
+  ROOT --> L1_GENERATION
+  ROOT --> L1_MINERALS
+  ROOT --> L1_POLICY
+
+  L1_APPLICATIONS --> L1_MODELS --> L1_TRAIN --> L1_HYPERSCALERS
+  L1_MODELS --> L1_DATA
+  L1_TRAIN --> L1_AI_SOFTWARE
+  L1_HYPERSCALERS --> L1_NEOCLOUDS
+  L1_HYPERSCALERS --> L1_DC_OPS --> L1_DC_REIT
+
+  L1_COMPUTE --> L2_AI_ACCELERATORS
+  L2_AI_ACCELERATORS --> L3_GPU
+  L2_AI_ACCELERATORS --> L3_HYPERSCALER_ASIC
+  L2_AI_ACCELERATORS --> L3_AI_STARTUP_ASIC
+  L1_COMPUTE --> L2_CPU
+  L1_COMPUTE --> L2_DPU
+
+  L3_GPU --> L4_HBM
+  L3_HYPERSCALER_ASIC --> L4_HBM
+  L1_COMPUTE --> L1_SEMI_DESIGN --> L1_EDA
+  L1_SEMI_DESIGN --> L1_SEMI_IP
+  L1_COMPUTE --> L1_FAB --> L2_LEADING_EDGE_FOUNDRY
+  L1_COMPUTE --> L1_PACKAGING --> L2_COWOS
+  L1_COMPUTE --> L1_MEMORY --> L2_HBM --> L4_HBM
+
+  L1_FAB --> L1_SEMI_EQUIP
+  L1_SEMI_EQUIP --> L1_LITHO --> L3_EUV_SCANNER --> L4_EUV_OPTICS
+  L1_SEMI_EQUIP --> L1_DEPOSITION
+  L1_SEMI_EQUIP --> L1_ETCH
+  L1_SEMI_EQUIP --> L1_METROLOGY
+  L1_SEMI_EQUIP --> L1_WAFER_CLEAN
+  L1_SEMI_EQUIP --> L1_ION_IMPLANT
+  L1_SEMI_EQUIP --> L1_CMP
+  L1_FAB --> L1_SPECIALTY_CHEM --> L1_PHOTORESIST
+  L1_FAB --> L1_INDUSTRIAL_GAS
+  L1_FAB --> L1_CLEANROOM
+
+  L1_COMPUTE --> L1_NETWORKING --> L2_SWITCH_ASIC
+  L1_NETWORKING --> L1_OPTICAL --> L2_TRANSCEIVERS
+  L1_COMPUTE --> L1_SERVERS
+  L1_SERVERS --> L1_STORAGE
+
+  L1_DC_OPS --> L1_DC_CONSTRUCTION
+  L1_DC_OPS --> L1_DC_POWER_INTERNAL --> L1_UPS
+  L1_DC_POWER_INTERNAL --> L1_GENSETS
+  L1_DC_OPS --> L1_COOLING --> L2_LIQUID_COOLING
+  L1_COOLING --> L2_IMMERSION
+  L1_DC_OPS --> L1_WATER
+  L1_DC_OPS --> L1_REAL_ESTATE
+
+  L1_DC_OPS --> L1_GRID_INTERCONNECT
+  L1_GRID_INTERCONNECT --> L1_T_AND_D --> L1_GRID_EQUIPMENT --> L2_LPT
+  L1_DC_OPS --> L1_GENERATION
+  L1_GENERATION --> L1_NUCLEAR --> L2_URANIUM_FUEL
+  L1_GENERATION --> L1_GAS_POWER --> L3_GAS_TURBINE
+  L1_GENERATION --> L1_RENEWABLES
+  L1_GENERATION --> L1_STORAGE_ESS
+
+  L1_MINERALS --> L1_MINING --> L1_REFINING
+  L1_REFINING --> L5_COPPER
+  L1_REFINING --> L5_ALUMINUM
+  L1_REFINING --> L5_GALLIUM
+  L1_REFINING --> L5_GERMANIUM
+  L1_REFINING --> L5_RARE_EARTHS_MAGNETS
+  L1_REFINING --> L5_GRAPHITE
+  L1_REFINING --> L5_LITHIUM
+  L1_REFINING --> L5_TUNGSTEN
+  L1_REFINING --> L5_URANIUM
+  L1_INDUSTRIAL_GAS --> L5_NEON
+  L1_INDUSTRIAL_GAS --> L5_HELIUM
+  L1_SI_POLYSI["Silicon / polysilicon"] --> L5_HIGH_PURITY_QUARTZ
+  L1_GRID_EQUIPMENT --> L5_GRAIN_ORIENTED_STEEL
+
+  L1_DC_OPS --> L1_LOGISTICS
+  L1_DC_OPS --> L1_FINANCE
+  L1_FAB --> L1_POLICY
+  L1_DC_OPS --> L1_PERMITTING
+  L1_DC_CONSTRUCTION --> L1_LABOR
+  L1_HYPERSCALERS --> L1_CYBERSEC
+
+  classDef applications fill:#fde2e4,stroke:#c14953,stroke-width:1px,color:#000;
+  classDef models fill:#fff1c1,stroke:#b07d00,stroke-width:1px,color:#000;
+  classDef cloud fill:#dbe7ff,stroke:#1d4ed8,stroke-width:1px,color:#000;
+  classDef compute fill:#caf0f8,stroke:#0277bd,stroke-width:1px,color:#000;
+  classDef memory fill:#bde0fe,stroke:#0353a4,stroke-width:1px,color:#000;
+  classDef networking fill:#d3f9d8,stroke:#2b8a3e,stroke-width:1px,color:#000;
+  classDef datacenter fill:#e2eafc,stroke:#3a86ff,stroke-width:1px,color:#000;
+  classDef power fill:#ffe5b4,stroke:#d97706,stroke-width:1px,color:#000;
+  classDef equipment fill:#e0c3fc,stroke:#5a189a,stroke-width:1px,color:#000;
+  classDef chemicals fill:#cffafe,stroke:#0e7490,stroke-width:1px,color:#000;
+  classDef minerals fill:#f1d3b3,stroke:#7c2d12,stroke-width:1px,color:#000;
+  classDef policyfinance fill:#e9ecef,stroke:#495057,stroke-width:1px,color:#000;
+
+  class ROOT applications;
+  class L1_APPLICATIONS applications;
+  class L1_MODELS,L1_TRAIN,L1_AI_SOFTWARE,L1_DATA models;
+  class L1_HYPERSCALERS,L1_NEOCLOUDS cloud;
+  class L1_COMPUTE,L2_AI_ACCELERATORS,L3_GPU,L3_HYPERSCALER_ASIC,L3_AI_STARTUP_ASIC,L2_CPU,L2_DPU,L1_SEMI_DESIGN,L1_SEMI_IP compute;
+  class L1_MEMORY,L2_HBM,L4_HBM memory;
+  class L1_NETWORKING,L2_SWITCH_ASIC,L1_OPTICAL,L2_TRANSCEIVERS,L1_SERVERS,L1_STORAGE networking;
+  class L1_DC_OPS,L1_DC_REIT,L1_DC_CONSTRUCTION,L1_DC_POWER_INTERNAL,L1_UPS,L1_GENSETS,L1_COOLING,L2_LIQUID_COOLING,L2_IMMERSION,L1_WATER,L1_REAL_ESTATE datacenter;
+  class L1_GRID_INTERCONNECT,L1_GENERATION,L1_NUCLEAR,L2_URANIUM_FUEL,L1_GAS_POWER,L3_GAS_TURBINE,L1_RENEWABLES,L1_STORAGE_ESS,L1_T_AND_D,L1_GRID_EQUIPMENT,L2_LPT power;
+  class L1_EDA,L1_FAB,L2_LEADING_EDGE_FOUNDRY,L1_PACKAGING,L2_COWOS,L1_SEMI_EQUIP,L1_LITHO,L3_EUV_SCANNER,L4_EUV_OPTICS,L1_DEPOSITION,L1_ETCH,L1_METROLOGY,L1_WAFER_CLEAN,L1_ION_IMPLANT,L1_CMP equipment;
+  class L1_SPECIALTY_CHEM,L1_PHOTORESIST,L1_INDUSTRIAL_GAS,L1_CLEANROOM,L1_SI_POLYSI chemicals;
+  class L1_MINERALS,L1_MINING,L1_REFINING,L5_COPPER,L5_ALUMINUM,L5_GALLIUM,L5_GERMANIUM,L5_NEON,L5_HELIUM,L5_HIGH_PURITY_QUARTZ,L5_RARE_EARTHS_MAGNETS,L5_GRAPHITE,L5_LITHIUM,L5_GRAIN_ORIENTED_STEEL,L5_TUNGSTEN,L5_URANIUM minerals;
+  class L1_LOGISTICS,L1_FINANCE,L1_POLICY,L1_PERMITTING,L1_LABOR,L1_CYBERSEC policyfinance;
