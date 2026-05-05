@@ -4,7 +4,10 @@ import { Alerts } from './pages/Alerts';
 import { Companies } from './pages/Companies';
 import { CompanyPage } from './pages/CompanyPage';
 import { Comparisons } from './pages/Comparisons';
+import { Bottlenecks } from './pages/Bottlenecks';
+import { Materials } from './pages/Materials';
 import { Overview } from './pages/Overview';
+import { Sources } from './pages/Sources';
 import { SupplyChain } from './pages/SupplyChain';
 import { Watchlist } from './pages/Watchlist';
 
@@ -18,6 +21,9 @@ export const router = createBrowserRouter([
       { path: 'supply-chain', element: <SupplyChain /> },
       { path: 'companies', element: <Companies /> },
       { path: 'companies/:id', element: <CompanyPage /> },
+      { path: 'materials', element: <Materials /> },
+      { path: 'bottlenecks', element: <Bottlenecks /> },
+      { path: 'sources', element: <Sources /> },
       { path: 'watchlist', element: <Watchlist /> },
       { path: 'comparisons', element: <Comparisons /> },
       { path: 'alerts', element: <Alerts /> },

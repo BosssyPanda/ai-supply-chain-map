@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import type { Source, SupplyChainNode } from '../../data/schema';
 import { cn } from '../../lib/cn';
+import { ConfidenceIndicator, SourceLink, SourceStatusBadge } from '../report';
 
 interface CompanyDetailProps {
   node: SupplyChainNode;
@@ -25,29 +26,27 @@ export function CompanyDetail({ node, upstream, downstream, sources, compact = f
   return (
     <div className="space-y-4">
       <div className="flex items-start gap-4">
-        <div className="grid h-16 w-16 shrink-0 place-items-center rounded-xl border border-blue-400/50 bg-blue-500/20 text-lg font-black text-white shadow-glowBlue">
+        <div className="grid h-16 w-16 shrink-0 place-items-center rounded-lg border border-border bg-accent-soft text-lg font-black text-accent">
           {node.ticker ?? node.label.slice(0, 3).toUpperCase()}
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <h2 className="truncate text-2xl font-bold text-white">{node.label}</h2>
-            <Star className="h-5 w-5 text-amber-300" />
+            <h2 className="truncate font-display text-3xl text-foreground">{node.label}</h2>
+            <Star className="h-5 w-5 text-high" />
           </div>
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-muted-foreground">
             {node.ticker ? `${node.ticker} · ${node.exchange} · ` : ''}
             {node.status?.replaceAll('_', ' ')}
           </p>
           <div className="mt-2 flex flex-wrap gap-2">
-            <Badge tone={status.tone}>{status.label}</Badge>
-            <Badge tone={node.confidence === 'high' ? 'green' : node.confidence === 'medium' ? 'amber' : 'red'}>
-              {node.confidence ?? 'low'} confidence
-            </Badge>
-            <Badge tone="blue">{lastUpdated ? `Updated ${lastUpdated}` : 'Last updated pending'}</Badge>
+            <SourceStatusBadge sourceCount={sources.length} confidence={node.confidence} />
+            <ConfidenceIndicator confidence={node.confidence} />
+            <Badge tone="partial">{lastUpdated ? `Updated ${lastUpdated}` : 'Last updated pending'}</Badge>
           </div>
           {!compact && node.type === 'company' ? (
             <Link
               to={`/companies/${node.id}`}
-              className="mt-3 inline-flex items-center gap-2 rounded-lg border border-blue-400/50 bg-blue-500/10 px-3 py-1.5 text-xs font-semibold text-blue-200 hover:bg-blue-500/20"
+              className="mt-3 inline-flex items-center gap-2 rounded-md border border-accent/35 bg-accent-soft px-3 py-1.5 text-xs font-semibold text-accent hover:border-accent/60"
             >
               Open Company Page
               <ExternalLink className="h-3.5 w-3.5" />
@@ -58,13 +57,13 @@ export function CompanyDetail({ node, upstream, downstream, sources, compact = f
 
       <Panel title="Company Overview">
         <p>{node.description}</p>
-        <p className="mt-3 text-slate-300">{node.whyItMatters}</p>
+        <p className="mt-3 text-foreground">{node.whyItMatters}</p>
       </Panel>
 
       <div className="grid gap-3 md:grid-cols-2">
         <ResearchStatusCard label={status.label} detail={status.detail} tone={status.tone} />
         <Panel title="Supply-chain Role">
-          <div className="space-y-2 text-sm text-slate-300">
+          <div className="space-y-2 text-sm text-muted-foreground">
             <p>{node.role || node.marketSegment || node.layer}</p>
             <MetaLine label="Ticker / exchange" value={node.ticker && node.exchange ? `${node.ticker} / ${node.exchange}` : node.ticker} />
             <MetaLine label="Status" value={node.status?.replaceAll('_', ' ')} />
@@ -86,7 +85,7 @@ export function CompanyDetail({ node, upstream, downstream, sources, compact = f
         </div>
       ) : (
         <Panel title="Financial Data">
-          <span className="text-xs text-slate-500">Data pending. Financial fields stay blank until a source is attached and verified.</span>
+          <span className="text-xs text-muted-foreground">Data pending. Financial fields stay blank until a source is attached and verified.</span>
         </Panel>
       )}
 
@@ -110,8 +109,8 @@ export function CompanyDetail({ node, upstream, downstream, sources, compact = f
 
 export function Panel({ title, children }: { title: string; children: ReactNode }): JSX.Element {
   return (
-    <section className="rounded-xl border border-slate-800 bg-slate-900/70 p-4 text-sm text-slate-400">
-      <h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-300">{title}</h3>
+    <section className="rounded-lg border border-border bg-surface p-4 text-sm text-muted-foreground">
+      <h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-foreground">{title}</h3>
       {children}
     </section>
   );
@@ -120,9 +119,9 @@ export function Panel({ title, children }: { title: string; children: ReactNode 
 function Metric({ label, value }: { label: string; value?: string }): JSX.Element {
   const hasValue = Boolean(value);
   return (
-    <div className={cn('rounded-xl border p-4', hasValue ? 'border-slate-800 bg-slate-900/70' : 'border-dashed border-slate-700 bg-slate-950/60')}>
-      <p className="text-xs text-slate-500">{label}</p>
-      <p className={cn('mt-1 text-lg font-bold', hasValue ? 'text-white' : 'text-slate-500')}>{value ?? 'Data pending'}</p>
+    <div className={cn('rounded-lg border p-4', hasValue ? 'border-border bg-surface' : 'border-dashed border-border bg-surface-muted')}>
+      <p className="text-xs text-muted-foreground">{label}</p>
+      <p className={cn('mt-1 text-lg font-bold', hasValue ? 'text-foreground' : 'text-muted-foreground')}>{value ?? 'Data pending'}</p>
     </div>
   );
 }
@@ -144,12 +143,12 @@ function TagPanel({
       <div className="flex flex-wrap gap-2">
         {values.length > 0 ? (
           values.map((item) => (
-            <span key={item} className="rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-1 text-xs text-slate-300">
+            <span key={item} className="rounded-md border border-border bg-surface-muted px-2.5 py-1 text-xs text-foreground">
               {item}
             </span>
           ))
         ) : (
-          <span className="text-xs text-slate-500">{emptyLabel}</span>
+          <span className="text-xs text-muted-foreground">{emptyLabel}</span>
         )}
       </div>
     </Panel>
@@ -161,24 +160,9 @@ export function SourceLinks({ sources }: { sources: Source[] }): JSX.Element {
     <Panel title="Source Links">
       <div className="space-y-2">
         {sources.length > 0 ? (
-          sources.map((source) => (
-            <a
-              key={source.id}
-              href={source.url}
-              target="_blank"
-              rel="noreferrer"
-              className={cn('block rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-xs text-blue-200 hover:border-blue-400/50')}
-            >
-              {source.title}
-              <span className="block text-slate-500">
-                {source.publisher}
-                {source.dateAccessed ? ` · ${source.dateAccessed}` : ''}
-                {source.reliabilityScore ? ` · ${source.reliabilityScore} reliability` : ''}
-              </span>
-            </a>
-          ))
+          sources.map((source) => <SourceLink key={source.id} source={source} />)
         ) : (
-          <span className="text-xs text-slate-500">No source attached yet. Treat confidence as low until this row is verified.</span>
+          <span className="text-xs text-muted-foreground">No source attached yet. Treat confidence as low until this row is verified.</span>
         )}
       </div>
     </Panel>
@@ -190,8 +174,8 @@ function ResearchStatusCard({ label, detail, tone }: { label: string; detail: st
     <Panel title="Research Status">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-lg font-bold text-white">{label}</p>
-          <p className="mt-1 text-sm text-slate-400">{detail}</p>
+          <p className="text-lg font-bold text-foreground">{label}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{detail}</p>
         </div>
         <Badge tone={tone}>{label}</Badge>
       </div>
@@ -201,23 +185,23 @@ function ResearchStatusCard({ label, detail, tone }: { label: string; detail: st
 
 function MetaLine({ label, value }: { label: string; value?: string }): JSX.Element {
   return (
-    <div className="flex items-center justify-between gap-3 border-t border-slate-800/80 pt-2 first:border-t-0 first:pt-0">
-      <span className="text-slate-500">{label}</span>
-      <span className="text-right font-semibold capitalize text-slate-200">{value?.replaceAll('_', ' ') ?? 'Data pending'}</span>
+    <div className="flex items-center justify-between gap-3 border-t border-border pt-2 first:border-t-0 first:pt-0">
+      <span className="text-muted-foreground">{label}</span>
+      <span className="text-right font-semibold capitalize text-foreground">{value?.replaceAll('_', ' ') ?? 'Data pending'}</span>
     </div>
   );
 }
 
-type BadgeTone = 'blue' | 'green' | 'amber' | 'red';
+type BadgeTone = 'partial' | 'verified' | 'high' | 'critical';
 
 function Badge({ tone, children }: { tone: BadgeTone; children: ReactNode }): JSX.Element {
   const styles = {
-    blue: 'border-blue-400/30 bg-blue-500/10 text-blue-200',
-    green: 'border-emerald-400/30 bg-emerald-500/10 text-emerald-200',
-    amber: 'border-amber-400/30 bg-amber-500/10 text-amber-200',
-    red: 'border-rose-400/30 bg-rose-500/10 text-rose-200',
+    partial: 'border-partial/30 bg-partial/10 text-partial',
+    verified: 'border-verified/30 bg-verified/10 text-verified',
+    high: 'border-high/30 bg-high/10 text-high',
+    critical: 'border-critical/30 bg-critical/10 text-critical',
   };
-  return <span className={cn('rounded-full border px-2.5 py-1 text-[11px] font-bold capitalize', styles[tone])}>{children}</span>;
+  return <span className={cn('rounded-md border px-2.5 py-1 text-[11px] font-bold capitalize', styles[tone])}>{children}</span>;
 }
 
 function getLastUpdated(sources: Source[]): string | undefined {
@@ -231,8 +215,8 @@ function getLastUpdated(sources: Source[]): string | undefined {
 function getResearchStatus(node: SupplyChainNode, sources: Source[]): { label: string; detail: string; tone: BadgeTone } {
   const hasSources = sources.length > 0;
   const missingFinancials = ['revenue', 'marketCap', 'grossMargin', 'freeCashFlow'].filter((key) => !node.financials?.[key as keyof typeof node.financials]).length;
-  if (!hasSources && node.confidence === 'low') return { label: 'Not researched yet', detail: 'No source row is attached and confidence is low.', tone: 'red' };
-  if (node.confidence === 'low' || !hasSources) return { label: 'Needs verification', detail: 'The mapping is useful but still needs source confirmation.', tone: 'amber' };
-  if (missingFinancials > 1) return { label: 'Partial', detail: 'Supply-chain mapping exists; financial fields can be filled later.', tone: 'blue' };
-  return { label: 'Complete', detail: 'Core source and company fields are populated.', tone: 'green' };
+  if (!hasSources && node.confidence === 'low') return { label: 'Not researched yet', detail: 'No source row is attached and confidence is low.', tone: 'critical' };
+  if (node.confidence === 'low' || !hasSources) return { label: 'Needs verification', detail: 'The mapping is useful but still needs source confirmation.', tone: 'high' };
+  if (missingFinancials > 1) return { label: 'Partial', detail: 'Supply-chain mapping exists; financial fields can be filled later.', tone: 'partial' };
+  return { label: 'Complete', detail: 'Core source and company fields are populated.', tone: 'verified' };
 }

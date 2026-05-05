@@ -30,16 +30,16 @@ export function FilterPanel({ nodes, filters, onChange }: FilterPanelProps): JSX
   const geographies = uniqueGeographies(nodes).slice(0, 18);
 
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-950/70 p-4 shadow-2xl">
+    <section className="rounded-lg border border-border bg-surface p-4 shadow-report-soft">
       <div className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2 text-sm font-semibold text-slate-100">
-          <Filter className="h-4 w-4 text-blue-300" />
+        <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+          <Filter className="h-4 w-4 text-accent" />
           Filters
         </div>
         <button
           type="button"
           onClick={() => onChange(defaultFilters)}
-          className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs text-slate-400 hover:bg-slate-800 hover:text-slate-100"
+          className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-muted-foreground hover:bg-surface-muted hover:text-foreground"
         >
           <RotateCcw className="h-3.5 w-3.5" />
           Reset
@@ -51,7 +51,7 @@ export function FilterPanel({ nodes, filters, onChange }: FilterPanelProps): JSX
           <select
             value={filters.layers[0] ?? ''}
             onChange={(event) => onChange({ ...filters, layers: event.target.value ? [event.target.value] : [] })}
-            className="h-9 w-full rounded-lg border border-slate-800 bg-slate-900 px-3 text-xs text-slate-200 outline-none"
+            className="h-9 w-full rounded-md border border-border bg-surface px-3 text-xs text-foreground outline-none focus:border-accent focus:ring-2 focus:ring-accent/15"
           >
             <option value="">All layers</option>
             {layers.map((layer) => (
@@ -96,12 +96,12 @@ export function FilterPanel({ nodes, filters, onChange }: FilterPanelProps): JSX
               value={filters.material}
               onChange={(event) => onChange({ ...filters, material: event.target.value })}
               placeholder="copper, HBM..."
-              className="h-9 rounded-lg border border-slate-800 bg-slate-900 px-3 text-xs text-slate-200 outline-none"
+              className="h-9 rounded-md border border-border bg-surface px-3 text-xs text-foreground outline-none placeholder:text-muted-foreground focus:border-accent focus:ring-2 focus:ring-accent/15"
             />
             <select
               value={filters.geographies[0] ?? ''}
               onChange={(event) => onChange({ ...filters, geographies: event.target.value ? [event.target.value] : [] })}
-              className="h-9 rounded-lg border border-slate-800 bg-slate-900 px-3 text-xs text-slate-200 outline-none"
+              className="h-9 rounded-md border border-border bg-surface px-3 text-xs text-foreground outline-none focus:border-accent focus:ring-2 focus:ring-accent/15"
             >
               <option value="">All geos</option>
               {geographies.map((geo) => (
@@ -114,7 +114,7 @@ export function FilterPanel({ nodes, filters, onChange }: FilterPanelProps): JSX
         </FilterGroup>
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2 border-t border-slate-800 pt-4">
+      <div className="mt-4 flex flex-wrap gap-2 border-t border-border pt-4">
         <Toggle active={filters.usListedOnly} onClick={() => onChange({ ...filters, usListedOnly: !filters.usListedOnly })}>
           U.S.-listed only
         </Toggle>
@@ -150,7 +150,7 @@ export function FilterPanel({ nodes, filters, onChange }: FilterPanelProps): JSX
 function FilterGroup({ label, children }: { label: string; children: ReactNode }): JSX.Element {
   return (
     <div>
-      <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">{label}</p>
+      <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">{label}</p>
       {children}
     </div>
   );
@@ -163,7 +163,7 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
       onClick={onClick}
       className={cn(
         'rounded-full border px-2.5 py-1 text-xs capitalize transition',
-        active ? 'border-blue-400/70 bg-blue-500/15 text-blue-200' : 'border-slate-800 bg-slate-900/80 text-slate-400 hover:text-slate-100',
+        active ? 'border-accent bg-accent-soft text-accent' : 'border-border bg-surface text-muted-foreground hover:text-foreground',
       )}
     >
       {children}
@@ -177,8 +177,8 @@ function Toggle({ active, onClick, children }: { active: boolean; onClick: () =>
       type="button"
       onClick={onClick}
       className={cn(
-        'rounded-lg border px-3 py-1.5 text-xs font-medium transition',
-        active ? 'border-teal-400/60 bg-teal-400/10 text-teal-200' : 'border-slate-800 bg-slate-900 text-slate-500',
+        'rounded-md border px-3 py-1.5 text-xs font-medium transition',
+        active ? 'border-accent bg-accent-soft text-accent' : 'border-border bg-surface text-muted-foreground hover:text-foreground',
       )}
     >
       {children}

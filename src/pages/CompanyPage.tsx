@@ -1,6 +1,8 @@
 import { ArrowLeft, Network } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import { CompanyDetail } from '../components/details/CompanyDetail';
+import { MainContentGrid, PageShell, RightRail } from '../components/layout/PageShell';
+import { InsightPanel, RiskBadge } from '../components/report';
 import { loadExplorerData } from '../data/loaders';
 import type { Source, SupplyChainNode } from '../data/schema';
 
@@ -13,14 +15,16 @@ export function CompanyPage(): JSX.Element {
 
   if (!node) {
     return (
-      <div className="grid min-h-screen place-items-center px-6">
-        <div className="rounded-3xl border border-slate-800 bg-slate-950/80 p-8 text-center">
-          <h1 className="text-2xl font-bold text-white">Company not found</h1>
-          <Link to="/companies" className="mt-4 inline-flex text-blue-300">
-            Back to companies
-          </Link>
+      <PageShell>
+        <div className="grid min-h-[60vh] place-items-center">
+          <div className="rounded-lg border border-border bg-surface p-8 text-center shadow-report-soft">
+            <h1 className="font-display text-3xl text-foreground">Company not found</h1>
+            <Link to="/companies" className="mt-4 inline-flex text-accent">
+              Back to companies
+            </Link>
+          </div>
         </div>
-      </div>
+      </PageShell>
     );
   }
 
@@ -30,52 +34,52 @@ export function CompanyPage(): JSX.Element {
   const peers = data.nodes.filter((item) => item.id !== node.id && item.type === 'company' && item.layer === node.layer).slice(0, 8);
 
   return (
-    <div className="min-h-screen px-4 py-6 lg:px-8">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-          <Link to="/companies" className="inline-flex items-center gap-2 text-sm font-semibold text-slate-400 hover:text-blue-200">
-            <ArrowLeft className="h-4 w-4" />
-            Back to companies
-          </Link>
-          <Link
-            to={`/supply-chain?focus=${node.id}`}
-            className="inline-flex items-center gap-2 rounded-xl border border-blue-400/50 bg-blue-500/10 px-4 py-2 text-sm font-semibold text-blue-200"
-          >
-            <Network className="h-4 w-4" />
-            Back to graph focused
-          </Link>
-        </div>
-
-        <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_320px]">
-          <section className="rounded-3xl border border-slate-800 bg-night-900/90 p-5 shadow-2xl">
-            <CompanyDetail node={node} upstream={upstream} downstream={downstream} sources={sources} compact />
-          </section>
-          <aside className="space-y-4">
-            <Panel title="Supply-chain position" value={node.layer} />
-            <Panel title="Geography" value={node.country ?? 'Data pending'} />
-            <Panel title="Bottleneck" value={node.bottleneckLevel ?? 'Unscored'} />
-            <section className="rounded-2xl border border-slate-800 bg-slate-950/70 p-4">
-              <h2 className="mb-3 text-sm font-bold text-white">Peers / Comparables</h2>
-              <div className="space-y-2">
-                {peers.length > 0 ? peers.map((peer) => (
-                  <Link key={peer.id} to={`/companies/${peer.id}`} className="block rounded-xl border border-slate-800 bg-slate-900/60 px-3 py-2 text-sm text-slate-300 hover:text-blue-200">
-                    {peer.label}
-                  </Link>
-                )) : <p className="text-sm text-slate-500">Peer mapping pending.</p>}
-              </div>
-            </section>
-          </aside>
-        </div>
+    <PageShell>
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+        <Link to="/companies" className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-accent">
+          <ArrowLeft className="h-4 w-4" />
+          Back to companies
+        </Link>
+        <Link
+          to={`/supply-chain?focus=${node.id}`}
+          className="inline-flex items-center gap-2 rounded-md border border-accent/35 bg-accent-soft px-4 py-2 text-sm font-semibold text-accent"
+        >
+          <Network className="h-4 w-4" />
+          Back to graph focused
+        </Link>
       </div>
-    </div>
+
+      <MainContentGrid>
+        <section className="rounded-lg border border-border bg-surface p-5 shadow-report-soft">
+          <CompanyDetail node={node} upstream={upstream} downstream={downstream} sources={sources} compact />
+        </section>
+        <RightRail>
+          <Panel title="Supply-chain position" value={node.layer} />
+          <Panel title="Geography" value={node.country ?? 'Data pending'} />
+          <section className="rounded-lg border border-border bg-surface p-4 shadow-report-soft">
+            <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Bottleneck</p>
+            <div className="mt-2 text-sm text-muted-foreground">{node.bottleneckLevel ? <RiskBadge level={node.bottleneckLevel} /> : 'Data pending'}</div>
+          </section>
+          <InsightPanel title="Peers / comparables">
+            <div className="space-y-2">
+              {peers.length > 0 ? peers.map((peer) => (
+                <Link key={peer.id} to={`/companies/${peer.id}`} className="block rounded-md border border-border bg-surface px-3 py-2 text-sm text-foreground hover:border-accent/45">
+                  {peer.label}
+                </Link>
+              )) : <p className="text-sm text-muted-foreground">Peer mapping pending.</p>}
+            </div>
+          </InsightPanel>
+        </RightRail>
+      </MainContentGrid>
+    </PageShell>
   );
 }
 
 function Panel({ title, value }: { title: string; value: string }): JSX.Element {
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-950/70 p-4">
-      <p className="text-xs uppercase tracking-[0.16em] text-slate-500">{title}</p>
-      <p className="mt-2 text-lg font-bold capitalize text-white">{value}</p>
+    <section className="rounded-lg border border-border bg-surface p-4 shadow-report-soft">
+      <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">{title}</p>
+      <p className="mt-2 text-lg font-bold capitalize text-foreground">{value}</p>
     </section>
   );
 }

@@ -15,12 +15,12 @@ export function CategoryDetail({ node, childrenNodes }: CategoryDetailProps): JS
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-2xl font-bold text-white">{node.label}</h2>
-        <p className="mt-1 text-sm text-slate-500">{node.layer}</p>
+        <h2 className="font-display text-3xl text-foreground">{node.label}</h2>
+        <p className="mt-1 text-sm text-muted-foreground">{node.layer}</p>
       </div>
       <Panel title="Category Description">
         <p>{node.description}</p>
-        <p className="mt-3 text-slate-300">{node.whyItMatters}</p>
+        <p className="mt-3 text-foreground">{node.whyItMatters}</p>
       </Panel>
       <div className="grid grid-cols-3 gap-3">
         <Stat label="Visible children" value={String(childrenNodes.length)} />
@@ -31,14 +31,14 @@ export function CategoryDetail({ node, childrenNodes }: CategoryDetailProps): JS
         <div className="flex flex-wrap gap-2">
           {childrenNodes.length > 0 ? (
             visibleChildren.map((child) => (
-              <span key={child.id} className="rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-1 text-xs text-slate-300">
+              <span key={child.id} className="rounded-md border border-border bg-surface-muted px-2.5 py-1 text-xs text-foreground">
                 {child.label}
               </span>
             ))
           ) : (
-            <span className="text-xs text-slate-500">Click the node in the graph to expand this branch.</span>
+            <span className="text-xs text-muted-foreground">Click the node in the graph to expand this branch.</span>
           )}
-          {hiddenChildren > 0 ? <span className="rounded-lg border border-dashed border-slate-700 bg-slate-950 px-2.5 py-1 text-xs font-semibold text-slate-400">{hiddenChildren} more hidden in panel</span> : null}
+          {hiddenChildren > 0 ? <span className="rounded-md border border-dashed border-border bg-surface-muted px-2.5 py-1 text-xs font-semibold text-muted-foreground">{hiddenChildren} more hidden in panel</span> : null}
         </div>
       </Panel>
     </div>
@@ -47,9 +47,9 @@ export function CategoryDetail({ node, childrenNodes }: CategoryDetailProps): JS
 
 function Stat({ label, value }: { label: string; value: string }): JSX.Element {
   return (
-    <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-3">
-      <p className="text-[11px] text-slate-500">{label}</p>
-      <p className="mt-1 text-xl font-bold text-white">{value}</p>
+    <div className="rounded-lg border border-border bg-surface p-3">
+      <p className="text-[11px] text-muted-foreground">{label}</p>
+      <p className="mt-1 text-xl font-bold text-foreground">{value}</p>
     </div>
   );
 }

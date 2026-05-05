@@ -45,19 +45,19 @@ export function DetailPanel({
   const showRankings = node.type !== 'company' && node.type !== 'watchlist';
 
   return (
-    <aside className="h-full overflow-hidden rounded-3xl border border-slate-800 bg-night-900/96 shadow-2xl backdrop-blur">
+    <aside className="h-full overflow-hidden rounded-lg border border-border bg-surface shadow-report">
       <div className="flex h-full flex-col">
-        <div className="border-b border-slate-800 p-5">
+        <div className="border-b border-border p-5">
           <div className="flex items-center justify-between gap-4">
-            <div className="min-w-0 text-xs text-slate-500">
+            <div className="min-w-0 text-xs text-muted-foreground">
               {breadcrumbs.map((crumb, index) => (
                 <span key={crumb.id}>
-                  {index > 0 ? <span className="mx-2 text-slate-700">/</span> : null}
-                  <span className={cn(index === breadcrumbs.length - 1 && 'font-semibold text-slate-300')}>{crumb.label}</span>
+                  {index > 0 ? <span className="mx-2 text-border-strong">/</span> : null}
+                  <span className={cn(index === breadcrumbs.length - 1 && 'font-semibold text-foreground')}>{crumb.label}</span>
                 </span>
               ))}
             </div>
-            <button type="button" onClick={onClose} className="grid h-8 w-8 place-items-center rounded-lg text-slate-500 hover:bg-slate-800 hover:text-slate-100">
+            <button type="button" onClick={onClose} className="grid h-8 w-8 place-items-center rounded-md text-muted-foreground hover:bg-surface-muted hover:text-foreground">
               <X className="h-4 w-4" />
             </button>
           </div>
@@ -79,7 +79,7 @@ export function DetailPanel({
           )}
         </div>
 
-        <div className="grid gap-2 border-t border-slate-800 p-5 md:grid-cols-2">
+        <div className="grid gap-2 border-t border-border p-5 md:grid-cols-2">
           <ActionButton icon={<Layers3 className="h-4 w-4" />} label="Focus this branch" onClick={() => onFocus(node.id)} />
           <ActionButton icon={<Route className="h-4 w-4" />} label="Show upstream roots" onClick={() => onShowUpstream(node.id)} />
           <ActionButton icon={<GitBranch className="h-4 w-4" />} label="Show downstream customers" onClick={() => onShowDownstream(node.id)} />
@@ -135,39 +135,39 @@ function ResearchList({
   variant: 'public' | 'watchlist' | 'bottleneck';
 }): JSX.Element {
   const accents = {
-    public: 'border-green-400/30 bg-green-500/8 text-green-200',
-    watchlist: 'border-lime-400/30 bg-lime-500/8 text-lime-200',
-    bottleneck: 'border-orange-400/30 bg-orange-500/8 text-orange-200',
+    public: 'border-verified/25 bg-verified/5 text-verified',
+    watchlist: 'border-pending/25 bg-pending/5 text-pending',
+    bottleneck: 'border-high/25 bg-high/5 text-high',
   };
 
   return (
-    <section className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
-      <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-300">{title}</h3>
+    <section className="rounded-lg border border-border bg-surface p-4">
+      <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-foreground">{title}</h3>
       <div className="space-y-2">
         {items.length > 0 ? (
           items.map((item) => (
             <Link
               key={item.id}
               to={`/companies/${item.id}`}
-              className={cn('block rounded-xl border p-3 transition hover:border-blue-400/50 hover:bg-slate-800/70', accents[variant])}
+              className={cn('block rounded-lg border p-3 transition hover:border-accent/45 hover:bg-accent-soft/50', accents[variant])}
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-bold text-white">{item.label}</p>
-                  <p className="mt-1 text-xs text-slate-400">
+                  <p className="truncate text-sm font-bold text-foreground">{item.label}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">
                     {item.ticker ? `${item.ticker} · ${item.exchange} · ` : ''}
                     {item.status?.replaceAll('_', ' ')}
                   </p>
                 </div>
                 {item.rankWithinNode ? (
-                  <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-xs font-black text-white">#{item.rankWithinNode}</span>
+                  <span className="rounded-full border border-border bg-surface-muted px-2 py-0.5 text-xs font-black text-foreground">#{item.rankWithinNode}</span>
                 ) : null}
               </div>
-              <p className="mt-2 line-clamp-2 text-xs text-slate-300">{item.whyItMatters || item.description}</p>
+              <p className="mt-2 line-clamp-2 text-xs text-muted-foreground">{item.whyItMatters || item.description}</p>
             </Link>
           ))
         ) : (
-          <p className="text-xs text-slate-500">{empty}</p>
+          <p className="text-xs text-muted-foreground">{empty}</p>
         )}
       </div>
     </section>
@@ -191,7 +191,7 @@ function ActionButton({ icon, label, onClick }: { icon: ReactNode; label: string
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-800 bg-slate-950 px-3 py-2 text-xs font-semibold text-slate-300 hover:border-blue-400/50 hover:text-blue-200"
+      className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-surface px-3 py-2 text-xs font-semibold text-muted-foreground hover:border-accent/45 hover:text-accent"
     >
       {icon}
       {label}

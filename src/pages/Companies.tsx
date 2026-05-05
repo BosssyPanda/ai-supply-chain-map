@@ -1,6 +1,23 @@
-import { ArrowDownUp, Filter, Search } from 'lucide-react';
+import { ArrowDownUp, Building2, ShieldCheck, TriangleAlert } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ContentSection, MainContentGrid, PageShell, RightRail } from '../components/layout/PageShell';
+import {
+  CompanyMiniCard,
+  ConfidenceIndicator,
+  FilterBar,
+  FilterSearch,
+  FilterSelect,
+  FilterToggle,
+  HeroSection,
+  InsightPanel,
+  ReportTable,
+  RiskBadge,
+  SectionHeader,
+  StatCard,
+  StatusBadge,
+  type ReportTableColumn,
+} from '../components/report';
 import { loadExplorerData } from '../data/loaders';
 import type { BottleneckLevel, CompanyStatus, Confidence, SupplyChainNode } from '../data/schema';
 import { isUsListed, uniqueGeographies, uniqueLayers } from '../lib/filters';
@@ -53,84 +70,135 @@ export function Companies(): JSX.Element {
     }
   };
 
+  const columns: ReportTableColumn<SupplyChainNode>[] = [
+    {
+      id: 'company',
+      header: <SortableHeader label="Company" sortKey="company" activeKey={sortKey} direction={sortDirection} onSort={setSort} />,
+      render: (node) => (
+        <div>
+          <p className="font-semibold text-foreground">{node.label}</p>
+          <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">{node.role || node.marketSegment || node.description}</p>
+        </div>
+      ),
+      className: 'min-w-[250px]',
+    },
+    {
+      id: 'ticker',
+      header: <SortableHeader label="Ticker" sortKey="ticker" activeKey={sortKey} direction={sortDirection} onSort={setSort} />,
+      render: (node) => <span className="font-semibold text-foreground">{node.ticker ?? '-'}</span>,
+    },
+    {
+      id: 'role',
+      header: 'Role / Segment',
+      render: (node) => node.marketSegment || node.role || 'Role mapping pending',
+      className: 'min-w-[220px]',
+    },
+    {
+      id: 'layer',
+      header: <SortableHeader label="Layer" sortKey="layer" activeKey={sortKey} direction={sortDirection} onSort={setSort} />,
+      render: (node) => node.layer,
+    },
+    { id: 'status', header: 'Status', render: (node) => <StatusBadge status={node.status} /> },
+    {
+      id: 'bottleneck',
+      header: <SortableHeader label="Bottleneck" sortKey="bottleneck" activeKey={sortKey} direction={sortDirection} onSort={setSort} />,
+      render: (node) => node.bottleneckLevel ? <RiskBadge level={node.bottleneckLevel} /> : 'Data pending',
+    },
+    {
+      id: 'geography',
+      header: <SortableHeader label="Geography" sortKey="geography" activeKey={sortKey} direction={sortDirection} onSort={setSort} />,
+      render: (node) => node.country ?? 'Data pending',
+    },
+    {
+      id: 'pure-play',
+      header: <SortableHeader label="Pure-play" sortKey="purePlayScore" activeKey={sortKey} direction={sortDirection} onSort={setSort} />,
+      render: (node) => <span className="capitalize">{node.purePlayScore ?? 'Data pending'}</span>,
+    },
+    {
+      id: 'confidence',
+      header: <SortableHeader label="Confidence" sortKey="confidence" activeKey={sortKey} direction={sortDirection} onSort={setSort} />,
+      render: (node) => <ConfidenceIndicator confidence={node.confidence} />,
+    },
+  ];
+
+  const usListedCount = companies.filter((node) => isUsListed(node.status)).length;
+  const highConfidenceCount = companies.filter((node) => node.confidence === 'high').length;
+  const criticalCount = companies.filter((node) => node.bottleneckLevel === 'critical').length;
+
   return (
-    <div className="min-h-screen px-4 py-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
-        <header className="mb-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-300">Company Universe</p>
-          <h1 className="mt-1 text-3xl font-bold text-white">Companies</h1>
-          <p className="mt-2 text-sm text-slate-500">Companies may appear multiple times if they have multiple supply-chain roles.</p>
-        </header>
+    <PageShell>
+      <HeroSection
+        title="Companies Across the AI Supply Chain"
+        subtitle="Explore the organizations mapped to the AI infrastructure stack. Companies are organized by role, bottleneck relevance, listing status, geography, and confidence."
+        stats={
+          <>
+            <StatCard icon={<Building2 className="h-4 w-4" />} label="Mapped companies" value={companies.length} context="Across the current research graph" />
+            <StatCard icon={<Building2 className="h-4 w-4" />} label="U.S.-listed" value={usListedCount} context="Public and ADR rows from CSV data" />
+            <StatCard icon={<TriangleAlert className="h-4 w-4" />} label="Critical bottleneck names" value={criticalCount} context="High-impact mapped constraints" />
+            <StatCard icon={<ShieldCheck className="h-4 w-4" />} label="High-confidence profiles" value={highConfidenceCount} context="Source-backed confidence state" />
+          </>
+        }
+      />
 
-        <div className="mb-4 space-y-3 rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-3 shadow-2xl">
-          <div className="flex items-center gap-3">
-            <Search className="h-4 w-4 text-slate-500" />
-            <input
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search by company, ticker, role, layer, geography, risk..."
-              className="h-9 flex-1 bg-transparent text-sm text-slate-100 outline-none placeholder:text-slate-500"
-            />
-          </div>
-          <div className="grid gap-2 md:grid-cols-3 xl:grid-cols-6">
-            <Select label="Layer" value={layer} onChange={setLayer} options={layers} allLabel="All layers" />
-            <Select label="Bottleneck" value={bottleneck} onChange={setBottleneck} options={bottlenecks} allLabel="All bottlenecks" />
-            <Select label="Geography" value={geography} onChange={setGeography} options={geographies} allLabel="All geographies" />
-            <Select label="Status" value={status} onChange={setStatus} options={statuses} allLabel="All statuses" />
-            <Select label="Confidence" value={confidence} onChange={setConfidence} options={confidences} allLabel="All confidence" />
-            <div className="flex items-end gap-2">
-              <Toggle active={usListedOnly} onClick={() => setUsListedOnly((value) => !value)}>U.S.-listed</Toggle>
-              <Toggle active={criticalOnly} onClick={() => setCriticalOnly((value) => !value)}>Critical</Toggle>
+      <MainContentGrid className="mt-8 xl:grid-cols-[minmax(0,1fr)_340px]">
+        <div className="space-y-6">
+          <FilterBar>
+            <div className="grid gap-3 lg:grid-cols-[minmax(240px,1fr)_repeat(4,minmax(140px,180px))]">
+              <FilterSearch value={query} onChange={setQuery} placeholder="Search companies by name, ticker, role, or keyword..." />
+              <FilterSelect label="Stage" value={layer} onChange={setLayer} options={layers} allLabel="All" />
+              <FilterSelect label="Geography" value={geography} onChange={setGeography} options={geographies} allLabel="All" />
+              <FilterSelect label="Listing status" value={status} onChange={setStatus} options={statuses} allLabel="All" />
+              <FilterSelect label="Bottleneck risk" value={bottleneck} onChange={setBottleneck} options={bottlenecks} allLabel="All" />
             </div>
-          </div>
-        </div>
+            <div className="mt-3 flex flex-wrap gap-2 border-t border-border pt-3">
+              <FilterSelect label="Confidence" value={confidence} onChange={setConfidence} options={confidences} allLabel="All confidence" className="w-44" />
+              <div className="flex items-end gap-2">
+                <FilterToggle active={usListedOnly} onClick={() => setUsListedOnly((value) => !value)}>U.S.-listed</FilterToggle>
+                <FilterToggle active={criticalOnly} onClick={() => setCriticalOnly((value) => !value)}>Critical</FilterToggle>
+              </div>
+            </div>
+          </FilterBar>
 
-        <div className="overflow-x-auto rounded-3xl border border-slate-800 bg-slate-950/70 shadow-2xl">
-          <table className="w-full min-w-[1120px] text-left text-sm">
-            <thead className="bg-slate-900/90 text-xs uppercase tracking-[0.14em] text-slate-500">
-              <tr>
-                <SortableHeader label="Company" sortKey="company" activeKey={sortKey} direction={sortDirection} onSort={setSort} />
-                <SortableHeader label="Ticker" sortKey="ticker" activeKey={sortKey} direction={sortDirection} onSort={setSort} />
-                <th className="px-4 py-3">Role / Segment</th>
-                <SortableHeader label="Layer" sortKey="layer" activeKey={sortKey} direction={sortDirection} onSort={setSort} />
-                <th className="px-4 py-3">Status</th>
-                <SortableHeader label="Bottleneck" sortKey="bottleneck" activeKey={sortKey} direction={sortDirection} onSort={setSort} />
-                <SortableHeader label="Geography" sortKey="geography" activeKey={sortKey} direction={sortDirection} onSort={setSort} />
-                <SortableHeader label="Pure-play" sortKey="purePlayScore" activeKey={sortKey} direction={sortDirection} onSort={setSort} />
-                <SortableHeader label="Confidence" sortKey="confidence" activeKey={sortKey} direction={sortDirection} onSort={setSort} />
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((node) => (
-                <tr
-                  key={node.id}
-                  onClick={() => navigate(`/companies/${node.id}`)}
-                  className="cursor-pointer border-t border-slate-800/80 transition hover:bg-blue-500/8"
-                >
-                  <td className="px-4 py-3">
-                    <p className="font-semibold text-blue-200">{node.label}</p>
-                    <p className="mt-0.5 text-xs text-slate-500">{node.role || node.marketSegment || node.description}</p>
-                  </td>
-                  <td className="px-4 py-3 font-semibold text-slate-300">{node.ticker ?? '-'}</td>
-                  <td className="px-4 py-3 text-slate-300">{node.marketSegment || node.role || 'Role mapping pending'}</td>
-                  <td className="px-4 py-3 text-slate-400">{node.layer}</td>
-                  <td className="px-4 py-3"><StatusBadge status={node.status} /></td>
-                  <td className="px-4 py-3"><LevelBadge level={node.bottleneckLevel} /></td>
-                  <td className="px-4 py-3 text-slate-400">{node.country ?? 'Data pending'}</td>
-                  <td className="px-4 py-3 capitalize text-slate-300">{node.purePlayScore ?? 'Data pending'}</td>
-                  <td className="px-4 py-3"><ConfidenceBadge confidence={node.confidence} /></td>
-                </tr>
+          <ContentSection>
+            <SectionHeader title="Featured companies" action={<span className="text-sm font-semibold text-accent">{filtered.length} visible</span>} />
+            <div className="grid gap-4 p-5 md:grid-cols-2 xl:grid-cols-3">
+              {filtered.slice(0, 6).map((node) => (
+                <CompanyMiniCard key={node.id} company={node} to={`/companies/${node.id}`} />
               ))}
-            </tbody>
-          </table>
-          {filtered.length === 0 ? (
-            <div className="border-t border-slate-800 px-4 py-10 text-center text-sm text-slate-500">
-              No companies match the current filters.
             </div>
-          ) : null}
+          </ContentSection>
+
+          <ContentSection>
+            <SectionHeader title="All mapped companies" description={`${filtered.length} visible from ${companies.length} mapped company rows`} />
+            <div className="p-5 pt-0">
+              <ReportTable
+                columns={columns}
+                rows={filtered}
+                getRowKey={(node) => node.id}
+                onRowClick={(node) => navigate(`/companies/${node.id}`)}
+                emptyMessage="No companies match the current filters."
+              />
+            </div>
+          </ContentSection>
         </div>
-      </div>
-    </div>
+
+        <RightRail>
+          <InsightPanel title="Why these companies matter">
+            <p>AI performance and scale depend on specialized companies across chips, data centers, power, cooling, materials, and services.</p>
+          </InsightPanel>
+          <InsightPanel title="Research rules" eyebrow="Boundary">
+            <ul className="space-y-2">
+              <li>Organized by supply-chain role.</li>
+              <li>Assessed for bottleneck relevance and confidence.</li>
+              <li>No buy, sell, or price-target language.</li>
+            </ul>
+          </InsightPanel>
+          <InsightPanel title="Data status">
+            <p>Company counts, filters, and row details are derived from the loaded research files. Unknown fields stay marked as pending until source-backed values are available.</p>
+          </InsightPanel>
+        </RightRail>
+      </MainContentGrid>
+    </PageShell>
   );
 }
 
@@ -152,77 +220,23 @@ function compareCompanies(a: SupplyChainNode, b: SupplyChainNode, key: SortKey, 
   return direction === 'asc' ? result : -result;
 }
 
-function Select({ label, value, onChange, options, allLabel }: { label: string; value: string; onChange: (value: string) => void; options: string[]; allLabel: string }): JSX.Element {
+function SortableHeader({
+  label,
+  sortKey,
+  activeKey,
+  direction,
+  onSort,
+}: {
+  label: string;
+  sortKey: SortKey;
+  activeKey: SortKey;
+  direction: SortDirection;
+  onSort: (key: SortKey) => void;
+}): JSX.Element {
   return (
-    <label className="block">
-      <span className="mb-1 flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-        <Filter className="h-3 w-3" />
-        {label}
-      </span>
-      <select value={value} onChange={(event) => onChange(event.target.value)} className="h-9 w-full rounded-lg border border-slate-800 bg-slate-900 px-3 text-xs capitalize text-slate-200 outline-none">
-        <option value="">{allLabel}</option>
-        {options.map((option) => (
-          <option key={option} value={option}>{option.replaceAll('_', ' ')}</option>
-        ))}
-      </select>
-    </label>
-  );
-}
-
-function Toggle({ active, onClick, children }: { active: boolean; onClick: () => void; children: string }): JSX.Element {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={cn('h-9 flex-1 rounded-lg border px-2 text-xs font-semibold transition', active ? 'border-teal-400/60 bg-teal-400/10 text-teal-200' : 'border-slate-800 bg-slate-900 text-slate-500 hover:text-slate-200')}
-    >
-      {children}
+    <button type="button" onClick={() => onSort(sortKey)} className={cn('inline-flex items-center gap-1 hover:text-accent', activeKey === sortKey && 'text-accent')}>
+      {label}
+      <ArrowDownUp className={cn('h-3.5 w-3.5', activeKey === sortKey && direction === 'desc' && 'rotate-180')} />
     </button>
   );
-}
-
-function SortableHeader({ label, sortKey, activeKey, direction, onSort }: { label: string; sortKey: SortKey; activeKey: SortKey; direction: SortDirection; onSort: (key: SortKey) => void }): JSX.Element {
-  return (
-    <th className="px-4 py-3">
-      <button type="button" onClick={() => onSort(sortKey)} className={cn('inline-flex items-center gap-1 hover:text-blue-200', activeKey === sortKey && 'text-blue-200')}>
-        {label}
-        <ArrowDownUp className={cn('h-3.5 w-3.5', activeKey === sortKey && direction === 'desc' && 'rotate-180')} />
-      </button>
-    </th>
-  );
-}
-
-function StatusBadge({ status }: { status?: CompanyStatus }): JSX.Element {
-  const styles = {
-    us_listed_public: 'border-green-400/30 bg-green-500/10 text-green-200',
-    us_listed_adr: 'border-emerald-400/30 bg-emerald-500/10 text-emerald-200',
-    private: 'border-slate-500/40 bg-slate-500/10 text-slate-300',
-    state_owned: 'border-amber-400/30 bg-amber-500/10 text-amber-200',
-    non_us_listed: 'border-zinc-500/40 bg-zinc-500/10 text-zinc-300',
-    watchlist_private_ipo_spac: 'border-lime-400/30 bg-lime-500/10 text-lime-200',
-    etf_optional: 'border-indigo-400/30 bg-indigo-500/10 text-indigo-200',
-  };
-  if (!status) return <span className="text-slate-500">Data pending</span>;
-  return <span className={cn('rounded-full border px-2.5 py-1 text-xs font-semibold capitalize', styles[status])}>{status.replaceAll('_', ' ')}</span>;
-}
-
-function LevelBadge({ level }: { level?: BottleneckLevel }): JSX.Element {
-  const styles = {
-    low: 'border-slate-500/30 bg-slate-500/10 text-slate-300',
-    medium: 'border-blue-400/30 bg-blue-500/10 text-blue-200',
-    high: 'border-amber-400/30 bg-amber-500/10 text-amber-200',
-    critical: 'border-rose-400/30 bg-rose-500/10 text-rose-200',
-  };
-  if (!level) return <span className="text-slate-500">Unscored</span>;
-  return <span className={cn('rounded-full border px-2.5 py-1 text-xs font-semibold capitalize', styles[level])}>{level}</span>;
-}
-
-function ConfidenceBadge({ confidence }: { confidence?: Confidence }): JSX.Element {
-  const styles = {
-    low: 'border-rose-400/30 bg-rose-500/10 text-rose-200',
-    medium: 'border-amber-400/30 bg-amber-500/10 text-amber-200',
-    high: 'border-emerald-400/30 bg-emerald-500/10 text-emerald-200',
-  };
-  if (!confidence) return <span className="text-slate-500">Needs verification</span>;
-  return <span className={cn('rounded-full border px-2.5 py-1 text-xs font-semibold capitalize', styles[confidence])}>{confidence}</span>;
 }

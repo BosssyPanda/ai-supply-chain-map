@@ -1,17 +1,20 @@
 import { Bell } from 'lucide-react';
+import { PageShell } from '../components/layout/PageShell';
 
 export function Alerts(): JSX.Element {
   return (
-    <div className="grid min-h-screen place-items-center px-6">
-      <section className="max-w-xl rounded-3xl border border-slate-800 bg-slate-950/75 p-8 text-center shadow-2xl">
-        <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl border border-blue-400/40 bg-blue-500/10 text-blue-200">
+    <PageShell>
+      <div className="grid min-h-[60vh] place-items-center">
+      <section className="max-w-xl rounded-lg border border-border bg-surface p-8 text-center shadow-report-soft">
+        <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-accent-soft text-accent">
           <Bell className="h-7 w-7" />
         </div>
-        <h1 className="mt-5 text-3xl font-bold text-white">Research Alerts</h1>
-        <p className="mt-3 text-slate-400">
+        <h1 className="mt-5 font-display text-4xl text-foreground">Research Alerts</h1>
+        <p className="mt-3 text-muted-foreground">
           Coming soon: monitors for export-control changes, listing-status changes, HBM capacity updates, and grid interconnection bottleneck shifts.
         </p>
       </section>
-    </div>
+      </div>
+    </PageShell>
   );
 }

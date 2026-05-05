@@ -4,6 +4,7 @@ import { DetailPanel } from '../components/details/DetailPanel';
 import { FilterPanel } from '../components/filters/FilterPanel';
 import { SupplyChainGraph } from '../components/graph/SupplyChainGraph';
 import { Legend } from '../components/legend/Legend';
+import { PageShell } from '../components/layout/PageShell';
 import { SearchBar } from '../components/search/SearchBar';
 import { loadExplorerData } from '../data/loaders';
 import type { GraphFilters, GraphViewMode } from '../data/schema';
@@ -64,11 +65,14 @@ export function SupplyChain(): JSX.Element {
   }, [focusParam, viewMode]);
 
   return (
-    <div className="min-h-screen px-4 py-5 lg:px-6">
-      <header className="mb-5 flex flex-col gap-4 2xl:flex-row 2xl:items-center 2xl:justify-between">
+    <PageShell fullWidth>
+      <header className="mb-6 flex flex-col gap-4 2xl:flex-row 2xl:items-end 2xl:justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-300">Interactive Explorer</p>
-          <h1 className="mt-1 text-3xl font-bold text-white">AI Supply Chain Explorer</h1>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Interactive report exhibit</p>
+          <h1 className="font-display text-5xl leading-[1.05] text-foreground">The AI Supply Chain, Mapped</h1>
+          <p className="mt-3 max-w-3xl text-base leading-7 text-muted-foreground">
+            Explore mapped relationships, focus branches, and verify where companies, materials, and bottlenecks connect.
+          </p>
         </div>
         <SearchBar nodes={data.nodes} value={searchQuery} onChange={setSearchQuery} onSelect={focus} />
       </header>
@@ -102,7 +106,7 @@ export function SupplyChain(): JSX.Element {
           onCollapse={collapse}
         />
       </div>
-    </div>
+    </PageShell>
   );
 }
 
@@ -128,9 +132,9 @@ function StatStrip({ stats }: { stats: Array<{ label: string; value: string | nu
   return (
     <div className="grid grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-7">
       {stats.map((stat) => (
-        <div key={stat.label} className="rounded-xl border border-slate-800 bg-slate-950/72 px-3 py-2.5 shadow-lg">
-          <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-slate-500">{stat.label}</p>
-          <p className="mt-0.5 text-base font-black text-white">{stat.value}</p>
+        <div key={stat.label} className="rounded-lg border border-border bg-surface px-3 py-2.5 shadow-report-soft">
+          <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">{stat.label}</p>
+          <p className="mt-0.5 text-base font-black text-foreground">{stat.value}</p>
         </div>
       ))}
     </div>

@@ -283,7 +283,7 @@ function SupplyChainGraphInner({
   } satisfies Record<ExplorationMode, string>;
 
   return (
-    <div className="relative h-[720px] overflow-hidden rounded-3xl border border-slate-800 bg-[radial-gradient(circle_at_top,rgba(30,64,175,0.22),transparent_34rem),#020617] shadow-2xl">
+    <div className="relative h-[720px] overflow-hidden rounded-lg border border-border bg-surface shadow-report">
       <div className="absolute left-4 right-4 top-4 z-20 flex flex-wrap gap-2 xl:right-auto">
         <ToolbarButton onClick={resetLayout} icon={<RotateCcw className="h-4 w-4" />} label="Reset Layout" />
         <ToolbarButton onClick={fitCanvas} icon={<Maximize2 className="h-4 w-4" />} label="Fit View" />
@@ -293,10 +293,10 @@ function SupplyChainGraphInner({
         <ToolbarButton onClick={() => setShowMiniMap((value) => !value)} icon={<MapIcon className="h-4 w-4" />} label={showMiniMap ? 'Hide Minimap' : 'Show Minimap'} />
       </div>
 
-      <div className="absolute left-4 right-4 top-[6.25rem] z-20 rounded-xl border border-slate-700 bg-slate-950/85 p-2 shadow-2xl backdrop-blur xl:left-auto xl:right-4 xl:top-4 xl:max-w-[520px]">
+      <div className="absolute left-4 right-4 top-[6.25rem] z-20 rounded-lg border border-border bg-surface/90 p-2 shadow-report-soft backdrop-blur xl:left-auto xl:right-4 xl:top-4 xl:max-w-[520px]">
         <div className="flex flex-wrap items-center justify-end gap-2">
-          <span className="inline-flex items-center gap-1 px-2 text-xs font-semibold text-slate-400">
-            <DatabaseZap className="h-3.5 w-3.5 text-cyan-300" />
+          <span className="inline-flex items-center gap-1 px-2 text-xs font-semibold text-muted-foreground">
+            <DatabaseZap className="h-3.5 w-3.5 text-accent" />
             {supplierDepthLabel}
           </span>
           {supplierDepthOptions.map((option) => (
@@ -305,8 +305,8 @@ function SupplyChainGraphInner({
               type="button"
               onClick={() => updateSupplierDepth(option)}
               className={cn(
-                'h-8 rounded-lg px-3 text-xs font-bold uppercase text-slate-400 transition hover:bg-slate-800 hover:text-slate-100',
-                supplierDepth === option && 'bg-blue-500/20 text-blue-200 shadow-[inset_0_0_0_1px_rgba(96,165,250,0.35)]',
+                'h-8 rounded-md px-3 text-xs font-bold uppercase text-muted-foreground transition hover:bg-surface-muted hover:text-foreground',
+                supplierDepth === option && 'bg-accent-soft text-accent shadow-[inset_0_0_0_1px_hsl(var(--accent)/0.28)]',
                 option === 'all' && !focusMode && 'cursor-not-allowed opacity-50',
               )}
             >
@@ -314,11 +314,11 @@ function SupplyChainGraphInner({
             </button>
           ))}
         </div>
-        {depthWarning ? <p className="mt-1 px-2 text-right text-xs text-amber-200">{depthWarning}</p> : null}
+        {depthWarning ? <p className="mt-1 px-2 text-right text-xs text-high">{depthWarning}</p> : null}
       </div>
 
       {focusMode ? (
-        <div className="absolute left-4 right-4 top-[10.5rem] z-20 rounded-xl border border-cyan-400/30 bg-cyan-500/10 px-3 py-2 text-xs font-semibold text-cyan-100 shadow-glowTeal xl:right-auto xl:top-16">
+        <div className="absolute left-4 right-4 top-[10.5rem] z-20 rounded-lg border border-accent/30 bg-accent-soft px-3 py-2 text-xs font-semibold text-accent shadow-report-soft xl:right-auto xl:top-16">
           Focus mode: {effectiveSelectedLabel} · {focusModeLabel[explorationMode]}
         </div>
       ) : null}
@@ -344,12 +344,12 @@ function SupplyChainGraphInner({
         selectionOnDrag={false}
         proOptions={{ hideAttribution: true }}
       >
-        <Background color="#1e293b" gap={28} size={1} />
+        <Background color="hsl(var(--border))" gap={28} size={1} />
         {showMiniMap ? (
           <MiniMap
-            className="!bottom-4 !right-4 !h-28 !w-44 !rounded-xl !border !border-blue-400/30 !bg-slate-950/90 !shadow-2xl"
-            maskColor="rgba(2, 6, 23, 0.68)"
-            nodeColor={(node) => ((node as SupplyChainGraphNode).data.node.type === 'company' ? '#22c55e' : '#38bdf8')}
+            className="!bottom-4 !right-4 !h-28 !w-44 !rounded-lg !border !border-border !bg-surface/90 !shadow-report"
+            maskColor="hsl(var(--background) / 0.68)"
+            nodeColor={(node) => ((node as SupplyChainGraphNode).data.node.type === 'company' ? 'hsl(var(--verified))' : 'hsl(var(--accent))')}
             nodeStrokeWidth={3}
             pannable
             zoomable
@@ -358,8 +358,8 @@ function SupplyChainGraphInner({
         <Controls className="ai-flow-controls !bottom-4 !left-4" />
       </ReactFlow>
 
-      <div className="pointer-events-none absolute bottom-5 left-1/2 z-20 hidden -translate-x-1/2 items-center gap-3 rounded-xl border border-slate-800 bg-slate-950/80 px-4 py-2 text-xs text-slate-400 shadow-2xl md:flex">
-        <Layers3 className="h-4 w-4 text-blue-300" />
+      <div className="pointer-events-none absolute bottom-5 left-1/2 z-20 hidden -translate-x-1/2 items-center gap-3 rounded-lg border border-border bg-surface/90 px-4 py-2 text-xs text-muted-foreground shadow-report-soft md:flex">
+        <Layers3 className="h-4 w-4 text-accent" />
         Drag canvas to pan · Scroll to zoom · Click node for top companies
       </div>
     </div>
@@ -383,7 +383,7 @@ function ToolbarButton({
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        'inline-flex h-9 items-center gap-2 rounded-xl border border-slate-700 bg-slate-950/85 px-3 text-xs font-semibold text-slate-200 shadow-2xl backdrop-blur transition hover:border-blue-400/60 hover:text-blue-200',
+        'inline-flex h-9 items-center gap-2 rounded-md border border-border bg-surface/90 px-3 text-xs font-semibold text-foreground shadow-report-soft backdrop-blur transition hover:border-accent/45 hover:text-accent',
         disabled && 'cursor-not-allowed opacity-45',
       )}
     >

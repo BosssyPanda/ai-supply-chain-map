@@ -1,10 +1,10 @@
 import { BaseEdge, EdgeLabelRenderer, getSmoothStepPath, type Edge, type EdgeProps } from '@xyflow/react';
 
 const edgeColors = {
-  low: '#64748b',
-  medium: '#3b82f6',
-  high: '#f59e0b',
-  critical: '#fb7185',
+  low: 'hsl(var(--low))',
+  medium: 'hsl(var(--medium))',
+  high: 'hsl(var(--high))',
+  critical: 'hsl(var(--critical))',
 };
 
 export interface SupplyChainEdgeData {
@@ -42,7 +42,7 @@ export function SupplyChainEdge({
       {data?.criticality === 'critical' ? (
         <EdgeLabelRenderer>
           <span
-            className="pointer-events-none absolute rounded-full border border-rose-400/40 bg-slate-950/85 px-2 py-0.5 text-[10px] font-semibold uppercase text-rose-200"
+            className="pointer-events-none absolute rounded-full border border-critical/30 bg-surface/90 px-2 py-0.5 text-[10px] font-semibold uppercase text-critical"
             style={{ transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)` }}
           >
             critical
