@@ -18,6 +18,7 @@ export function ReportTable<T>({
   title,
   description,
   action,
+  note,
   className,
 }: {
   columns: ReportTableColumn<T>[];
@@ -28,12 +29,13 @@ export function ReportTable<T>({
   title?: ReactNode;
   description?: ReactNode;
   action?: ReactNode;
+  note?: ReactNode;
   className?: string;
 }): JSX.Element {
   return (
     <div className={cn('overflow-hidden rounded-lg border border-border bg-surface shadow-report-soft', className)}>
       {title || description || action ? (
-        <div className="flex flex-col gap-3 border-b border-border px-4 py-3 sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex flex-col gap-2 border-b border-border px-4 py-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
             {title ? <h3 className="font-display text-xl leading-tight text-foreground">{title}</h3> : null}
             {description ? <p className="mt-1 text-sm text-muted-foreground">{description}</p> : null}
@@ -41,12 +43,18 @@ export function ReportTable<T>({
           {action ? <div className="shrink-0 text-sm font-semibold text-accent">{action}</div> : null}
         </div>
       ) : null}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto [scrollbar-width:thin]">
         <table className="w-full min-w-[880px] text-left text-sm">
           <thead className="border-b border-border bg-surface-muted text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
             <tr>
               {columns.map((column) => (
-                <th key={column.id} className={cn('px-4 py-3', column.className)}>
+                <th
+                  key={column.id}
+                  className={cn(
+                    'px-4 py-2.5 first:sticky first:left-0 first:z-10 first:bg-surface-muted',
+                    column.className,
+                  )}
+                >
                   {column.header}
                 </th>
               ))}
@@ -57,10 +65,16 @@ export function ReportTable<T>({
               <tr
                 key={getRowKey(row)}
                 onClick={() => onRowClick?.(row)}
-                className={cn('transition hover:bg-accent-soft/60', onRowClick && 'cursor-pointer')}
+                className={cn('group transition hover:bg-accent-soft/60', onRowClick && 'cursor-pointer')}
               >
                 {columns.map((column) => (
-                  <td key={column.id} className={cn('px-4 py-3 align-top text-muted-foreground', column.className)}>
+                  <td
+                    key={column.id}
+                    className={cn(
+                      'px-4 py-2.5 align-top text-muted-foreground first:sticky first:left-0 first:z-10 first:bg-surface group-hover:first:bg-accent-soft/60',
+                      column.className,
+                    )}
+                  >
                     {column.render(row)}
                   </td>
                 ))}
@@ -74,6 +88,7 @@ export function ReportTable<T>({
           <EmptyState message={emptyMessage} />
         </div>
       ) : null}
+      {note ? <div className="border-t border-border bg-surface-elevated px-4 py-2 text-xs leading-5 text-muted-foreground">{note}</div> : null}
     </div>
   );
 }

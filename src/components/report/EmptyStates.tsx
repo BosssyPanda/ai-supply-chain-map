@@ -34,3 +34,16 @@ export function DataPendingState({
     </span>
   );
 }
+
+export function PendingCell({ className }: { className?: string }): JSX.Element {
+  return (
+    <span
+      className={cn('inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground', className)}
+      title="Source needed"
+      aria-label="Pending source"
+    >
+      <Clock className="h-3 w-3" />
+      Pending
+    </span>
+  );
+}

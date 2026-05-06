@@ -16,7 +16,7 @@ import {
   SectionHeader,
   StatCard,
   StatusBadge,
-  DataPendingState,
+  PendingCell,
   type ReportTableColumn,
 } from '../components/report';
 import { loadExplorerData } from '../data/loaders';
@@ -87,12 +87,12 @@ export function Companies(): JSX.Element {
     {
       id: 'ticker',
       header: <SortableHeader label="Ticker" sortKey="ticker" activeKey={sortKey} direction={sortDirection} onSort={setSort} />,
-      render: (node) => <span className="font-semibold text-foreground">{dataPending(node.ticker)}</span>,
+      render: (node) => node.ticker ? <span className="font-semibold text-foreground">{node.ticker}</span> : <PendingCell />,
     },
     {
       id: 'role',
       header: 'Role / Segment',
-      render: (node) => node.marketSegment || node.role || <DataPendingState />,
+      render: (node) => node.marketSegment || node.role || <PendingCell />,
       className: 'min-w-[220px]',
     },
     {
@@ -104,17 +104,17 @@ export function Companies(): JSX.Element {
     {
       id: 'bottleneck',
       header: <SortableHeader label="Bottleneck" sortKey="bottleneck" activeKey={sortKey} direction={sortDirection} onSort={setSort} />,
-      render: (node) => node.bottleneckLevel ? <RiskBadge level={node.bottleneckLevel} /> : <DataPendingState />,
+      render: (node) => node.bottleneckLevel ? <RiskBadge level={node.bottleneckLevel} /> : <PendingCell />,
     },
     {
       id: 'geography',
       header: <SortableHeader label="Geography" sortKey="geography" activeKey={sortKey} direction={sortDirection} onSort={setSort} />,
-      render: (node) => dataPending(node.country),
+      render: (node) => node.country || <PendingCell />,
     },
     {
       id: 'pure-play',
       header: <SortableHeader label="Exposure" sortKey="purePlayScore" activeKey={sortKey} direction={sortDirection} onSort={setSort} />,
-      render: (node) => <span className="capitalize">{dataPending(node.purePlayScore)}</span>,
+      render: (node) => node.purePlayScore ? <span className="capitalize">{node.purePlayScore}</span> : <PendingCell />,
     },
     {
       id: 'confidence',
@@ -183,6 +183,7 @@ export function Companies(): JSX.Element {
             getRowKey={(node) => node.id}
             onRowClick={(node) => navigate(`/companies/${node.id}`)}
             emptyMessage="No companies match the current filters."
+            note="Pending cells indicate fields that need an attached source before they are promoted into the report view."
           />
         </div>
 

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import type { SupplyChainNode } from '../../data/schema';
 import { cn } from '../../lib/cn';
 import { RiskBadge, StatusBadge } from './Badges';
+import { DataPendingState } from './EmptyStates';
 
 function initials(label: string): string {
   return label
@@ -40,7 +41,7 @@ export function CompanyMiniCard({
   className?: string;
 }): JSX.Element {
   const content = (
-    <article className={cn('rounded-lg border border-border bg-surface p-4 shadow-report-soft transition', to && 'hover:border-accent/45', className)}>
+    <article className={cn('h-full rounded-lg border border-border bg-surface p-4 shadow-report-soft transition', to && 'hover:border-accent/45', className)}>
       <div className="flex items-start gap-3">
         <CompanyLogo company={company} />
         <div className="min-w-0 flex-1">
@@ -49,10 +50,12 @@ export function CompanyMiniCard({
             {company.ticker ? `${company.ticker} · ` : ''}
             {company.exchange ?? company.country ?? company.layer}
           </p>
-          <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">{company.description}</p>
-          <div className="mt-3 flex flex-wrap gap-2">
+          <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">
+            {company.description || <DataPendingState />}
+          </p>
+          <div className="mt-3 flex flex-wrap gap-1.5">
             <StatusBadge status={company.status} />
-            {company.bottleneckLevel ? <RiskBadge level={company.bottleneckLevel} /> : null}
+            {company.bottleneckLevel === 'critical' || company.bottleneckLevel === 'high' ? <RiskBadge level={company.bottleneckLevel} /> : null}
           </div>
         </div>
       </div>

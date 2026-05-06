@@ -81,7 +81,7 @@ export function Comparisons(): JSX.Element {
             <p>Use comparisons to understand structural differences: role, stage, mapped exposure, bottleneck relevance, geography, confidence, and source state.</p>
           </InsightPanel>
           <InsightPanel title="Current limitation">
-            <p>This Step 3 version compares two company-style records. Stage-to-stage and material comparisons can be layered on later using the same report selectors.</p>
+            <p>This view currently compares two company-style records. Stage-to-stage and material comparisons are reserved for a later research workflow.</p>
           </InsightPanel>
           <InsightPanel title="Research boundary">
             <p>Comparisons are structural research views, not investment advice. Missing data remains visible as <DataPendingState />.</p>

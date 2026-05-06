@@ -8,7 +8,6 @@ import mineralsCsv from '../../data/minerals_to_ai_inputs.csv?raw';
 import nodesCsv from '../../data/nodes.csv?raw';
 import sourcesCsv from '../../data/sources.csv?raw';
 import watchlistCsv from '../../data/watchlist_private_spac_ipo.csv?raw';
-import { sampleData } from './sampleData';
 import type {
   BottleneckLevel,
   CompanyStatus,
@@ -286,13 +285,11 @@ export function adaptResearchCsvsToSupplyChainData(snapshot = getResearchCsvSnap
 }
 
 export function loadExplorerData(): SupplyChainData {
-  try {
-    const data = adaptResearchCsvsToSupplyChainData();
-    if (data.nodes.some((node) => node.id === 'L0_AI_ECOSYSTEM')) return data;
-  } catch {
-    return sampleData;
+  const data = adaptResearchCsvsToSupplyChainData();
+  if (!data.nodes.some((node) => node.id === 'L0_AI_ECOSYSTEM')) {
+    throw new Error('Supply-chain CSV data is missing the L0_AI_ECOSYSTEM root node.');
   }
-  return sampleData;
+  return data;
 }
 
 export function getResearchStats(snapshot = getResearchCsvSnapshot()) {

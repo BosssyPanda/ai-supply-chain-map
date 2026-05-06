@@ -8,6 +8,7 @@ import {
   DataPendingState,
   HeroSection,
   InsightPanel,
+  PendingCell,
   ReportTable,
   RiskBadge,
   SectionHeader,
@@ -17,7 +18,7 @@ import {
 } from '../components/report';
 import { loadExplorerData } from '../data/loaders';
 import type { SupplyChainNode } from '../data/schema';
-import { dataPending, getBottleneckCategoryReports, getDerivedReportStats, getRankedBottleneckNodes, pendingCopy } from '../lib/reportSelectors';
+import { getBottleneckCategoryReports, getDerivedReportStats, getRankedBottleneckNodes, pendingCopy } from '../lib/reportSelectors';
 
 const data = loadExplorerData();
 const categoryIcons = [Cpu, Database, PackageOpen, Network, Zap, Shield];
@@ -35,8 +36,8 @@ export function Bottlenecks(): JSX.Element {
     { id: 'stage', header: 'Stage', render: (node) => node.layer },
     { id: 'severity', header: 'Severity', render: (node) => node.bottleneckLevel ? <RiskBadge level={node.bottleneckLevel} /> : <DataPendingState /> },
     { id: 'why', header: 'Why it matters', render: (node) => <span className="line-clamp-2">{node.whyItMatters || node.description || pendingCopy}</span>, className: 'min-w-[360px]' },
-    { id: 'substitutability', header: 'Substitutability', render: (node) => dataPending(node.substitutability) },
-    { id: 'confidence', header: 'Confidence', render: (node) => node.confidence ? <ConfidenceIndicator confidence={node.confidence} /> : <DataPendingState /> },
+    { id: 'substitutability', header: 'Substitutability', render: (node) => node.substitutability || <PendingCell /> },
+    { id: 'confidence', header: 'Confidence', render: (node) => node.confidence ? <ConfidenceIndicator confidence={node.confidence} /> : <PendingCell /> },
     { id: 'source-state', header: 'Source state', render: (node) => <SourceStatusBadge sourceCount={node.sourceIds.length} confidence={node.confidence} /> },
   ];
 
@@ -107,6 +108,7 @@ export function Bottlenecks(): JSX.Element {
             columns={columns}
             rows={bottlenecks}
             getRowKey={(node) => node.id}
+            note="Pending cells mark bottleneck attributes that remain source-needed; severity and confidence are shown only when present in the research data."
           />
         </div>
 

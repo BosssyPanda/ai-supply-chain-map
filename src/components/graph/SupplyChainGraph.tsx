@@ -283,42 +283,44 @@ function SupplyChainGraphInner({
   } satisfies Record<ExplorationMode, string>;
 
   return (
-    <div className="relative h-[720px] overflow-hidden rounded-lg border border-border bg-surface shadow-report">
-      <div className="absolute left-4 right-4 top-4 z-20 flex flex-wrap gap-2 xl:right-auto">
-        <ToolbarButton onClick={resetLayout} icon={<RotateCcw className="h-4 w-4" />} label="Reset" />
-        <ToolbarButton onClick={fitCanvas} icon={<Maximize2 className="h-4 w-4" />} label="Fit" />
-        <ToolbarButton onClick={() => setDirection((value) => (value === 'DOWN' ? 'RIGHT' : 'DOWN'))} icon={<GitBranch className="h-4 w-4" />} label={direction === 'DOWN' ? 'Top-down' : 'Left-right'} />
-        <ToolbarButton onClick={collapseToStage} icon={<ChevronDown className="h-4 w-4" />} label="Stage view" />
-        {focusMode ? <ToolbarButton onClick={collapseToStage} icon={<X className="h-4 w-4" />} label="Exit focus" /> : null}
-        <ToolbarButton onClick={() => setShowMiniMap((value) => !value)} icon={<MapIcon className="h-4 w-4" />} label={showMiniMap ? 'Hide map' : 'Minimap'} />
-      </div>
-
-      <div className="absolute left-4 right-4 top-[6.25rem] z-20 rounded-lg border border-border bg-surface/90 p-2 shadow-report-soft backdrop-blur xl:left-auto xl:right-4 xl:top-4 xl:max-w-[520px]">
-        <div className="flex flex-wrap items-center justify-end gap-2">
-          <span className="inline-flex items-center gap-1 px-2 text-xs font-semibold text-muted-foreground">
-            <DatabaseZap className="h-3.5 w-3.5 text-accent" />
-            Supplier depth · {supplierDepthLabel}
-          </span>
-          {supplierDepthOptions.map((option) => (
-            <button
-              key={String(option)}
-              type="button"
-              onClick={() => updateSupplierDepth(option)}
-              className={cn(
-                'h-8 rounded-md px-3 text-xs font-bold uppercase text-muted-foreground transition hover:bg-surface-muted hover:text-foreground',
-                supplierDepth === option && 'bg-accent-soft text-accent shadow-[inset_0_0_0_1px_hsl(var(--accent)/0.28)]',
-                option === 'all' && !focusMode && 'cursor-not-allowed opacity-50',
-              )}
-            >
-              {option}
-            </button>
-          ))}
+    <div className="relative h-[620px] overflow-hidden rounded-lg border border-border bg-surface shadow-report md:h-[680px] xl:h-[720px]">
+      <div className="pointer-events-none absolute left-3 right-3 top-3 z-20 flex flex-col gap-2 lg:left-4 lg:right-4 lg:top-4 xl:flex-row xl:items-start xl:justify-between">
+        <div className="pointer-events-auto flex max-w-full flex-wrap gap-2">
+          <ToolbarButton onClick={resetLayout} icon={<RotateCcw className="h-4 w-4" />} label="Reset" />
+          <ToolbarButton onClick={fitCanvas} icon={<Maximize2 className="h-4 w-4" />} label="Fit" />
+          <ToolbarButton onClick={() => setDirection((value) => (value === 'DOWN' ? 'RIGHT' : 'DOWN'))} icon={<GitBranch className="h-4 w-4" />} label={direction === 'DOWN' ? 'Top-down' : 'Left-right'} />
+          <ToolbarButton onClick={collapseToStage} icon={<ChevronDown className="h-4 w-4" />} label="Stage view" />
+          {focusMode ? <ToolbarButton onClick={collapseToStage} icon={<X className="h-4 w-4" />} label="Exit focus" /> : null}
+          <ToolbarButton onClick={() => setShowMiniMap((value) => !value)} icon={<MapIcon className="h-4 w-4" />} label={showMiniMap ? 'Hide map' : 'Minimap'} />
         </div>
-        {depthWarning ? <p className="mt-1 px-2 text-right text-xs text-high">{depthWarning}</p> : null}
+
+        <div className="pointer-events-auto rounded-lg border border-border bg-surface/90 p-2 shadow-report-soft backdrop-blur xl:max-w-[520px]">
+          <div className="flex flex-wrap items-center gap-2 xl:justify-end">
+            <span className="inline-flex items-center gap-1 px-2 text-xs font-semibold text-muted-foreground">
+              <DatabaseZap className="h-3.5 w-3.5 text-accent" />
+              Supplier depth · {supplierDepthLabel}
+            </span>
+            {supplierDepthOptions.map((option) => (
+              <button
+                key={String(option)}
+                type="button"
+                onClick={() => updateSupplierDepth(option)}
+                className={cn(
+                  'h-8 rounded-md px-3 text-xs font-bold uppercase text-muted-foreground transition hover:bg-surface-muted hover:text-foreground',
+                  supplierDepth === option && 'bg-accent-soft text-accent shadow-[inset_0_0_0_1px_hsl(var(--accent)/0.28)]',
+                  option === 'all' && !focusMode && 'cursor-not-allowed opacity-50',
+                )}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+          {depthWarning ? <p className="mt-1 px-2 text-xs text-high xl:text-right">{depthWarning}</p> : null}
+        </div>
       </div>
 
       {focusMode ? (
-        <div className="absolute left-4 right-4 top-[10.5rem] z-20 rounded-lg border border-accent/30 bg-accent-soft px-3 py-2 text-xs font-semibold text-accent shadow-report-soft xl:right-auto xl:top-16">
+        <div className="absolute left-3 right-3 top-[9.75rem] z-20 rounded-lg border border-accent/30 bg-accent-soft px-3 py-2 text-xs font-semibold text-accent shadow-report-soft md:top-[8.5rem] xl:right-auto xl:top-16">
           Focus mode: {effectiveSelectedLabel} · {focusModeLabel[explorationMode]}
         </div>
       ) : null}

@@ -7,6 +7,7 @@ import {
   DataPendingState,
   HeroSection,
   InsightPanel,
+  PendingCell,
   ReportTable,
   SectionHeader,
   StatCard,
@@ -15,7 +16,7 @@ import {
 } from '../components/report';
 import { loadExplorerData } from '../data/loaders';
 import type { SupplyChainNode } from '../data/schema';
-import { dataPending, getDerivedReportStats, getWatchlistGroups, pendingCopy } from '../lib/reportSelectors';
+import { getDerivedReportStats, getWatchlistGroups, pendingCopy } from '../lib/reportSelectors';
 
 const data = loadExplorerData();
 
@@ -28,21 +29,21 @@ export function Watchlist(): JSX.Element {
     { id: 'segment', header: 'Segment', render: (node) => node.layer },
     { id: 'why', header: 'Why it matters', render: (node) => <span className="line-clamp-2">{node.whyItMatters || node.description || pendingCopy}</span>, className: 'min-w-[360px]' },
     { id: 'status', header: 'Status', render: (node) => <StatusBadge status={node.status} /> },
-    { id: 'timing', header: 'Timing / Catalyst', render: (node) => dataPending(node.publicPath || node.estimatedMaturity) },
-    { id: 'confidence', header: 'Confidence', render: (node) => dataPending(node.confidence) },
+    { id: 'timing', header: 'Monitoring signal', render: (node) => node.publicPath || node.estimatedMaturity || <PendingCell /> },
+    { id: 'confidence', header: 'Confidence', render: (node) => node.confidence || <PendingCell /> },
   ];
 
   return (
     <PageShell>
       <HeroSection
         title="Names to Watch"
-        subtitle="Upcoming IPOs, SPAC candidates, and emerging private companies worth tracking across the AI supply chain."
+        subtitle="Upcoming IPOs, SPAC candidates, and emerging private companies tracked for supply-chain relevance."
         action={<Link to="/sources" className="text-sm font-semibold text-accent">How to read this section</Link>}
         stats={
           <>
             <StatCard icon={<Rocket className="h-4 w-4" />} label="Public-path names" value={groups.publicPath.length} context="Rows with public-path notes" />
             <StatCard icon={<Users className="h-4 w-4" />} label="Private names tracked" value={groups.privateNames.length} context="Separated from public company tables" />
-            <StatCard icon={<Star className="h-4 w-4" />} label="Near-term catalyst names" value={groups.nearTermCatalysts.length} context="Maturity or public-path fields present" />
+            <StatCard icon={<Star className="h-4 w-4" />} label="Near-term signals" value={groups.nearTermCatalysts.length} context="Maturity or public-path fields present" />
             <StatCard icon={<CalendarClock className="h-4 w-4" />} label="Last updated" value={stats.latestSourceDate ?? pendingCopy} context="Latest source date" to="/sources" />
           </>
         }
@@ -69,12 +70,13 @@ export function Watchlist(): JSX.Element {
           </ContentSection>
 
           <ReportTable
-            title="Companies worth following"
+            title="Tracked private and public-path names"
             description="Research tracking only. These rows are not investment advice."
             action={<Link to="/companies">View company universe</Link>}
             columns={columns}
             rows={groups.all}
             getRowKey={(node) => node.id}
+            note="Pending cells mean the timing, maturity, or source-confidence field is not yet sourced enough for display."
           />
         </div>
 
@@ -102,7 +104,7 @@ export function Watchlist(): JSX.Element {
           </InsightPanel>
 
           <InsightPanel title="Research-only boundary">
-            <p>Watchlist rows are research tracking entries, not investment advice. Missing timing and catalyst data shows as <DataPendingState />.</p>
+            <p>Watchlist rows are research tracking entries, not investment advice. Missing public-path or timing data shows as <DataPendingState />.</p>
             <Link to="/sources" className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent">
               Review methodology
               <ArrowRight className="h-3.5 w-3.5" />

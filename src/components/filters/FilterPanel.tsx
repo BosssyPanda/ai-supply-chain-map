@@ -1,5 +1,6 @@
 import { Filter, RotateCcw } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { useState } from 'react';
 import type { BottleneckLevel, CompanyStatus, GraphFilters, PurePlayScore, SupplyChainNode } from '../../data/schema';
 import { defaultFilters, uniqueGeographies, uniqueLayers } from '../../lib/filters';
 import { cn } from '../../lib/cn';
@@ -18,7 +19,7 @@ const statuses: CompanyStatus[] = [
   'non_us_listed',
   'watchlist_private_ipo_spac',
 ];
-const levels: BottleneckLevel[] = ['low', 'medium', 'high', 'critical'];
+const levels: BottleneckLevel[] = ['critical', 'high', 'medium', 'low'];
 const purePlay: PurePlayScore[] = ['low', 'medium', 'high'];
 
 function toggleArray<T extends string>(values: T[], value: T): T[] {
@@ -28,25 +29,56 @@ function toggleArray<T extends string>(values: T[], value: T): T[] {
 export function FilterPanel({ nodes, filters, onChange }: FilterPanelProps): JSX.Element {
   const layers = uniqueLayers(nodes);
   const geographies = uniqueGeographies(nodes).slice(0, 18);
+  const [expanded, setExpanded] = useState(false);
+  const activeCount = [
+    filters.layers.length,
+    filters.statuses.length,
+    filters.bottleneckLevels.length,
+    filters.geographies.length,
+    filters.material ? 1 : 0,
+    filters.usListedOnly ? 1 : 0,
+    filters.adrOnly ? 1 : 0,
+    filters.showCompanies ? 0 : 1,
+    filters.showNonInvestable ? 0 : 1,
+    filters.showMinerals ? 0 : 1,
+    filters.showWatchlist ? 0 : 1,
+    filters.purePlayScores.length,
+  ].reduce((total, value) => total + value, 0);
 
   return (
     <section className="rounded-lg border border-border bg-surface p-4 shadow-report-soft">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
           <Filter className="h-4 w-4 text-accent" />
-          Filters
+          Research filters
+          <span className="rounded-md border border-border bg-surface-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+            {activeCount === 0 ? 'Default view' : `${activeCount} active`}
+          </span>
         </div>
-        <button
-          type="button"
-          onClick={() => onChange(defaultFilters)}
-          className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-muted-foreground hover:bg-surface-muted hover:text-foreground"
-        >
-          <RotateCcw className="h-3.5 w-3.5" />
-          Reset
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => onChange(defaultFilters)}
+            className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-muted-foreground hover:bg-surface-muted hover:text-foreground"
+          >
+            <RotateCcw className="h-3.5 w-3.5" />
+            Reset
+          </button>
+          <button
+            type="button"
+            onClick={() => setExpanded((value) => !value)}
+            className="rounded-md border border-border bg-surface px-3 py-1.5 text-xs font-semibold text-foreground hover:border-accent/45 hover:text-accent"
+          >
+            {expanded ? 'Hide filters' : 'Show filters'}
+          </button>
+        </div>
       </div>
 
-      <div className="mt-4 grid gap-4 lg:grid-cols-2 xl:grid-cols-4">
+      <p className="mt-2 text-xs leading-5 text-muted-foreground">
+        Use filters when investigating a specific branch. The default map remains the primary editorial view.
+      </p>
+
+      <div className={cn('mt-4 grid gap-4 lg:grid-cols-2 xl:grid-cols-4', !expanded && 'hidden')}>
         <FilterGroup label="Supply-chain layer">
           <select
             value={filters.layers[0] ?? ''}
@@ -114,7 +146,7 @@ export function FilterPanel({ nodes, filters, onChange }: FilterPanelProps): JSX
         </FilterGroup>
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2 border-t border-border pt-4">
+      <div className={cn('mt-4 flex flex-wrap gap-2 border-t border-border pt-4', !expanded && 'hidden')}>
         <Toggle active={filters.usListedOnly} onClick={() => onChange({ ...filters, usListedOnly: !filters.usListedOnly })}>
           U.S.-listed only
         </Toggle>
