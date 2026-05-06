@@ -1,23 +1,35 @@
-import { Layers3, Rocket, Star, Users } from 'lucide-react';
+import { ArrowRight, CalendarClock, Layers3, Rocket, Shield, Sparkles, Star, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ContentSection, MainContentGrid, PageShell, RightRail } from '../components/layout/PageShell';
-import { ChapterCard, CompanyMiniCard, HeroSection, InsightPanel, ReportTable, SectionHeader, StatCard, StatusBadge, type ReportTableColumn } from '../components/report';
+import {
+  ChapterCard,
+  CompanyMiniCard,
+  DataPendingState,
+  HeroSection,
+  InsightPanel,
+  ReportTable,
+  SectionHeader,
+  StatCard,
+  StatusBadge,
+  type ReportTableColumn,
+} from '../components/report';
 import { loadExplorerData } from '../data/loaders';
 import type { SupplyChainNode } from '../data/schema';
+import { dataPending, getDerivedReportStats, getWatchlistGroups, pendingCopy } from '../lib/reportSelectors';
 
 const data = loadExplorerData();
 
 export function Watchlist(): JSX.Element {
-  const watchlist = data.nodes.filter((node) => node.type === 'watchlist' || node.status === 'watchlist_private_ipo_spac' || node.status === 'private');
-  const upcoming = watchlist.filter((node) => node.publicPath || node.estimatedMaturity);
-  const privateNames = watchlist.filter((node) => node.status === 'private' || node.type === 'watchlist');
+  const groups = getWatchlistGroups(data);
+  const stats = getDerivedReportStats(data);
 
   const columns: ReportTableColumn<SupplyChainNode>[] = [
-    { id: 'company', header: 'Company', render: (node) => <span className="font-semibold text-foreground">{node.label}</span> },
+    { id: 'company', header: 'Company', render: (node) => <span className="font-semibold text-foreground">{node.label}</span>, className: 'min-w-[210px]' },
     { id: 'segment', header: 'Segment', render: (node) => node.layer },
-    { id: 'why', header: 'Why it matters', render: (node) => <span className="line-clamp-2">{node.whyItMatters || node.description}</span>, className: 'min-w-[320px]' },
+    { id: 'why', header: 'Why it matters', render: (node) => <span className="line-clamp-2">{node.whyItMatters || node.description || pendingCopy}</span>, className: 'min-w-[360px]' },
     { id: 'status', header: 'Status', render: (node) => <StatusBadge status={node.status} /> },
-    { id: 'timing', header: 'Timing / Catalyst', render: (node) => node.estimatedMaturity || node.publicPath || 'Monitoring only' },
+    { id: 'timing', header: 'Timing / Catalyst', render: (node) => dataPending(node.publicPath || node.estimatedMaturity) },
+    { id: 'confidence', header: 'Confidence', render: (node) => dataPending(node.confidence) },
   ];
 
   return (
@@ -28,9 +40,10 @@ export function Watchlist(): JSX.Element {
         action={<Link to="/sources" className="text-sm font-semibold text-accent">How to read this section</Link>}
         stats={
           <>
-            <StatCard icon={<Rocket className="h-4 w-4" />} label="Upcoming public-path names" value={upcoming.length} context="Rows with maturity or public-path notes" />
-            <StatCard icon={<Users className="h-4 w-4" />} label="Private companies tracked" value={privateNames.length} context="Separated from ranked public companies" />
-            <StatCard icon={<Star className="h-4 w-4" />} label="Watchlist names" value={watchlist.length} context="Current CSV-backed watchlist scope" />
+            <StatCard icon={<Rocket className="h-4 w-4" />} label="Public-path names" value={groups.publicPath.length} context="Rows with public-path notes" />
+            <StatCard icon={<Users className="h-4 w-4" />} label="Private names tracked" value={groups.privateNames.length} context="Separated from public company tables" />
+            <StatCard icon={<Star className="h-4 w-4" />} label="Near-term catalyst names" value={groups.nearTermCatalysts.length} context="Maturity or public-path fields present" />
+            <StatCard icon={<CalendarClock className="h-4 w-4" />} label="Last updated" value={stats.latestSourceDate ?? pendingCopy} context="Latest source date" to="/sources" />
           </>
         }
       />
@@ -40,42 +53,72 @@ export function Watchlist(): JSX.Element {
           <ContentSection>
             <SectionHeader title="At a glance" />
             <div className="grid gap-4 p-5 md:grid-cols-3">
-              <ChapterCard icon={<Rocket className="h-4 w-4" />} title="IPO pipeline" description="Companies preparing for public-market paths or later-stage financing signals." />
-              <ChapterCard icon={<Users className="h-4 w-4" />} title="Private names" description="High-potential private companies shaping the AI supply chain." />
-              <ChapterCard icon={<Layers3 className="h-4 w-4" />} title="Emerging suppliers" description="Early-stage infrastructure and component enablers to monitor." />
+              <ChapterCard icon={<Rocket className="h-4 w-4" />} title="IPO pipeline" description="Companies with public-path notes, S-1 references, or maturity signals in the research file." action={<span>{groups.publicPath.length} rows</span>} />
+              <ChapterCard icon={<Users className="h-4 w-4" />} title="Private names" description="Private companies tracked for structural supply-chain relevance." action={<span>{groups.privateNames.length} rows</span>} />
+              <ChapterCard icon={<Layers3 className="h-4 w-4" />} title="Emerging suppliers" description="Early-stage infrastructure, silicon, power, and component enablers to monitor." action={<span>{groups.emergingSuppliers.length} rows</span>} />
             </div>
           </ContentSection>
 
           <ContentSection>
-            <SectionHeader title="Upcoming listings" action={<Link to="/companies" className="text-sm font-semibold text-accent">View company universe</Link>} />
+            <SectionHeader title="Upcoming listings and public-path names" action={<Link to="/sources" className="text-sm font-semibold text-accent">View source status</Link>} />
             <div className="grid gap-4 p-5 md:grid-cols-2 xl:grid-cols-3">
-              {watchlist.slice(0, 6).map((node) => (
+              {(groups.publicPath.length > 0 ? groups.publicPath : groups.all).slice(0, 6).map((node) => (
                 <CompanyMiniCard key={node.id} company={node} to={node.type === 'company' ? `/companies/${node.id}` : undefined} />
               ))}
             </div>
           </ContentSection>
 
-          <ContentSection>
-            <SectionHeader title="Companies worth following" />
-            <div className="p-5 pt-0">
-              <ReportTable columns={columns} rows={watchlist} getRowKey={(node) => node.id} />
-            </div>
-          </ContentSection>
+          <ReportTable
+            title="Companies worth following"
+            description="Research tracking only. These rows are not investment advice."
+            action={<Link to="/companies">View company universe</Link>}
+            columns={columns}
+            rows={groups.all}
+            getRowKey={(node) => node.id}
+          />
         </div>
 
         <RightRail>
-          <InsightPanel title="Focus" eyebrow="Monitoring">
-            <p>Tracking names early helps identify future exposure to critical technologies before they appear in major public company datasets.</p>
+          <InsightPanel title="Focus" eyebrow="Research tracking">
+            <p>Tracking private and public-path names helps identify future exposure to critical technologies before they appear in the main public company universe.</p>
           </InsightPanel>
-          <InsightPanel title="What qualifies a name">
+
+          <InsightPanel title="Key themes">
             <ul className="space-y-2">
-              <li>Strategic role in the AI supply chain.</li>
-              <li>Evidence of product traction or design wins.</li>
-              <li>Near-term public path, funding, or maturity signal where known.</li>
+              <li>Networking and interconnects</li>
+              <li>Power and thermal infrastructure</li>
+              <li>Memory and packaging bottlenecks</li>
+              <li>Model and cloud demand formation</li>
             </ul>
+          </InsightPanel>
+
+          <InsightPanel title="What qualifies a name for inclusion">
+            <div className="grid gap-2">
+              <Criteria icon={<Shield className="h-4 w-4" />} text="Strategic role in the AI supply chain" />
+              <Criteria icon={<Star className="h-4 w-4" />} text="Evidence of traction, product relevance, or design wins" />
+              <Criteria icon={<CalendarClock className="h-4 w-4" />} text="Public-path, funding, maturity, or monitoring signal where known" />
+              <Criteria icon={<Sparkles className="h-4 w-4" />} text="Potential impact on scalability, cost, or chokepoints" />
+            </div>
+          </InsightPanel>
+
+          <InsightPanel title="Research-only boundary">
+            <p>Watchlist rows are research tracking entries, not investment advice. Missing timing and catalyst data shows as <DataPendingState />.</p>
+            <Link to="/sources" className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent">
+              Review methodology
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
           </InsightPanel>
         </RightRail>
       </MainContentGrid>
     </PageShell>
+  );
+}
+
+function Criteria({ icon, text }: { icon: JSX.Element; text: string }): JSX.Element {
+  return (
+    <div className="flex items-center gap-3 rounded-md border border-border bg-surface px-3 py-2 text-sm text-muted-foreground">
+      <span className="text-accent">{icon}</span>
+      <span>{text}</span>
+    </div>
   );
 }

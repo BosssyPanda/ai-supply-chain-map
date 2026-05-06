@@ -271,10 +271,10 @@ function SupplyChainGraphInner({
 
   const supplierDepthLabel =
     explorationMode === 'downstream'
-      ? 'Showing downstream customers; supplier depth is paused in this view.'
+      ? 'paused while downstream customers are shown'
       : supplierDepth === 'all'
-        ? 'Showing full available upstream depth in focus mode.'
-        : `Showing supplier depth: ${supplierDepth} level${supplierDepth === 1 ? '' : 's'} upstream.`;
+        ? 'full available upstream depth'
+        : `${supplierDepth} level${supplierDepth === 1 ? '' : 's'} upstream`;
 
   const focusModeLabel = {
     branch: 'branch focus',
@@ -285,19 +285,19 @@ function SupplyChainGraphInner({
   return (
     <div className="relative h-[720px] overflow-hidden rounded-lg border border-border bg-surface shadow-report">
       <div className="absolute left-4 right-4 top-4 z-20 flex flex-wrap gap-2 xl:right-auto">
-        <ToolbarButton onClick={resetLayout} icon={<RotateCcw className="h-4 w-4" />} label="Reset Layout" />
-        <ToolbarButton onClick={fitCanvas} icon={<Maximize2 className="h-4 w-4" />} label="Fit View" />
+        <ToolbarButton onClick={resetLayout} icon={<RotateCcw className="h-4 w-4" />} label="Reset" />
+        <ToolbarButton onClick={fitCanvas} icon={<Maximize2 className="h-4 w-4" />} label="Fit" />
         <ToolbarButton onClick={() => setDirection((value) => (value === 'DOWN' ? 'RIGHT' : 'DOWN'))} icon={<GitBranch className="h-4 w-4" />} label={direction === 'DOWN' ? 'Top-down' : 'Left-right'} />
-        <ToolbarButton onClick={collapseToStage} icon={<ChevronDown className="h-4 w-4" />} label="Collapse to Stage" />
-        {focusMode ? <ToolbarButton onClick={collapseToStage} icon={<X className="h-4 w-4" />} label="Exit Focus Mode" /> : null}
-        <ToolbarButton onClick={() => setShowMiniMap((value) => !value)} icon={<MapIcon className="h-4 w-4" />} label={showMiniMap ? 'Hide Minimap' : 'Show Minimap'} />
+        <ToolbarButton onClick={collapseToStage} icon={<ChevronDown className="h-4 w-4" />} label="Stage view" />
+        {focusMode ? <ToolbarButton onClick={collapseToStage} icon={<X className="h-4 w-4" />} label="Exit focus" /> : null}
+        <ToolbarButton onClick={() => setShowMiniMap((value) => !value)} icon={<MapIcon className="h-4 w-4" />} label={showMiniMap ? 'Hide map' : 'Minimap'} />
       </div>
 
       <div className="absolute left-4 right-4 top-[6.25rem] z-20 rounded-lg border border-border bg-surface/90 p-2 shadow-report-soft backdrop-blur xl:left-auto xl:right-4 xl:top-4 xl:max-w-[520px]">
         <div className="flex flex-wrap items-center justify-end gap-2">
           <span className="inline-flex items-center gap-1 px-2 text-xs font-semibold text-muted-foreground">
             <DatabaseZap className="h-3.5 w-3.5 text-accent" />
-            {supplierDepthLabel}
+            Supplier depth · {supplierDepthLabel}
           </span>
           {supplierDepthOptions.map((option) => (
             <button
@@ -360,7 +360,7 @@ function SupplyChainGraphInner({
 
       <div className="pointer-events-none absolute bottom-5 left-1/2 z-20 hidden -translate-x-1/2 items-center gap-3 rounded-lg border border-border bg-surface/90 px-4 py-2 text-xs text-muted-foreground shadow-report-soft md:flex">
         <Layers3 className="h-4 w-4 text-accent" />
-        Drag canvas to pan · Scroll to zoom · Click node for top companies
+        Advanced map workspace · Pan, zoom, and select nodes to inspect source-backed context
       </div>
     </div>
   );

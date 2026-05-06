@@ -1,6 +1,6 @@
 import { ArrowDownUp, Building2, ShieldCheck, TriangleAlert } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ContentSection, MainContentGrid, PageShell, RightRail } from '../components/layout/PageShell';
 import {
   CompanyMiniCard,
@@ -16,12 +16,14 @@ import {
   SectionHeader,
   StatCard,
   StatusBadge,
+  DataPendingState,
   type ReportTableColumn,
 } from '../components/report';
 import { loadExplorerData } from '../data/loaders';
 import type { BottleneckLevel, CompanyStatus, Confidence, SupplyChainNode } from '../data/schema';
 import { isUsListed, uniqueGeographies, uniqueLayers } from '../lib/filters';
 import { cn } from '../lib/cn';
+import { dataPending, getDerivedReportStats } from '../lib/reportSelectors';
 import { searchSupplyChain } from '../lib/search';
 
 const data = loadExplorerData();
@@ -85,12 +87,12 @@ export function Companies(): JSX.Element {
     {
       id: 'ticker',
       header: <SortableHeader label="Ticker" sortKey="ticker" activeKey={sortKey} direction={sortDirection} onSort={setSort} />,
-      render: (node) => <span className="font-semibold text-foreground">{node.ticker ?? '-'}</span>,
+      render: (node) => <span className="font-semibold text-foreground">{dataPending(node.ticker)}</span>,
     },
     {
       id: 'role',
       header: 'Role / Segment',
-      render: (node) => node.marketSegment || node.role || 'Role mapping pending',
+      render: (node) => node.marketSegment || node.role || <DataPendingState />,
       className: 'min-w-[220px]',
     },
     {
@@ -102,17 +104,17 @@ export function Companies(): JSX.Element {
     {
       id: 'bottleneck',
       header: <SortableHeader label="Bottleneck" sortKey="bottleneck" activeKey={sortKey} direction={sortDirection} onSort={setSort} />,
-      render: (node) => node.bottleneckLevel ? <RiskBadge level={node.bottleneckLevel} /> : 'Data pending',
+      render: (node) => node.bottleneckLevel ? <RiskBadge level={node.bottleneckLevel} /> : <DataPendingState />,
     },
     {
       id: 'geography',
       header: <SortableHeader label="Geography" sortKey="geography" activeKey={sortKey} direction={sortDirection} onSort={setSort} />,
-      render: (node) => node.country ?? 'Data pending',
+      render: (node) => dataPending(node.country),
     },
     {
       id: 'pure-play',
-      header: <SortableHeader label="Pure-play" sortKey="purePlayScore" activeKey={sortKey} direction={sortDirection} onSort={setSort} />,
-      render: (node) => <span className="capitalize">{node.purePlayScore ?? 'Data pending'}</span>,
+      header: <SortableHeader label="Exposure" sortKey="purePlayScore" activeKey={sortKey} direction={sortDirection} onSort={setSort} />,
+      render: (node) => <span className="capitalize">{dataPending(node.purePlayScore)}</span>,
     },
     {
       id: 'confidence',
@@ -124,6 +126,11 @@ export function Companies(): JSX.Element {
   const usListedCount = companies.filter((node) => isUsListed(node.status)).length;
   const highConfidenceCount = companies.filter((node) => node.confidence === 'high').length;
   const criticalCount = companies.filter((node) => node.bottleneckLevel === 'critical').length;
+  const reportStats = getDerivedReportStats(data);
+  const keyGroups = layers
+    .map((name) => ({ name, count: companies.filter((node) => node.layer === name).length }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 5);
 
   return (
     <PageShell>
@@ -135,7 +142,7 @@ export function Companies(): JSX.Element {
             <StatCard icon={<Building2 className="h-4 w-4" />} label="Mapped companies" value={companies.length} context="Across the current research graph" />
             <StatCard icon={<Building2 className="h-4 w-4" />} label="U.S.-listed" value={usListedCount} context="Public and ADR rows from CSV data" />
             <StatCard icon={<TriangleAlert className="h-4 w-4" />} label="Critical bottleneck names" value={criticalCount} context="High-impact mapped constraints" />
-            <StatCard icon={<ShieldCheck className="h-4 w-4" />} label="High-confidence profiles" value={highConfidenceCount} context="Source-backed confidence state" />
+            <StatCard icon={<ShieldCheck className="h-4 w-4" />} label="High-confidence profiles" value={highConfidenceCount} context={`${reportStats.confidencePercent}% of scored mappings are high confidence`} />
           </>
         }
       />
@@ -168,33 +175,44 @@ export function Companies(): JSX.Element {
             </div>
           </ContentSection>
 
-          <ContentSection>
-            <SectionHeader title="All mapped companies" description={`${filtered.length} visible from ${companies.length} mapped company rows`} />
-            <div className="p-5 pt-0">
-              <ReportTable
-                columns={columns}
-                rows={filtered}
-                getRowKey={(node) => node.id}
-                onRowClick={(node) => navigate(`/companies/${node.id}`)}
-                emptyMessage="No companies match the current filters."
-              />
-            </div>
-          </ContentSection>
+          <ReportTable
+            title="All mapped companies"
+            description={`${filtered.length} visible from ${companies.length} mapped company rows`}
+            columns={columns}
+            rows={filtered}
+            getRowKey={(node) => node.id}
+            onRowClick={(node) => navigate(`/companies/${node.id}`)}
+            emptyMessage="No companies match the current filters."
+          />
         </div>
 
         <RightRail>
           <InsightPanel title="Why these companies matter">
-            <p>AI performance and scale depend on specialized companies across chips, data centers, power, cooling, materials, and services.</p>
+            <p>AI performance and scale depend on specialized companies across chips, data centers, power, cooling, materials, and services. This page shows role, exposure, bottleneck relevance, geography, and source confidence with research-only framing.</p>
           </InsightPanel>
-          <InsightPanel title="Research rules" eyebrow="Boundary">
-            <ul className="space-y-2">
-              <li>Organized by supply-chain role.</li>
-              <li>Assessed for bottleneck relevance and confidence.</li>
-              <li>No buy, sell, or price-target language.</li>
-            </ul>
+          <InsightPanel title="Key groups" eyebrow="Database structure">
+            <div className="space-y-2">
+              {keyGroups.map((group) => (
+                <button
+                  key={group.name}
+                  type="button"
+                  onClick={() => setLayer(group.name)}
+                  className="flex w-full items-center justify-between gap-3 rounded-md border border-border bg-surface px-3 py-2 text-left text-sm hover:border-accent/45"
+                >
+                  <span className="font-semibold text-foreground">{group.name}</span>
+                  <span className="text-muted-foreground">{group.count} rows</span>
+                </button>
+              ))}
+            </div>
+          </InsightPanel>
+          <InsightPanel title="Spotlight" eyebrow="Report chapter">
+            <p>Company dossiers show the source-backed role, upstream and downstream position, mapped risks, peers, and confidence state for each organization.</p>
+            <Link to={filtered[0] ? `/companies/${filtered[0].id}` : '/companies'} className="mt-4 inline-flex text-sm font-semibold text-accent">
+              Open a dossier
+            </Link>
           </InsightPanel>
           <InsightPanel title="Data status">
-            <p>Company counts, filters, and row details are derived from the loaded research files. Unknown fields stay marked as pending until source-backed values are available.</p>
+            <p>Company counts, filters, and row details are derived from loaded research files. Unknown fields stay marked as {dataPending()}.</p>
           </InsightPanel>
         </RightRail>
       </MainContentGrid>

@@ -15,6 +15,9 @@ export function ReportTable<T>({
   getRowKey,
   onRowClick,
   emptyMessage = 'No records match the current view.',
+  title,
+  description,
+  action,
   className,
 }: {
   columns: ReportTableColumn<T>[];
@@ -22,10 +25,22 @@ export function ReportTable<T>({
   getRowKey: (row: T) => string;
   onRowClick?: (row: T) => void;
   emptyMessage?: string;
+  title?: ReactNode;
+  description?: ReactNode;
+  action?: ReactNode;
   className?: string;
 }): JSX.Element {
   return (
     <div className={cn('overflow-hidden rounded-lg border border-border bg-surface shadow-report-soft', className)}>
+      {title || description || action ? (
+        <div className="flex flex-col gap-3 border-b border-border px-4 py-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            {title ? <h3 className="font-display text-xl leading-tight text-foreground">{title}</h3> : null}
+            {description ? <p className="mt-1 text-sm text-muted-foreground">{description}</p> : null}
+          </div>
+          {action ? <div className="shrink-0 text-sm font-semibold text-accent">{action}</div> : null}
+        </div>
+      ) : null}
       <div className="overflow-x-auto">
         <table className="w-full min-w-[880px] text-left text-sm">
           <thead className="border-b border-border bg-surface-muted text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">

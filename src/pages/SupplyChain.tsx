@@ -1,16 +1,19 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { DetailPanel } from '../components/details/DetailPanel';
 import { FilterPanel } from '../components/filters/FilterPanel';
 import { SupplyChainGraph } from '../components/graph/SupplyChainGraph';
 import { Legend } from '../components/legend/Legend';
 import { PageShell } from '../components/layout/PageShell';
+import { HeroSection, StatCard } from '../components/report';
 import { SearchBar } from '../components/search/SearchBar';
 import { loadExplorerData } from '../data/loaders';
 import type { GraphFilters, GraphViewMode } from '../data/schema';
 import { defaultFilters, isNonInvestable } from '../lib/filters';
 import type { ExplorationMode } from '../lib/focusGraph';
+import { dataPending, getDerivedReportStats } from '../lib/reportSelectors';
 import { getStageNode } from '../lib/stages';
+import { AlertTriangle, ArrowLeft, Building2, GitBranch, Network } from 'lucide-react';
 
 const data = loadExplorerData();
 const rootId = 'L0_AI_ECOSYSTEM';
@@ -31,6 +34,7 @@ export function SupplyChain(): JSX.Element {
 
   const selectedNode = useMemo(() => data.nodes.find((node) => node.id === selectedNodeId) ?? getStageNode(selectedNodeId), [selectedNodeId]);
   const stats = useMemo(() => getExplorerStats(), []);
+  const reportStats = useMemo(() => getDerivedReportStats(data), []);
 
   const focus = useCallback((nodeId: string, mode: ExplorationMode = 'branch') => {
     setSelectedNodeId(nodeId);
@@ -66,21 +70,34 @@ export function SupplyChain(): JSX.Element {
 
   return (
     <PageShell fullWidth>
-      <header className="mb-6 flex flex-col gap-4 2xl:flex-row 2xl:items-end 2xl:justify-between">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Interactive report exhibit</p>
-          <h1 className="font-display text-5xl leading-[1.05] text-foreground">The AI Supply Chain, Mapped</h1>
-          <p className="mt-3 max-w-3xl text-base leading-7 text-muted-foreground">
-            Explore mapped relationships, focus branches, and verify where companies, materials, and bottlenecks connect.
-          </p>
-        </div>
-        <SearchBar nodes={data.nodes} value={searchQuery} onChange={setSearchQuery} onSelect={focus} />
-      </header>
+      <HeroSection
+        className="lg:grid-cols-[minmax(0,0.9fr)_minmax(420px,0.9fr)]"
+        title="The AI Supply Chain, Mapped"
+        subtitle="This is the advanced research workspace for exploring mapped relationships, focus branches, supplier depth, and how companies, materials, and bottlenecks connect."
+        action={
+          <div className="flex flex-wrap items-center gap-3">
+            <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-accent">
+              <ArrowLeft className="h-4 w-4" />
+              Back to Overview
+            </Link>
+            <div className="w-full max-w-xl 2xl:w-[520px]">
+              <SearchBar nodes={data.nodes} value={searchQuery} onChange={setSearchQuery} onSelect={focus} />
+            </div>
+          </div>
+        }
+        stats={
+          <>
+            <StatCard icon={<Network className="h-4 w-4" />} label="Graph nodes" value={stats.totalNodes} context="Visible research universe" />
+            <StatCard icon={<GitBranch className="h-4 w-4" />} label="Relationships" value={stats.relationships} context="Mapped graph edges" />
+            <StatCard icon={<Building2 className="h-4 w-4" />} label="Companies" value={reportStats.mappedCompanies} context="Public, private, and watchlist rows" />
+            <StatCard icon={<AlertTriangle className="h-4 w-4" />} label="Critical bottlenecks" value={reportStats.criticalBottlenecks} context="Rows marked critical" />
+          </>
+        }
+      />
 
-      <div className="grid gap-5 2xl:grid-cols-[minmax(0,1fr)_460px]">
+      <div className="mt-8 grid gap-5 2xl:grid-cols-[minmax(0,1fr)_460px]">
         <section className="min-w-0 space-y-4">
           <FilterPanel nodes={data.nodes} filters={filters} onChange={setFilters} />
-          <StatStrip stats={stats} />
           <SupplyChainGraph
             data={data}
             filters={filters}
@@ -111,32 +128,12 @@ export function SupplyChain(): JSX.Element {
 }
 
 function getExplorerStats() {
-  const lastUpdated = data.sources
-    .map((source) => source.dateAccessed)
-    .filter(Boolean)
-    .sort();
-  const latestDate = lastUpdated[lastUpdated.length - 1];
-
-  return [
-    { label: 'Total nodes', value: data.nodes.length },
-    { label: 'U.S. public', value: data.nodes.filter((node) => node.status === 'us_listed_public').length },
-    { label: 'ADRs', value: data.nodes.filter((node) => node.status === 'us_listed_adr').length },
-    { label: 'Critical bottlenecks', value: data.nodes.filter((node) => node.bottleneckLevel === 'critical').length },
-    { label: 'Root materials', value: data.nodes.filter((node) => node.type === 'material' || node.type === 'mineral').length },
-    { label: 'Non-investable', value: data.nodes.filter((node) => isNonInvestable(node.status)).length },
-    { label: 'Last updated', value: latestDate ?? 'Data pending' },
-  ];
-}
-
-function StatStrip({ stats }: { stats: Array<{ label: string; value: string | number }> }): JSX.Element {
-  return (
-    <div className="grid grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-7">
-      {stats.map((stat) => (
-        <div key={stat.label} className="rounded-lg border border-border bg-surface px-3 py-2.5 shadow-report-soft">
-          <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">{stat.label}</p>
-          <p className="mt-0.5 text-base font-black text-foreground">{stat.value}</p>
-        </div>
-      ))}
-    </div>
-  );
+  const dates = data.sources.map((source) => source.dateAccessed).filter(Boolean).sort();
+  return {
+    totalNodes: data.nodes.length,
+    relationships: data.edges.length,
+    usPublic: data.nodes.filter((node) => node.status === 'us_listed_public').length,
+    nonInvestable: data.nodes.filter((node) => isNonInvestable(node.status)).length,
+    lastUpdated: dataPending(dates[dates.length - 1]),
+  };
 }

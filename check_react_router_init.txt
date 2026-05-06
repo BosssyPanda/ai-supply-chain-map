@@ -1,0 +1,12 @@
+KEY FINDINGS:
+
+1. badgeRules.test.ts imports ONLY from:
+   - vitest (describe, expect, it)
+   - ./badgeRules (the functions being tested)
+
+2. badgeRules.ts imports ONLY from:
+   - ../../data/schema (TypeScript types, no side effects)
+
+3. This should work fine in Vitest!
+
+However, let's check if Vitest is configured to use a browser environment...

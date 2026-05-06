@@ -21,7 +21,7 @@ export function EmptyState({
 }
 
 export function DataPendingState({
-  children = 'Data pending until a source-backed value is available.',
+  children = 'Data pending — source needed',
   className,
 }: {
   children?: ReactNode;

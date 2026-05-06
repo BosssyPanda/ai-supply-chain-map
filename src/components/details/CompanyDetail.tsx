@@ -16,12 +16,6 @@ interface CompanyDetailProps {
 export function CompanyDetail({ node, upstream, downstream, sources, compact = false }: CompanyDetailProps): JSX.Element {
   const status = getResearchStatus(node, sources);
   const lastUpdated = getLastUpdated(sources);
-  const financialEntries = [
-    { label: 'Revenue', value: node.financials?.revenue },
-    { label: 'Market Cap', value: node.financials?.marketCap },
-    { label: 'Gross Margin', value: node.financials?.grossMargin },
-    { label: 'Free Cash Flow', value: node.financials?.freeCashFlow },
-  ].filter((entry): entry is { label: string; value: string } => Boolean(entry.value));
 
   return (
     <div className="space-y-4">
@@ -77,17 +71,11 @@ export function CompanyDetail({ node, upstream, downstream, sources, compact = f
         </Panel>
       </div>
 
-      {financialEntries.length > 0 ? (
-        <div className="grid grid-cols-2 gap-3">
-          {financialEntries.map((entry) => (
-            <Metric key={entry.label} label={entry.label} value={entry.value} />
-          ))}
-        </div>
-      ) : (
-        <Panel title="Financial Data">
-          <span className="text-xs text-muted-foreground">Data pending. Financial fields stay blank until a source is attached and verified.</span>
-        </Panel>
-      )}
+      <Panel title="Financial data">
+        <span className="text-xs text-muted-foreground">
+          Data pending — source needed. This detail panel does not display fallback or illustrative financial values.
+        </span>
+      </Panel>
 
       <div className="grid gap-3 lg:grid-cols-2">
         <TagPanel title="Upstream Dependencies" items={upstream.map((item) => item.label)} />
@@ -113,16 +101,6 @@ export function Panel({ title, children }: { title: string; children: ReactNode 
       <h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-foreground">{title}</h3>
       {children}
     </section>
-  );
-}
-
-function Metric({ label, value }: { label: string; value?: string }): JSX.Element {
-  const hasValue = Boolean(value);
-  return (
-    <div className={cn('rounded-lg border p-4', hasValue ? 'border-border bg-surface' : 'border-dashed border-border bg-surface-muted')}>
-      <p className="text-xs text-muted-foreground">{label}</p>
-      <p className={cn('mt-1 text-lg font-bold', hasValue ? 'text-foreground' : 'text-muted-foreground')}>{value ?? 'Data pending'}</p>
-    </div>
   );
 }
 
@@ -214,9 +192,8 @@ function getLastUpdated(sources: Source[]): string | undefined {
 
 function getResearchStatus(node: SupplyChainNode, sources: Source[]): { label: string; detail: string; tone: BadgeTone } {
   const hasSources = sources.length > 0;
-  const missingFinancials = ['revenue', 'marketCap', 'grossMargin', 'freeCashFlow'].filter((key) => !node.financials?.[key as keyof typeof node.financials]).length;
   if (!hasSources && node.confidence === 'low') return { label: 'Not researched yet', detail: 'No source row is attached and confidence is low.', tone: 'critical' };
   if (node.confidence === 'low' || !hasSources) return { label: 'Needs verification', detail: 'The mapping is useful but still needs source confirmation.', tone: 'high' };
-  if (missingFinancials > 1) return { label: 'Partial', detail: 'Supply-chain mapping exists; financial fields can be filled later.', tone: 'partial' };
-  return { label: 'Complete', detail: 'Core source and company fields are populated.', tone: 'verified' };
+  if (node.confidence === 'medium') return { label: 'Partial', detail: 'Supply-chain mapping exists; some source confidence remains provisional.', tone: 'partial' };
+  return { label: 'Source-backed', detail: 'Core supply-chain mapping has attached source rows. Financial fields remain pending unless sourced in project data.', tone: 'verified' };
 }

@@ -80,10 +80,10 @@ export function DetailPanel({
         </div>
 
         <div className="grid gap-2 border-t border-border p-5 md:grid-cols-2">
-          <ActionButton icon={<Layers3 className="h-4 w-4" />} label="Focus this branch" onClick={() => onFocus(node.id)} />
-          <ActionButton icon={<Route className="h-4 w-4" />} label="Show upstream roots" onClick={() => onShowUpstream(node.id)} />
-          <ActionButton icon={<GitBranch className="h-4 w-4" />} label="Show downstream customers" onClick={() => onShowDownstream(node.id)} />
-          <ActionButton icon={<X className="h-4 w-4" />} label="Collapse branch" onClick={onCollapse} />
+          <ActionButton icon={<Layers3 className="h-4 w-4" />} label="Focus branch" onClick={() => onFocus(node.id)} />
+          <ActionButton icon={<Route className="h-4 w-4" />} label="Upstream roots" onClick={() => onShowUpstream(node.id)} />
+          <ActionButton icon={<GitBranch className="h-4 w-4" />} label="Downstream" onClick={() => onShowDownstream(node.id)} />
+          <ActionButton icon={<X className="h-4 w-4" />} label="Collapse" onClick={onCollapse} />
         </div>
       </div>
     </aside>
@@ -102,19 +102,19 @@ function RankedResearchPanel({
   return (
     <div className="mt-4 space-y-4">
       <ResearchList
-        title="Top 3 U.S.-Listed Companies"
-        empty="No clean U.S.-listed public top-3 mapping is available for this node yet."
+        title="Mapped U.S.-listed companies"
+        empty="No U.S.-listed company mapping is available for this node yet."
         items={topCompanies}
         variant="public"
       />
       <ResearchList
-        title="Honorable Mentions / IPO-SPAC Watchlist"
+        title="Private and public-path watchlist"
         empty="No private, IPO, SPAC, or watchlist mentions are mapped to this node yet."
         items={watchlistMentions}
         variant="watchlist"
       />
       <ResearchList
-        title="Non-Investable Bottleneck Dependencies"
+        title="Non-investable bottleneck dependencies"
         empty="No separate non-investable bottleneck dependencies are mapped to this node yet."
         items={nonInvestableBottlenecks}
         variant="bottleneck"
@@ -142,7 +142,7 @@ function ResearchList({
 
   return (
     <section className="rounded-lg border border-border bg-surface p-4">
-      <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-foreground">{title}</h3>
+      <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-foreground">{title}</h3>
       <div className="space-y-2">
         {items.length > 0 ? (
           items.map((item) => (
