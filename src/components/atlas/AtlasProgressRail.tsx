@@ -38,7 +38,11 @@ export function AtlasProgressRail({
                 >
                   {stage.step}
                 </span>
-                <Link to={stage.href} className={cn('text-sm leading-5 transition hover:text-white', isActive ? 'text-white' : 'text-white/48')}>
+                <Link
+                  to={stage.href}
+                  aria-current={isActive ? 'step' : undefined}
+                  className={cn('rounded-sm text-sm leading-5 transition hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-300/50', isActive ? 'text-white' : 'text-white/48')}
+                >
                   {stage.title}
                 </Link>
               </li>
@@ -53,13 +57,17 @@ export function AtlasProgressRail({
             >
               <ChevronDown className="h-3.5 w-3.5" aria-hidden="true" />
             </span>
-            <a href="#atlas-report-content" className={cn('text-sm leading-5 transition hover:text-white', isHandoff ? 'text-white' : 'text-white/48')}>
+            <a
+              href="#atlas-report-content"
+              aria-current={isHandoff ? 'step' : undefined}
+              className={cn('rounded-sm text-sm leading-5 transition hover:text-white focus:outline-none focus:ring-2 focus:ring-amber-200/50', isHandoff ? 'text-white' : 'text-white/48')}
+            >
               Report content
             </a>
           </li>
         </ol>
       </div>
-      <Link to="/supply-chain" className="mt-8 inline-flex text-sm font-semibold text-white/55 transition hover:text-white">
+      <Link to="/supply-chain" className="mt-8 inline-flex rounded-sm text-sm font-semibold text-white/55 transition hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-300/50">
         Explore full graph
       </Link>
     </aside>

@@ -15,7 +15,7 @@ export function AtlasConceptPage(): JSX.Element {
   const prefersReducedMotion = Boolean(useReducedMotion());
 
   return (
-    <div className="relative isolate min-h-screen overflow-hidden bg-[#030814] text-white">
+    <div className="relative isolate min-h-screen overflow-x-clip bg-[#030814] text-white">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_28%_18%,rgba(37,99,235,0.2),transparent_30%),radial-gradient(circle_at_80%_42%,rgba(245,158,11,0.12),transparent_26%),linear-gradient(180deg,#07111f_0%,#08111d_48%,#030814_100%)]" />
       <div className="absolute inset-x-0 top-0 -z-10 h-64 bg-gradient-to-b from-white/10 to-transparent" />
 

@@ -23,7 +23,7 @@ export function AtlasStageCard({ stage, compact = false, linked = true }: { stag
   const Icon = iconMap[stage.icon];
   const className = cn(
     'group flex h-full flex-col rounded-lg border border-white/18 bg-white/[0.08] p-4 text-white shadow-[0_18px_50px_rgba(2,6,23,0.28)] backdrop-blur-xl transition dark:border-white/12',
-    linked ? 'hover:-translate-y-0.5 hover:border-white/35 hover:bg-white/[0.12] focus:outline-none focus:ring-2 focus:ring-accent/50' : '',
+    linked ? 'hover:-translate-y-0.5 hover:border-white/35 hover:bg-white/[0.12] focus:outline-none focus:ring-2 focus:ring-blue-300/50' : '',
     compact ? 'gap-3' : 'gap-4',
   );
   const content = (

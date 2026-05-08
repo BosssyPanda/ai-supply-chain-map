@@ -28,15 +28,15 @@ export function AtlasHeroShell({
   const dependencyStrip = scrollState.isHandoff ? stages.slice().reverse() : stages;
 
   return (
-    <section className="relative min-h-[calc(100vh-7rem)] overflow-hidden py-8 lg:min-h-[720px] xl:min-h-[760px]" aria-labelledby="atlas-hero-title">
+    <section className="relative min-h-[calc(100vh-5rem)] overflow-hidden lg:min-h-[760px] xl:min-h-[820px]" aria-labelledby="atlas-hero-title">
       <div className="absolute inset-0">
         <AtlasCanvas stages={stages} activeIndex={scrollState.activeIndex} isHandoff={scrollState.isHandoff} />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_55%_38%,transparent_0%,rgba(3,8,20,0.18)_48%,rgba(3,8,20,0.7)_100%)]" />
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-[52%] bg-gradient-to-r from-[#030814] via-[#030814]/88 to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-[54%] bg-gradient-to-r from-[#030814] via-[#030814]/90 to-transparent" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#030814] to-transparent" />
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 top-2 z-10 hidden justify-center xl:flex" aria-hidden="true">
+      <div className="pointer-events-none absolute inset-x-0 top-4 z-10 hidden justify-center xl:flex" aria-hidden="true">
         <ol className="flex max-w-4xl items-center gap-2 rounded-lg border border-white/10 bg-[#07111f]/60 px-3 py-2 text-white/64 shadow-[0_20px_80px_rgba(2,6,23,0.28)] backdrop-blur-xl">
           {dependencyStrip.slice(0, 5).map((stage, index) => (
             <li key={stage.id} className="flex items-center gap-2">
@@ -54,8 +54,8 @@ export function AtlasHeroShell({
         <AtlasFloatingCard key={stage.id} stage={stage} isActive={scrollState.activeIndex === index} isOverview={scrollState.isOverview} isHandoff={scrollState.isHandoff} />
       ))}
 
-      <div className="relative z-20 flex min-h-[inherit] items-center">
-        <div className="max-w-xl pb-16 pt-20">
+      <div className="relative z-20 flex min-h-[inherit] items-start">
+        <div className="max-w-xl pb-20 pt-12 xl:pt-16">
           <p className="text-xs font-semibold uppercase tracking-[0.26em] text-blue-300">Immersive Supply-Chain Atlas</p>
           <motion.div
             key={scrollState.phase === 'handoff' ? 'handoff' : activeStage?.id ?? 'overview'}
@@ -63,7 +63,7 @@ export function AtlasHeroShell({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, ease: 'easeOut' }}
           >
-            <p className="mt-8 text-[11px] font-semibold uppercase tracking-[0.24em] text-white/46">{eyebrow}</p>
+            <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.24em] text-white/46">{eyebrow}</p>
             <h1 id="atlas-hero-title" className="mt-3 font-display text-4xl leading-[1.04] text-white sm:text-5xl 2xl:text-6xl">
               {headline}
             </h1>
@@ -73,14 +73,14 @@ export function AtlasHeroShell({
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
             <Link
               to={primaryHref}
-              className="inline-flex items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(37,99,235,0.28)] transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300/70"
+              className="inline-flex items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(37,99,235,0.28)] transition hover:-translate-y-0.5 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300/70"
             >
               {primaryLabel}
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               to="/sources"
-              className="inline-flex items-center justify-center gap-2 rounded-md border border-white/18 bg-white/[0.06] px-5 py-3 text-sm font-semibold text-white/84 transition hover:border-white/32 hover:bg-white/[0.1] focus:outline-none focus:ring-2 focus:ring-blue-300/50"
+              className="inline-flex items-center justify-center gap-2 rounded-md border border-white/18 bg-white/[0.06] px-5 py-3 text-sm font-semibold text-white/84 transition hover:-translate-y-0.5 hover:border-white/32 hover:bg-white/[0.1] focus:outline-none focus:ring-2 focus:ring-blue-300/50"
             >
               Read sources
               <HelpCircle className="h-4 w-4" />

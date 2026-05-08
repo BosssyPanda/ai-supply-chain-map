@@ -14,36 +14,70 @@ const navigation = [
   { label: 'Names to Watch', href: '/watchlist' },
 ] as const;
 
-export function TopNav({ lastUpdated }: { lastUpdated?: string }): JSX.Element {
+const atlasNavigation = [
+  { label: 'Overview', href: '/' },
+  { label: 'Atlas', href: '/concept/atlas' },
+  { label: 'Companies', href: '/companies' },
+  { label: 'Research', href: '/sources' },
+  { label: 'Supply Chain', href: '/supply-chain' },
+] as const;
+
+type NavigationItem = (typeof navigation)[number] | (typeof atlasNavigation)[number];
+export type TopNavVariant = 'default' | 'atlas';
+
+export function TopNav({ lastUpdated, variant = 'default' }: { lastUpdated?: string; variant?: TopNavVariant }): JSX.Element {
+  const isAtlas = variant === 'atlas';
+  const items = isAtlas ? atlasNavigation : navigation;
+
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-surface/92 backdrop-blur">
+    <header
+      className={cn(
+        'sticky top-0 z-40 border-b backdrop-blur',
+        isAtlas ? 'border-white/10 bg-[#030814]/88 text-white shadow-[0_24px_80px_rgba(2,6,23,0.28)]' : 'border-border bg-surface/92',
+      )}
+    >
       <div className="mx-auto flex min-h-16 max-w-[1780px] items-center gap-4 px-4 sm:min-h-20 sm:gap-5 sm:px-5 lg:px-8">
         <NavLink to="/" className="flex shrink-0 items-center gap-3">
-          <div className="grid h-10 w-10 place-items-center rounded-lg border border-accent/35 bg-accent-soft text-accent sm:h-11 sm:w-11">
+          <div
+            className={cn(
+              'grid h-10 w-10 place-items-center rounded-lg border sm:h-11 sm:w-11',
+              isAtlas ? 'border-blue-300/35 bg-blue-400/10 text-blue-200' : 'border-accent/35 bg-accent-soft text-accent',
+            )}
+          >
             <Network className="h-5 w-5" />
           </div>
           <div className="block leading-tight">
-            <p className="text-xs font-bold uppercase text-foreground sm:text-sm">AI Supply</p>
-            <p className="text-xs font-bold uppercase text-foreground sm:text-sm">Chain Explorer</p>
+            <p className={cn('text-xs font-bold uppercase sm:text-sm', isAtlas ? 'text-white' : 'text-foreground')}>AI Supply</p>
+            <p className={cn('text-xs font-bold uppercase sm:text-sm', isAtlas ? 'text-white' : 'text-foreground')}>Chain Explorer</p>
           </div>
         </NavLink>
 
-        <nav className="hidden min-w-0 flex-1 items-center justify-center gap-1 2xl:flex" aria-label="Primary navigation">
-          <NavItems />
+        <nav className={cn('hidden min-w-0 flex-1 items-center justify-center gap-1', isAtlas ? 'xl:flex' : '2xl:flex')} aria-label="Primary navigation">
+          <NavItems items={items} variant={variant} />
         </nav>
 
         <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
-          <label className="relative hidden w-[360px] lg:block">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <label className={cn('relative hidden w-[360px]', isAtlas ? 'xl:block' : 'lg:block')}>
+            <Search className={cn('pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2', isAtlas ? 'text-white/48' : 'text-muted-foreground')} />
             <input
               type="search"
               placeholder="Search companies, technologies, materials..."
-              className="h-11 w-full rounded-md border border-border bg-surface pl-10 pr-3 text-sm text-foreground outline-none transition placeholder:text-muted-foreground focus:border-accent focus:ring-2 focus:ring-accent/15"
+              className={cn(
+                'h-11 w-full rounded-md border pl-10 pr-3 text-sm outline-none transition focus:ring-2',
+                isAtlas
+                  ? 'border-white/12 bg-white/[0.06] text-white placeholder:text-white/42 focus:border-blue-300/60 focus:ring-blue-300/20'
+                  : 'border-border bg-surface text-foreground placeholder:text-muted-foreground focus:border-accent focus:ring-accent/15',
+              )}
             />
           </label>
           <button
             type="button"
-            className="hidden h-10 w-10 place-items-center rounded-md border border-border bg-surface text-muted-foreground transition hover:border-accent/45 hover:text-accent md:grid"
+            className={cn(
+              'hidden h-10 w-10 place-items-center rounded-md border transition md:grid',
+              isAtlas
+                ? 'border-white/12 bg-white/[0.06] text-white/62 hover:border-blue-300/45 hover:text-blue-100'
+                : 'border-border bg-surface text-muted-foreground hover:border-accent/45 hover:text-accent',
+            )}
             aria-label="Bookmark report"
             title="Bookmark report"
           >
@@ -51,36 +85,52 @@ export function TopNav({ lastUpdated }: { lastUpdated?: string }): JSX.Element {
           </button>
           <button
             type="button"
-            className="hidden h-10 w-10 place-items-center rounded-md border border-border bg-surface text-muted-foreground transition hover:border-accent/45 hover:text-accent md:grid"
+            className={cn(
+              'hidden h-10 w-10 place-items-center rounded-md border transition md:grid',
+              isAtlas
+                ? 'border-white/12 bg-white/[0.06] text-white/62 hover:border-blue-300/45 hover:text-blue-100'
+                : 'border-border bg-surface text-muted-foreground hover:border-accent/45 hover:text-accent',
+            )}
             aria-label="Share report"
             title="Share report"
           >
             <Share2 className="h-4 w-4" />
           </button>
           <ThemeToggle />
-          <LastUpdatedIndicator value={lastUpdated} />
+          {isAtlas ? null : <LastUpdatedIndicator value={lastUpdated} />}
         </div>
       </div>
-      <nav className="mx-auto flex w-full max-w-[1780px] min-w-0 gap-1 overflow-x-auto overscroll-x-contain border-t border-border px-3 [scrollbar-width:none] sm:px-5 lg:px-8 2xl:hidden [&::-webkit-scrollbar]:hidden" aria-label="Primary navigation">
-        <NavItems />
+      <nav
+        className={cn(
+          'mx-auto flex w-full max-w-[1780px] min-w-0 gap-1 overflow-x-auto overscroll-x-contain border-t px-3 [scrollbar-width:none] sm:px-5 lg:px-8 [&::-webkit-scrollbar]:hidden',
+          isAtlas ? 'border-white/10 xl:hidden' : 'border-border 2xl:hidden',
+        )}
+        aria-label="Primary navigation"
+      >
+        <NavItems items={items} variant={variant} />
       </nav>
     </header>
   );
 }
 
-function NavItems(): JSX.Element {
+function NavItems({ items, variant }: { items: readonly NavigationItem[]; variant: TopNavVariant }): JSX.Element {
+  const isAtlas = variant === 'atlas';
+
   return (
     <>
-      {navigation.map((item) => (
+      {items.map((item) => (
         <NavLink
           key={item.href}
           to={item.href}
           end={item.href === '/'}
           className={({ isActive }) =>
             cn(
-              'relative whitespace-nowrap px-3 py-3 text-sm font-medium text-muted-foreground transition hover:text-foreground sm:px-4 xl:py-7',
+              'relative whitespace-nowrap px-3 py-3 text-sm font-medium transition sm:px-4',
+              isAtlas ? 'text-white/56 hover:text-white xl:py-6' : 'text-muted-foreground hover:text-foreground xl:py-7',
               isActive &&
-                'text-accent after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:rounded-full after:bg-accent sm:after:left-4 sm:after:right-4',
+                (isAtlas
+                  ? 'text-white after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:rounded-full after:bg-blue-300 after:shadow-[0_0_16px_rgba(147,197,253,0.75)] sm:after:left-4 sm:after:right-4'
+                  : 'text-accent after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:rounded-full after:bg-accent sm:after:left-4 sm:after:right-4'),
             )
           }
         >

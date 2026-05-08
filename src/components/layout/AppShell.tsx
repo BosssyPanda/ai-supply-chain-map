@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { loadExplorerData } from '../../data/loaders';
 import { TopNav } from './TopNav';
 
@@ -13,9 +13,12 @@ function getLatestSourceDate(): string | undefined {
 }
 
 export function AppShell(): JSX.Element {
+  const location = useLocation();
+  const isAtlasRoute = location.pathname === '/concept/atlas';
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <TopNav lastUpdated={getLatestSourceDate()} />
+    <div className={isAtlasRoute ? 'min-h-screen bg-[#030814] text-white' : 'min-h-screen bg-background text-foreground'}>
+      <TopNav lastUpdated={getLatestSourceDate()} variant={isAtlasRoute ? 'atlas' : 'default'} />
       <main>
         <Outlet />
       </main>

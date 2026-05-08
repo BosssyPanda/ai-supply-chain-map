@@ -69,7 +69,7 @@ export function AtlasScrollController({
 
   return (
     <section ref={sectionRef} className="relative min-h-[520vh]" aria-label="Immersive atlas scroll journey">
-      <div className="sticky top-[4.85rem] flex min-h-[calc(100vh-4.85rem)] items-start pb-4 pt-10 lg:pt-12">
+      <div className="sticky top-[7.75rem] flex min-h-[calc(100vh-7.75rem)] items-start pb-4 pt-4 lg:pt-6 xl:top-20 xl:min-h-[calc(100vh-5rem)]">
         {children(state)}
       </div>
     </section>

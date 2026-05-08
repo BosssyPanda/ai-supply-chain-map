@@ -1,5 +1,9 @@
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
 import { loadExplorerData } from '../../data/loaders';
+import { AtlasFallback } from './AtlasFallback';
 import { getAtlasScrollState } from './AtlasScrollController';
 import { getAtlasInsight, getAtlasStages } from './atlasStages';
 
@@ -38,5 +42,20 @@ describe('atlasStages', () => {
     expect(getAtlasScrollState(0.88, stages).activeStage?.title).toBe('Materials & Minerals');
     expect(getAtlasScrollState(1, stages).activeStage?.title ?? null).toBeNull();
     expect(getAtlasScrollState(1, stages).isHandoff).toBe(true);
+    expect(getAtlasScrollState(-0.2, stages).progress).toBe(0);
+    expect(getAtlasScrollState(1.2, stages).progress).toBe(1);
+  });
+
+  it('renders the reduced-motion fallback with the five real stage labels and one primary CTA', () => {
+    const stages = getAtlasStages(loadExplorerData());
+    const html = renderToStaticMarkup(
+      createElement(MemoryRouter, null, createElement(AtlasFallback, { stages, reducedMotion: true })),
+    );
+
+    for (const stage of stages) {
+      expect(html).toContain(stage.title.replace(/&/g, '&amp;'));
+    }
+    expect(html).toContain('A static atlas view is shown because reduced motion is enabled.');
+    expect(html.match(/Open current graph/g)?.length).toBe(1);
   });
 });

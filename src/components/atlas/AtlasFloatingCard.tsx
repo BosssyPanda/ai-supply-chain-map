@@ -23,7 +23,7 @@ export function AtlasFloatingCard({
   return (
     <motion.article
       className={cn(
-        'absolute hidden rounded-lg border border-white/14 bg-[#081626]/82 text-white backdrop-blur-xl xl:block',
+        'absolute hidden rounded-lg border border-white/14 bg-[#081626]/82 text-white backdrop-blur-xl transition-colors hover:border-white/30 hover:bg-[#0b1b2f]/88 xl:block',
         showDetails ? 'w-[min(17rem,23vw)] p-4 shadow-[0_24px_70px_rgba(2,6,23,0.46)]' : 'w-44 p-3 shadow-[0_14px_35px_rgba(2,6,23,0.26)]',
         stage.scene.cardClassName,
         showDetails ? 'z-20 border-white/28 bg-[#0b1b2f]/92' : 'z-10',
@@ -34,6 +34,7 @@ export function AtlasFloatingCard({
         y: showDetails ? -6 : isHandoff ? 8 : 0,
         scale: showDetails ? 1.02 : 0.92,
       }}
+      whileHover={{ y: showDetails ? -8 : -3, scale: showDetails ? 1.025 : 0.95 }}
       transition={{ duration: 0.35, ease: 'easeOut' }}
     >
       <div className="flex items-start justify-between gap-4">
@@ -62,7 +63,7 @@ export function AtlasFloatingCard({
       ) : null}
 
       {showDetails ? (
-        <Link to={stage.href} className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-white transition hover:text-blue-200 focus:outline-none focus:ring-2 focus:ring-accent/50">
+        <Link to={stage.href} className="mt-4 inline-flex items-center gap-2 rounded-sm text-sm font-semibold text-white transition hover:text-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-300/50">
           Explore stage
           <ArrowRight className="h-4 w-4" />
         </Link>
