@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { AppShell } from './components/layout/AppShell';
 import { Alerts } from './pages/Alerts';
+import { AtlasConcept } from './pages/AtlasConcept';
 import { Companies } from './pages/Companies';
 import { CompanyPage } from './pages/CompanyPage';
 import { Comparisons } from './pages/Comparisons';
@@ -27,6 +28,7 @@ export const router = createBrowserRouter([
       { path: 'watchlist', element: <Watchlist /> },
       { path: 'comparisons', element: <Comparisons /> },
       { path: 'alerts', element: <Alerts /> },
+      { path: 'concept/atlas', element: <AtlasConcept /> },
     ],
   },
 ]);
