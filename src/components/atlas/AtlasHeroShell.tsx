@@ -22,9 +22,9 @@ export function AtlasHeroShell({
     ? 'The immersive atlas resolves into the current report view, where each stage links back to the underlying supply-chain graph.'
     : activeStage
     ? activeStage.description
-    : 'A working concept route for tracing the AI supply chain from models and compute to infrastructure, power, and physical inputs.';
+    : 'An immersive overview for tracing the AI supply chain from models and compute to infrastructure, power, and physical inputs.';
   const primaryHref = activeStage?.href ?? '/supply-chain';
-  const primaryLabel = scrollState.isHandoff ? 'Open full graph' : activeStage ? 'Explore this stage' : 'Open current graph';
+  const primaryLabel = scrollState.isHandoff ? 'Open full graph' : activeStage ? 'Explore this stage' : 'Open supply-chain graph';
   const dependencyStrip = scrollState.isHandoff ? stages.slice().reverse() : stages;
 
   return (

@@ -56,6 +56,6 @@ describe('atlasStages', () => {
       expect(html).toContain(stage.title.replace(/&/g, '&amp;'));
     }
     expect(html).toContain('A static atlas view is shown because reduced motion is enabled.');
-    expect(html.match(/Open current graph/g)?.length).toBe(1);
+    expect(html.match(/Open supply-chain graph/g)?.length).toBe(1);
   });
 });

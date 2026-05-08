@@ -49,7 +49,7 @@ export function AtlasFallback({ stages, reducedMotion = false }: { stages: Atlas
         to="/supply-chain"
         className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(37,99,235,0.28)] transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300/70 sm:w-auto"
       >
-        Open current graph
+        Open supply-chain graph
         <ArrowRight className="h-4 w-4" />
       </Link>
 

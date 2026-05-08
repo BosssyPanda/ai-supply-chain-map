@@ -14,7 +14,7 @@ function getLatestSourceDate(): string | undefined {
 
 export function AppShell(): JSX.Element {
   const location = useLocation();
-  const isAtlasRoute = location.pathname === '/concept/atlas';
+  const isAtlasRoute = location.pathname === '/' || location.pathname === '/overview' || location.pathname === '/concept/atlas';
 
   return (
     <div className={isAtlasRoute ? 'min-h-screen bg-[#030814] text-white' : 'min-h-screen bg-background text-foreground'}>

@@ -14,20 +14,11 @@ const navigation = [
   { label: 'Names to Watch', href: '/watchlist' },
 ] as const;
 
-const atlasNavigation = [
-  { label: 'Overview', href: '/' },
-  { label: 'Atlas', href: '/concept/atlas' },
-  { label: 'Companies', href: '/companies' },
-  { label: 'Research', href: '/sources' },
-  { label: 'Supply Chain', href: '/supply-chain' },
-] as const;
-
-type NavigationItem = (typeof navigation)[number] | (typeof atlasNavigation)[number];
+type NavigationItem = (typeof navigation)[number];
 export type TopNavVariant = 'default' | 'atlas';
 
 export function TopNav({ lastUpdated, variant = 'default' }: { lastUpdated?: string; variant?: TopNavVariant }): JSX.Element {
   const isAtlas = variant === 'atlas';
-  const items = isAtlas ? atlasNavigation : navigation;
 
   return (
     <header
@@ -53,7 +44,7 @@ export function TopNav({ lastUpdated, variant = 'default' }: { lastUpdated?: str
         </NavLink>
 
         <nav className={cn('hidden min-w-0 flex-1 items-center justify-center gap-1', isAtlas ? 'xl:flex' : '2xl:flex')} aria-label="Primary navigation">
-          <NavItems items={items} variant={variant} />
+          <NavItems items={navigation} variant={variant} />
         </nav>
 
         <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
@@ -107,7 +98,7 @@ export function TopNav({ lastUpdated, variant = 'default' }: { lastUpdated?: str
         )}
         aria-label="Primary navigation"
       >
-        <NavItems items={items} variant={variant} />
+        <NavItems items={navigation} variant={variant} />
       </nav>
     </header>
   );
