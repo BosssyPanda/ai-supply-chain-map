@@ -1,5 +1,5 @@
 import type { SupplyChainData } from '../../data/schema';
-import { getDerivedReportStats, getOverviewStages, pendingCopy } from '../../lib/reportSelectors';
+import { getDerivedReportStats, getOverviewStages } from '../../lib/reportSelectors';
 
 export type AtlasStageTone = 'blue' | 'indigo' | 'cyan' | 'amber' | 'slate';
 export type AtlasStageIcon = 'cloud' | 'chip' | 'network' | 'power' | 'materials';
@@ -35,6 +35,8 @@ export interface AtlasInsight {
   lastUpdated: string;
   sourceCount: number;
 }
+
+export const atlasPendingCopy = 'Data pending - source needed';
 
 const stagePresentation = [
   {
@@ -117,8 +119,8 @@ export function getAtlasStages(data: SupplyChainData): AtlasStage[] {
       step: String(index + 1).padStart(2, '0'),
       title: stage.title,
       shortTitle: presentation.shortTitle,
-      description: stage.description || pendingCopy,
-      keyEnablers: stage.keyEnablers.length > 0 ? stage.keyEnablers : [pendingCopy],
+      description: stage.description || atlasPendingCopy,
+      keyEnablers: stage.keyEnablers.length > 0 ? stage.keyEnablers : [atlasPendingCopy],
       mappedExamples: stage.companies.map((company) => company.label).filter(Boolean).slice(0, 2),
       href: `/supply-chain?focus=${stage.focusId}`,
       tone: presentation.tone,
@@ -130,11 +132,11 @@ export function getAtlasStages(data: SupplyChainData): AtlasStage[] {
 
 export function getAtlasInsight(data: SupplyChainData): AtlasInsight {
   const stats = getDerivedReportStats(data);
-  const lastUpdated = stats.latestSourceDate ?? pendingCopy;
+  const lastUpdated = stats.latestSourceDate ?? atlasPendingCopy;
 
   return {
     title: 'Research coverage',
-    summary: `${stats.sources} source rows support the current atlas dataset. Missing fields remain marked as ${pendingCopy}.`,
+    summary: `${stats.sources} source rows support the current atlas dataset. Missing fields remain marked as ${atlasPendingCopy}.`,
     lastUpdated,
     sourceCount: stats.sources,
   };

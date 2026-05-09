@@ -1,9 +1,23 @@
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '../../lib/cn';
-import { pendingCopy } from '../../lib/reportSelectors';
-import type { AtlasStage } from './atlasStages';
+import { atlasPendingCopy, type AtlasStage } from './atlasStages';
+
+export function shouldRevealFloatingCardDetails({
+  isActive,
+  isHovered,
+  isFocused,
+  isHandoff,
+}: {
+  isActive: boolean;
+  isHovered: boolean;
+  isFocused: boolean;
+  isHandoff: boolean;
+}): boolean {
+  return !isHandoff && (isActive || isHovered || isFocused);
+}
 
 export function AtlasFloatingCard({
   stage,
@@ -16,17 +30,20 @@ export function AtlasFloatingCard({
   isOverview: boolean;
   isHandoff?: boolean;
 }): JSX.Element {
-  const mappedExamples = stage.mappedExamples.length > 0 ? stage.mappedExamples.join(', ') : pendingCopy;
-  const showDetails = isActive && !isHandoff;
+  const [isHovered, setIsHovered] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const mappedExamples = stage.mappedExamples.length > 0 ? stage.mappedExamples.join(', ') : atlasPendingCopy;
+  const showDetails = shouldRevealFloatingCardDetails({ isActive, isHovered, isFocused, isHandoff });
   const showOverviewSummary = isOverview && !showDetails && !isHandoff;
 
   return (
     <motion.article
+      tabIndex={0}
       className={cn(
-        'absolute hidden rounded-lg border border-white/14 bg-[#081626]/82 text-white backdrop-blur-xl transition-colors hover:border-white/30 hover:bg-[#0b1b2f]/88 xl:block',
+        'absolute hidden rounded-lg border border-white/14 bg-[#081626]/82 text-white backdrop-blur-xl transition-colors hover:border-white/30 hover:bg-[#0b1b2f]/88 focus:outline-none focus:ring-2 focus:ring-blue-300/45 xl:block',
         showDetails ? 'w-[min(17rem,23vw)] p-4 shadow-[0_24px_70px_rgba(2,6,23,0.46)]' : 'w-44 p-3 shadow-[0_14px_35px_rgba(2,6,23,0.26)]',
         stage.scene.cardClassName,
-        showDetails ? 'z-20 border-white/28 bg-[#0b1b2f]/92' : 'z-10',
+        showDetails ? 'z-40 border-white/28 bg-[#0b1b2f]/92' : 'z-30',
       )}
       initial={false}
       animate={{
@@ -36,6 +53,14 @@ export function AtlasFloatingCard({
       }}
       whileHover={{ y: showDetails ? -8 : -3, scale: showDetails ? 1.025 : 0.95 }}
       transition={{ duration: 0.35, ease: 'easeOut' }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      onPointerEnter={() => setIsHovered(true)}
+      onPointerLeave={() => setIsHovered(false)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
     >
       <div className="flex items-start justify-between gap-4">
         <div>

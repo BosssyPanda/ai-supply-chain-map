@@ -4,6 +4,9 @@ import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
 import { loadExplorerData } from '../../data/loaders';
 import { AtlasFallback } from './AtlasFallback';
+import { getFallbackMarkerPosition } from './AtlasFallback';
+import { shouldRenderDesktopAtlas } from './AtlasConceptPage';
+import { shouldRevealFloatingCardDetails } from './AtlasFloatingCard';
 import { getAtlasScrollState } from './AtlasScrollController';
 import { getAtlasInsight, getAtlasStages } from './atlasStages';
 
@@ -27,8 +30,30 @@ describe('atlasStages', () => {
   it('uses source-backed insight data without inventing fallback numbers', () => {
     const insight = getAtlasInsight(loadExplorerData());
 
-    expect(insight.lastUpdated).toMatch(/^\d{4}-\d{2}-\d{2}$|Data pending — source needed/);
+    expect(insight.lastUpdated).toMatch(/^\d{4}-\d{2}-\d{2}$|Data pending - source needed/);
     expect(insight.summary).toContain('source rows');
+    expect(insight.summary).toContain('Data pending - source needed');
+    expect(insight.summary).not.toContain('Data pending — source needed');
+  });
+
+  it('renders the desktop atlas only for large non-reduced-motion viewports', () => {
+    expect(shouldRenderDesktopAtlas({ isLargeViewport: true, prefersReducedMotion: false })).toBe(true);
+    expect(shouldRenderDesktopAtlas({ isLargeViewport: false, prefersReducedMotion: false })).toBe(false);
+    expect(shouldRenderDesktopAtlas({ isLargeViewport: true, prefersReducedMotion: true })).toBe(false);
+  });
+
+  it('reveals floating card details on scroll focus, hover, or keyboard focus', () => {
+    expect(shouldRevealFloatingCardDetails({ isActive: true, isHovered: false, isFocused: false, isHandoff: false })).toBe(true);
+    expect(shouldRevealFloatingCardDetails({ isActive: false, isHovered: true, isFocused: false, isHandoff: false })).toBe(true);
+    expect(shouldRevealFloatingCardDetails({ isActive: false, isHovered: false, isFocused: true, isHandoff: false })).toBe(true);
+    expect(shouldRevealFloatingCardDetails({ isActive: true, isHovered: true, isFocused: true, isHandoff: true })).toBe(false);
+  });
+
+  it('keeps fallback preview markers inside narrow mobile bounds', () => {
+    const positions = Array.from({ length: 5 }, (_, index) => getFallbackMarkerPosition(index, 5));
+
+    expect(positions.map((position) => position.leftPercent)).toEqual([14, 32, 50, 68, 86]);
+    expect(positions.every((position) => position.leftPercent >= 14 && position.leftPercent <= 86)).toBe(true);
   });
 
   it('maps scroll progress to the intended atlas focus states', () => {
@@ -56,6 +81,8 @@ describe('atlasStages', () => {
       expect(html).toContain(stage.title.replace(/&/g, '&amp;'));
     }
     expect(html).toContain('A static atlas view is shown because reduced motion is enabled.');
+    expect(html).toContain('data-atlas-render-mode="page-fallback"');
+    expect(html).toContain('data-atlas-fallback-reason="reduced motion enabled"');
     expect(html.match(/Open supply-chain graph/g)?.length).toBe(1);
   });
 });

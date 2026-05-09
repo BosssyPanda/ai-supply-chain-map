@@ -6,9 +6,25 @@ import { AtlasStageCard } from './AtlasStageCard';
 
 const iconMap = [Cloud, Cpu, Network, Factory, Mountain] as const;
 
+export function getFallbackMarkerPosition(index: number, total: number): { leftPercent: number } {
+  if (total <= 1) return { leftPercent: 50 };
+
+  const min = 14;
+  const max = 86;
+  const step = (max - min) / (total - 1);
+  return { leftPercent: Math.round(min + index * step) };
+}
+
 export function AtlasFallback({ stages, reducedMotion = false }: { stages: AtlasStage[]; reducedMotion?: boolean }): JSX.Element {
+  const fallbackReason = reducedMotion ? 'reduced motion enabled' : 'small viewport';
+
   return (
-    <section className="mx-auto w-full max-w-4xl px-4 py-8 sm:px-5 lg:px-8" aria-labelledby="atlas-fallback-title">
+    <section
+      className="mx-auto w-full max-w-4xl px-4 py-8 sm:px-5 lg:px-8"
+      aria-labelledby="atlas-fallback-title"
+      data-atlas-render-mode="page-fallback"
+      data-atlas-fallback-reason={fallbackReason}
+    >
       <div className="max-w-2xl">
         <p className="text-xs font-semibold uppercase tracking-[0.26em] text-blue-300">Immersive Supply-Chain Atlas</p>
         <h1 id="atlas-fallback-title" className="mt-4 font-display text-4xl leading-[1.05] text-white sm:text-5xl">
@@ -23,17 +39,18 @@ export function AtlasFallback({ stages, reducedMotion = false }: { stages: Atlas
 
       <div className="mt-8 overflow-hidden rounded-lg border border-white/12 bg-[#07111f]/72 p-4 shadow-[0_24px_70px_rgba(2,6,23,0.38)]">
         <div className="relative mx-auto min-h-[220px] max-w-xl">
-          <div className="absolute left-7 right-7 top-[48%] h-1 rounded-full bg-gradient-to-r from-blue-300/25 via-cyan-200/75 to-amber-200/70 shadow-[0_0_22px_rgba(96,165,250,0.34)]" />
+          <div className="absolute left-10 right-10 top-[48%] h-1 rounded-full bg-gradient-to-r from-blue-300/25 via-cyan-200/75 to-amber-200/70 shadow-[0_0_22px_rgba(96,165,250,0.34)] sm:left-12 sm:right-12" />
           {stages.map((stage, index) => {
             const Icon = iconMap[index] ?? Cloud;
+            const position = getFallbackMarkerPosition(index, stages.length);
             return (
               <div
                 key={stage.id}
                 className={cn(
-                  'absolute grid h-20 w-20 -translate-x-1/2 place-items-center rounded-lg border border-white/14 bg-white/[0.08] text-white shadow-[0_16px_45px_rgba(2,6,23,0.34)] backdrop-blur',
+                  'absolute grid h-16 w-16 -translate-x-1/2 place-items-center rounded-lg border border-white/14 bg-white/[0.08] text-white shadow-[0_16px_45px_rgba(2,6,23,0.34)] backdrop-blur sm:h-20 sm:w-20',
                   index % 2 === 0 ? 'top-6' : 'bottom-6',
                 )}
-                style={{ left: `${10 + index * 20}%` }}
+                style={{ left: `${position.leftPercent}%` }}
               >
                 <span className="absolute -top-3 grid h-7 w-7 place-items-center rounded-full border border-blue-200/40 bg-[#07111f] text-xs font-semibold text-blue-100">
                   {stage.step}

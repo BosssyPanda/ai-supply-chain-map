@@ -1,8 +1,9 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Cloud, Cpu, Factory, Mountain, Network } from 'lucide-react';
-import { Component, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { Component, useCallback, useEffect, useMemo, useRef, useState, type ErrorInfo, type ReactNode } from 'react';
 import { Vector3 } from 'three';
 import { AtlasConnectionLines } from './AtlasConnectionLines';
+import { AtlasDebugOverlay, type AtlasRenderMode } from './AtlasDebugOverlay';
 import { AtlasStagePlatform } from './AtlasStagePlatform';
 import type { AtlasStage } from './atlasStages';
 
@@ -10,6 +11,10 @@ const overviewCamera = new Vector3(0.25, 5.35, 8.5);
 const overviewTarget = new Vector3(0.65, 0.04, 0.72);
 const handoffCamera = new Vector3(0, 5.05, 7.25);
 const handoffTarget = new Vector3(0, -0.05, 1.1);
+const webGLUnavailableReason = 'WebGL unavailable or blocked by this browser profile.';
+const canvasRenderErrorReason = 'Atlas WebGL canvas failed to render.';
+const webGLContextLostReason = 'WebGL context was lost by the browser.';
+type WebGLStatus = 'checking' | 'available' | 'unavailable';
 
 export function AtlasCanvas({
   stages,
@@ -20,23 +25,31 @@ export function AtlasCanvas({
   activeIndex: number | null;
   isHandoff?: boolean;
 }): JSX.Element {
-  const webGLAvailable = useWebGLAvailable();
+  const webGL = useWebGLStatus();
+  const [canvasFailureReason, setCanvasFailureReason] = useState<string | null>(null);
+  const fallbackReason = webGL.reason ?? canvasFailureReason ?? undefined;
+  const renderMode: AtlasRenderMode = webGL.status === 'unavailable' || canvasFailureReason ? 'canvas-fallback' : 'webgl';
+  const handleCanvasError = useCallback((reason: string) => {
+    setCanvasFailureReason(reason);
+  }, []);
 
   return (
-    <div className="absolute inset-0">
-      {webGLAvailable ? (
-        <AtlasCanvasBoundary fallback={<CanvasFallback stages={stages} />}>
+    <div className="absolute inset-0" data-atlas-render-mode={renderMode} data-atlas-fallback-reason={fallbackReason}>
+      {webGL.status === 'checking' ? (
+        <CanvasProbePlaceholder />
+      ) : renderMode === 'webgl' ? (
+        <AtlasCanvasBoundary fallback={<CanvasFallback stages={stages} reason={canvasRenderErrorReason} />} onError={handleCanvasError}>
           <Canvas
             dpr={[1, 1.5]}
-            gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+            gl={{ antialias: true, alpha: true, failIfMajorPerformanceCaveat: true, powerPreference: 'default' }}
             camera={{ position: [0.25, 5.35, 8.5], fov: 43, near: 0.1, far: 60 }}
-            fallback={<CanvasFallback stages={stages} />}
           >
             <fog attach="fog" args={['#040b16', 8, 18]} />
             <ambientLight intensity={0.58} />
             <directionalLight position={[-3, 6, 4]} intensity={1.15} />
             <pointLight position={[-4, 3.5, -2]} color="#60a5fa" intensity={1.1} distance={8} />
             <pointLight position={[3.6, 3, 2.2]} color="#f59e0b" intensity={0.85} distance={7} />
+            <CanvasContextEvents onContextLost={() => handleCanvasError(webGLContextLostReason)} />
             <CameraRig stages={stages} activeIndex={activeIndex} isHandoff={isHandoff} />
             <group rotation={[0, 0.12, 0]} scale={0.88}>
               <gridHelper args={[9, 18, '#1d4ed8', '#17243a']} position={[0, -0.02, 0.65]} />
@@ -52,32 +65,55 @@ export function AtlasCanvas({
           </Canvas>
         </AtlasCanvasBoundary>
       ) : (
-        <CanvasFallback stages={stages} />
+        <CanvasFallback stages={stages} reason={fallbackReason ?? webGLUnavailableReason} />
       )}
+      <AtlasDebugOverlay mode={renderMode} fallbackReason={fallbackReason} detail={webGL.status === 'checking' ? 'Checking WebGL support.' : undefined} />
     </div>
   );
 }
 
-function useWebGLAvailable(): boolean {
-  const [isAvailable, setIsAvailable] = useState(false);
+function useWebGLStatus(): { status: WebGLStatus; reason: string | null } {
+  const [webGL, setWebGL] = useState<{ status: WebGLStatus; reason: string | null }>({ status: 'checking', reason: null });
 
   useEffect(() => {
     try {
       const canvas = document.createElement('canvas');
-      const context = canvas.getContext('webgl2') ?? canvas.getContext('webgl');
-      setIsAvailable(Boolean(context));
-    } catch {
-      setIsAvailable(false);
+      const contextAttributes: WebGLContextAttributes = {
+        failIfMajorPerformanceCaveat: true,
+        powerPreference: 'default',
+      };
+      const context = canvas.getContext('webgl2', contextAttributes) ?? canvas.getContext('webgl', contextAttributes);
+
+      if (context) {
+        setWebGL({ status: 'available', reason: null });
+        return;
+      }
+
+      console.warn(`[Atlas] ${webGLUnavailableReason}`);
+      setWebGL({ status: 'unavailable', reason: webGLUnavailableReason });
+    } catch (error) {
+      const reason = 'WebGL availability check threw before the Atlas canvas could mount.';
+      console.warn(`[Atlas] ${reason}`, error);
+      setWebGL({ status: 'unavailable', reason });
     }
   }, []);
 
-  return isAvailable;
+  return webGL;
+}
+
+function CanvasProbePlaceholder(): JSX.Element {
+  return (
+    <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_65%_38%,rgba(37,99,235,0.12),transparent_30%),radial-gradient(circle_at_78%_72%,rgba(245,158,11,0.08),transparent_24%),linear-gradient(180deg,rgba(15,23,42,0.04),rgba(2,6,23,0.82))]" />
+    </div>
+  );
 }
 
 class AtlasCanvasBoundary extends Component<
   {
     children: ReactNode;
     fallback: ReactNode;
+    onError: (reason: string) => void;
   },
   { hasError: boolean }
 > {
@@ -87,10 +123,41 @@ class AtlasCanvasBoundary extends Component<
     return { hasError: true };
   }
 
+  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+    console.warn(`[Atlas] ${canvasRenderErrorReason}`, { error, componentStack: errorInfo.componentStack });
+    this.props.onError(canvasRenderErrorReason);
+  }
+
   render(): ReactNode {
     if (this.state.hasError) return this.props.fallback;
     return this.props.children;
   }
+}
+
+function CanvasContextEvents({ onContextLost }: { onContextLost: () => void }): null {
+  const { gl } = useThree();
+
+  useEffect(() => {
+    const canvas = gl.domElement;
+    const handleContextLost = (event: Event) => {
+      event.preventDefault();
+      console.warn(`[Atlas] ${webGLContextLostReason}`);
+      onContextLost();
+    };
+    const handleContextRestored = () => {
+      console.info('[Atlas] WebGL context was restored by the browser.');
+    };
+
+    canvas.addEventListener('webglcontextlost', handleContextLost);
+    canvas.addEventListener('webglcontextrestored', handleContextRestored);
+
+    return () => {
+      canvas.removeEventListener('webglcontextlost', handleContextLost);
+      canvas.removeEventListener('webglcontextrestored', handleContextRestored);
+    };
+  }, [gl, onContextLost]);
+
+  return null;
 }
 
 function CameraRig({ stages, activeIndex, isHandoff }: { stages: AtlasStage[]; activeIndex: number | null; isHandoff: boolean }): null {
@@ -133,9 +200,14 @@ const fallbackIconMap = {
   materials: Mountain,
 } satisfies Record<AtlasStage['icon'], typeof Cloud>;
 
-function CanvasFallback({ stages }: { stages: AtlasStage[] }): JSX.Element {
+function CanvasFallback({ stages, reason }: { stages: AtlasStage[]; reason: string }): JSX.Element {
   return (
-    <div className="relative h-full overflow-hidden" aria-label="Static atlas preview with five supply-chain stages">
+    <div
+      className="relative h-full overflow-hidden"
+      aria-label="Static atlas preview with five supply-chain stages"
+      data-atlas-render-mode="canvas-fallback"
+      data-atlas-fallback-reason={reason}
+    >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_65%_38%,rgba(37,99,235,0.18),transparent_30%),radial-gradient(circle_at_78%_72%,rgba(245,158,11,0.12),transparent_24%),linear-gradient(180deg,rgba(15,23,42,0.06),rgba(2,6,23,0.9))]" />
       <div className="absolute left-[39%] top-[17%] h-[68%] w-[52%] rounded-[50%] border border-blue-300/10 bg-blue-400/[0.018] shadow-[inset_0_0_90px_rgba(37,99,235,0.06)]" aria-hidden="true" />
       <div className="absolute left-[52%] top-[24%] h-[50%] w-[32%] rotate-[-12deg] rounded-[50%] border border-cyan-200/10" aria-hidden="true" />
@@ -171,9 +243,7 @@ function CanvasFallback({ stages }: { stages: AtlasStage[] }): JSX.Element {
         );
       })}
 
-      <p className="sr-only">
-        Static atlas preview shown because WebGL is unavailable.
-      </p>
+      <p className="sr-only">Static atlas preview shown because {reason}</p>
     </div>
   );
 }
