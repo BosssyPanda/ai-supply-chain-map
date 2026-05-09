@@ -40,7 +40,7 @@ export function AtlasFloatingCard({
     <motion.article
       tabIndex={0}
       className={cn(
-        'absolute hidden rounded-lg border border-white/14 bg-[#081626]/82 text-white backdrop-blur-xl transition-colors hover:border-white/30 hover:bg-[#0b1b2f]/88 focus:outline-none focus:ring-2 focus:ring-blue-300/45 xl:block',
+        'absolute hidden rounded-lg border border-white/14 bg-[#081626]/82 text-white backdrop-blur-xl transition-colors hover:border-white/30 hover:bg-[#0b1b2f]/88 focus:outline-none focus:ring-2 focus:ring-blue-300/45 lg:block',
         showDetails ? 'w-[min(17rem,23vw)] p-4 shadow-[0_24px_70px_rgba(2,6,23,0.46)]' : 'w-44 p-3 shadow-[0_14px_35px_rgba(2,6,23,0.26)]',
         stage.scene.cardClassName,
         showDetails ? 'z-40 border-white/28 bg-[#0b1b2f]/92' : 'z-30',

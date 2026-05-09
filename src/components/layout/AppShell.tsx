@@ -17,7 +17,7 @@ export function AppShell(): JSX.Element {
   const isAtlasRoute = location.pathname === '/' || location.pathname === '/overview' || location.pathname === '/concept/atlas';
 
   return (
-    <div className={isAtlasRoute ? 'min-h-screen bg-[#030814] text-white' : 'min-h-screen bg-background text-foreground'}>
+    <div className={isAtlasRoute ? 'min-h-screen bg-white text-slate-950 xl:bg-[#030814] xl:text-white' : 'min-h-screen bg-background text-foreground'}>
       <TopNav lastUpdated={getLatestSourceDate()} variant={isAtlasRoute ? 'atlas' : 'default'} />
       <main>
         <Outlet />

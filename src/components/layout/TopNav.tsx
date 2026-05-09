@@ -24,7 +24,9 @@ export function TopNav({ lastUpdated, variant = 'default' }: { lastUpdated?: str
     <header
       className={cn(
         'sticky top-0 z-40 border-b backdrop-blur',
-        isAtlas ? 'border-white/10 bg-[#030814]/88 text-white shadow-[0_24px_80px_rgba(2,6,23,0.28)]' : 'border-border bg-surface/92',
+        isAtlas
+          ? 'hidden border-white/10 bg-[#030814]/88 text-white shadow-[0_24px_80px_rgba(2,6,23,0.28)] xl:block'
+          : 'border-border bg-surface/92',
       )}
     >
       <div className="mx-auto flex min-h-16 max-w-[1780px] items-center gap-4 px-4 sm:min-h-20 sm:gap-5 sm:px-5 lg:px-8">

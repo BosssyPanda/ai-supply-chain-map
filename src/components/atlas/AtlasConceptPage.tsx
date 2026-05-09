@@ -10,7 +10,7 @@ import { AtlasStageCard } from './AtlasStageCard';
 import { getAtlasInsight, getAtlasStages } from './atlasStages';
 
 const data = loadExplorerData();
-const atlasLargeViewportQuery = '(min-width: 1024px)';
+export const atlasDesktopViewportQuery = '(min-width: 1280px)';
 
 export function shouldRenderDesktopAtlas({
   isLargeViewport,
@@ -31,9 +31,13 @@ export function AtlasConceptPage(): JSX.Element {
   const pageFallbackReason = prefersReducedMotion ? 'reduced motion enabled' : 'small viewport';
 
   return (
-    <div className="relative isolate min-h-screen overflow-x-clip bg-[#030814] text-white">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_28%_18%,rgba(37,99,235,0.2),transparent_30%),radial-gradient(circle_at_80%_42%,rgba(245,158,11,0.12),transparent_26%),linear-gradient(180deg,#07111f_0%,#08111d_48%,#030814_100%)]" />
-      <div className="absolute inset-x-0 top-0 -z-10 h-64 bg-gradient-to-b from-white/10 to-transparent" />
+    <div className="relative isolate min-h-screen overflow-x-clip bg-white text-slate-950 xl:bg-[#030814] xl:text-white">
+      {renderDesktopAtlas ? (
+        <>
+          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_28%_18%,rgba(37,99,235,0.2),transparent_30%),radial-gradient(circle_at_80%_42%,rgba(245,158,11,0.12),transparent_26%),linear-gradient(180deg,#07111f_0%,#08111d_48%,#030814_100%)]" />
+          <div className="absolute inset-x-0 top-0 -z-10 h-64 bg-gradient-to-b from-white/10 to-transparent" />
+        </>
+      ) : null}
 
       {renderDesktopAtlas ? (
         <div>
@@ -49,13 +53,13 @@ export function AtlasConceptPage(): JSX.Element {
       ) : null}
 
       {!renderDesktopAtlas ? (
-        <div data-atlas-render-mode="page-fallback" data-atlas-fallback-reason={pageFallbackReason}>
-          <AtlasFallback stages={stages} reducedMotion={prefersReducedMotion} />
+        <>
+          <AtlasFallback stages={stages} insight={insight} reducedMotion={prefersReducedMotion} fallbackReason={pageFallbackReason} />
           <AtlasDebugOverlay mode="page-fallback" fallbackReason={pageFallbackReason} />
-        </div>
+        </>
       ) : null}
 
-      <section id="atlas-report-content" className="mx-auto hidden w-full max-w-[1780px] px-5 pb-20 pt-6 lg:block lg:px-8" aria-labelledby="atlas-stage-cards">
+      <section id="atlas-report-content" className="mx-auto hidden w-full max-w-[1780px] px-5 pb-20 pt-6 lg:px-8 xl:block" aria-labelledby="atlas-stage-cards">
         <div className="mb-5 flex items-end justify-between gap-4">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/50">Report continuation</p>
@@ -78,7 +82,9 @@ function useIsLargeAtlasViewport(): boolean {
   const [isLargeViewport, setIsLargeViewport] = useState(() => getIsLargeAtlasViewport());
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia(atlasLargeViewportQuery);
+    const mediaQuery = window.matchMedia?.(atlasDesktopViewportQuery);
+    if (!mediaQuery) return undefined;
+
     const updateViewport = () => setIsLargeViewport(mediaQuery.matches);
 
     updateViewport();
@@ -91,6 +97,6 @@ function useIsLargeAtlasViewport(): boolean {
 }
 
 function getIsLargeAtlasViewport(): boolean {
-  if (typeof window === 'undefined') return false;
-  return window.matchMedia(atlasLargeViewportQuery).matches;
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return false;
+  return window.matchMedia(atlasDesktopViewportQuery).matches;
 }

@@ -1,6 +1,24 @@
 import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 
+declare const process: {
+  env: Record<string, string | undefined>;
+};
+
+const buildTimestamp = new Date().toISOString();
+const buildCommit = process.env.VERCEL_GIT_COMMIT_SHA ?? process.env.CF_PAGES_COMMIT_SHA ?? process.env.GITHUB_SHA ?? null;
+const deploymentId = process.env.VERCEL_DEPLOYMENT_ID ?? process.env.VERCEL_URL ?? null;
+const deployedBuildId = deploymentId?.replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 16);
+const buildId = deployedBuildId || buildCommit?.slice(0, 12) || `local-${buildTimestamp.replace(/[^0-9]/g, '').slice(0, 14)}`;
+const appBuildInfo = {
+  version: process.env.npm_package_version ?? '0.2.0',
+  buildId,
+  builtAt: buildTimestamp,
+  commit: buildCommit,
+  deploymentId,
+  environment: process.env.VERCEL_ENV ?? process.env.NODE_ENV ?? 'development',
+};
+
 const lucideIconExports = {
   AlertCircle: 'alert-circle',
   AlertTriangle: 'alert-triangle',
@@ -9,6 +27,7 @@ const lucideIconExports = {
   ArrowRight: 'arrow-right',
   Beaker: 'beaker',
   Bell: 'bell',
+  BookOpen: 'book-open',
   Bookmark: 'bookmark',
   Boxes: 'boxes',
   Building2: 'building-2',
@@ -73,6 +92,9 @@ function lucideReactSubset(): Plugin {
 
 export default defineConfig({
   plugins: [lucideReactSubset(), react()],
+  define: {
+    __APP_BUILD_INFO__: JSON.stringify(appBuildInfo),
+  },
   server: {
     host: '127.0.0.1',
     port: 5173,

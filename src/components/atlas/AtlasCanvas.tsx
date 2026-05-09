@@ -2,6 +2,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Cloud, Cpu, Factory, Mountain, Network } from 'lucide-react';
 import { Component, useCallback, useEffect, useMemo, useRef, useState, type ErrorInfo, type ReactNode } from 'react';
 import { Vector3 } from 'three';
+import { atlasWebGLContextAttributes, probeAtlasWebGL, webGLUnavailableReason, type AtlasWebGLProbe, type AtlasWebGLStatus } from '../../lib/atlasWebGL';
 import { AtlasConnectionLines } from './AtlasConnectionLines';
 import { AtlasDebugOverlay, type AtlasRenderMode } from './AtlasDebugOverlay';
 import { AtlasStagePlatform } from './AtlasStagePlatform';
@@ -11,10 +12,9 @@ const overviewCamera = new Vector3(0.25, 5.35, 8.5);
 const overviewTarget = new Vector3(0.65, 0.04, 0.72);
 const handoffCamera = new Vector3(0, 5.05, 7.25);
 const handoffTarget = new Vector3(0, -0.05, 1.1);
-const webGLUnavailableReason = 'WebGL unavailable or blocked by this browser profile.';
 const canvasRenderErrorReason = 'Atlas WebGL canvas failed to render.';
 const webGLContextLostReason = 'WebGL context was lost by the browser.';
-type WebGLStatus = 'checking' | 'available' | 'unavailable';
+type WebGLStatus = 'checking' | AtlasWebGLStatus;
 
 export function AtlasCanvas({
   stages,
@@ -27,7 +27,7 @@ export function AtlasCanvas({
 }): JSX.Element {
   const webGL = useWebGLStatus();
   const [canvasFailureReason, setCanvasFailureReason] = useState<string | null>(null);
-  const fallbackReason = webGL.reason ?? canvasFailureReason ?? undefined;
+  const fallbackReason = canvasFailureReason ?? (webGL.status === 'unavailable' ? webGL.probe?.reason ?? webGLUnavailableReason : undefined);
   const renderMode: AtlasRenderMode = webGL.status === 'unavailable' || canvasFailureReason ? 'canvas-fallback' : 'webgl';
   const handleCanvasError = useCallback((reason: string) => {
     setCanvasFailureReason(reason);
@@ -38,10 +38,10 @@ export function AtlasCanvas({
       {webGL.status === 'checking' ? (
         <CanvasProbePlaceholder />
       ) : renderMode === 'webgl' ? (
-        <AtlasCanvasBoundary fallback={<CanvasFallback stages={stages} reason={canvasRenderErrorReason} />} onError={handleCanvasError}>
+        <AtlasCanvasBoundary fallback={<CanvasFallback stages={stages} reason={canvasRenderErrorReason} includeRenderModeMarker={false} />} onError={handleCanvasError}>
           <Canvas
             dpr={[1, 1.5]}
-            gl={{ antialias: true, alpha: true, failIfMajorPerformanceCaveat: true, powerPreference: 'default' }}
+            gl={{ antialias: true, alpha: true, ...atlasWebGLContextAttributes }}
             camera={{ position: [0.25, 5.35, 8.5], fov: 43, near: 0.1, far: 60 }}
           >
             <fog attach="fog" args={['#040b16', 8, 18]} />
@@ -65,37 +65,24 @@ export function AtlasCanvas({
           </Canvas>
         </AtlasCanvasBoundary>
       ) : (
-        <CanvasFallback stages={stages} reason={fallbackReason ?? webGLUnavailableReason} />
+        <CanvasFallback stages={stages} reason={fallbackReason ?? webGLUnavailableReason} includeRenderModeMarker={false} />
       )}
-      <AtlasDebugOverlay mode={renderMode} fallbackReason={fallbackReason} detail={webGL.status === 'checking' ? 'Checking WebGL support.' : undefined} />
+      <AtlasDebugOverlay mode={renderMode} fallbackReason={fallbackReason} detail={webGL.status === 'checking' ? 'Checking WebGL support.' : undefined} webGLProbe={webGL.probe} />
     </div>
   );
 }
 
-function useWebGLStatus(): { status: WebGLStatus; reason: string | null } {
-  const [webGL, setWebGL] = useState<{ status: WebGLStatus; reason: string | null }>({ status: 'checking', reason: null });
+function useWebGLStatus(): { status: WebGLStatus; probe: AtlasWebGLProbe | null } {
+  const [webGL, setWebGL] = useState<{ status: WebGLStatus; probe: AtlasWebGLProbe | null }>({ status: 'checking', probe: null });
 
   useEffect(() => {
-    try {
-      const canvas = document.createElement('canvas');
-      const contextAttributes: WebGLContextAttributes = {
-        failIfMajorPerformanceCaveat: true,
-        powerPreference: 'default',
-      };
-      const context = canvas.getContext('webgl2', contextAttributes) ?? canvas.getContext('webgl', contextAttributes);
+    const probe = probeAtlasWebGL();
 
-      if (context) {
-        setWebGL({ status: 'available', reason: null });
-        return;
-      }
-
-      console.warn(`[Atlas] ${webGLUnavailableReason}`);
-      setWebGL({ status: 'unavailable', reason: webGLUnavailableReason });
-    } catch (error) {
-      const reason = 'WebGL availability check threw before the Atlas canvas could mount.';
-      console.warn(`[Atlas] ${reason}`, error);
-      setWebGL({ status: 'unavailable', reason });
+    if (!probe.supported) {
+      console.warn(`[Atlas] ${probe.reason ?? webGLUnavailableReason}`);
     }
+
+    setWebGL({ status: probe.status, probe });
   }, []);
 
   return webGL;
@@ -104,7 +91,7 @@ function useWebGLStatus(): { status: WebGLStatus; reason: string | null } {
 function CanvasProbePlaceholder(): JSX.Element {
   return (
     <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_65%_38%,rgba(37,99,235,0.12),transparent_30%),radial-gradient(circle_at_78%_72%,rgba(245,158,11,0.08),transparent_24%),linear-gradient(180deg,rgba(15,23,42,0.04),rgba(2,6,23,0.82))]" />
+      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(37,99,235,0.12),transparent_36%),linear-gradient(180deg,rgba(15,23,42,0.04),rgba(2,6,23,0.82))]" />
     </div>
   );
 }
@@ -200,17 +187,24 @@ const fallbackIconMap = {
   materials: Mountain,
 } satisfies Record<AtlasStage['icon'], typeof Cloud>;
 
-function CanvasFallback({ stages, reason }: { stages: AtlasStage[]; reason: string }): JSX.Element {
+export function CanvasFallback({
+  stages,
+  reason,
+  includeRenderModeMarker = true,
+}: {
+  stages: AtlasStage[];
+  reason: string;
+  includeRenderModeMarker?: boolean;
+}): JSX.Element {
   return (
     <div
       className="relative h-full overflow-hidden"
       aria-label="Static atlas preview with five supply-chain stages"
-      data-atlas-render-mode="canvas-fallback"
+      data-atlas-render-mode={includeRenderModeMarker ? 'canvas-fallback' : undefined}
       data-atlas-fallback-reason={reason}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_65%_38%,rgba(37,99,235,0.18),transparent_30%),radial-gradient(circle_at_78%_72%,rgba(245,158,11,0.12),transparent_24%),linear-gradient(180deg,rgba(15,23,42,0.06),rgba(2,6,23,0.9))]" />
-      <div className="absolute left-[39%] top-[17%] h-[68%] w-[52%] rounded-[50%] border border-blue-300/10 bg-blue-400/[0.018] shadow-[inset_0_0_90px_rgba(37,99,235,0.06)]" aria-hidden="true" />
-      <div className="absolute left-[52%] top-[24%] h-[50%] w-[32%] rotate-[-12deg] rounded-[50%] border border-cyan-200/10" aria-hidden="true" />
+      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(37,99,235,0.18),transparent_34%),linear-gradient(155deg,transparent_40%,rgba(245,158,11,0.1)_72%,transparent_100%),linear-gradient(180deg,rgba(15,23,42,0.06),rgba(2,6,23,0.9))]" />
+      <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(148,163,184,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.1)_1px,transparent_1px)] [background-size:64px_64px]" aria-hidden="true" />
       <svg className="absolute inset-0 h-full w-full opacity-90" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
         <path d="M60 36 C70 36 76 41 75 48 C73 57 61 58 55 66 C63 65 75 66 80 72 C83 78 73 81 67 86" fill="none" stroke="rgba(96,165,250,0.34)" strokeWidth="0.55" strokeLinecap="round" />
         <path d="M60 36 C70 36 76 41 75 48 C73 57 61 58 55 66 C63 65 75 66 80 72 C83 78 73 81 67 86" fill="none" stroke="rgba(191,219,254,0.52)" strokeWidth="0.15" strokeDasharray="1 2" strokeLinecap="round" />
@@ -228,16 +222,12 @@ function CanvasFallback({ stages, reason }: { stages: AtlasStage[]; reason: stri
             style={{ left: position.left, top: position.top }}
             aria-label={`${stage.step} ${stage.title}`}
           >
-            <div className="relative grid h-16 w-16 place-items-center">
-              <div
-                className="absolute rounded-full border border-white/10 bg-white/[0.015]"
-                style={{ height: position.orbit, width: position.orbit, boxShadow: `inset 0 0 28px ${stage.scene.accent}14` }}
-                aria-hidden="true"
-              />
-              <span className="absolute h-8 w-8 rounded-full blur-lg" style={{ backgroundColor: `${stage.scene.accent}22` }} aria-hidden="true" />
-              <span className="relative grid h-11 w-11 place-items-center rounded-full border border-white/18 bg-[#081626]/70 shadow-[0_18px_44px_rgba(2,6,23,0.32)] backdrop-blur" style={{ color: stage.scene.accent }}>
+            <div className="relative h-20 w-24">
+              <span className="absolute inset-x-2 bottom-1 h-9 -skew-x-12 rounded-md border border-white/12 bg-[#0b1b2f]/78 shadow-[0_20px_54px_rgba(2,6,23,0.38)]" style={{ boxShadow: `0 18px 46px ${stage.scene.accent}1f` }} aria-hidden="true" />
+              <span className="absolute left-5 top-4 grid h-11 w-11 place-items-center rounded-md border border-white/18 bg-[#081626]/82 shadow-[0_18px_44px_rgba(2,6,23,0.32)] backdrop-blur" style={{ color: stage.scene.accent }}>
                 <Icon className="h-5 w-5" aria-hidden="true" />
               </span>
+              <span className="absolute right-2 top-2 rounded-md border border-white/14 bg-black/22 px-1.5 py-0.5 text-[10px] font-semibold text-white/72">{stage.step}</span>
             </div>
           </div>
         );

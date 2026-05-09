@@ -24,7 +24,7 @@ export function AtlasHeroShell({
     ? activeStage.description
     : 'An immersive overview for tracing the AI supply chain from models and compute to infrastructure, power, and physical inputs.';
   const primaryHref = activeStage?.href ?? '/supply-chain';
-  const primaryLabel = scrollState.isHandoff ? 'Open full graph' : activeStage ? 'Explore this stage' : 'Open supply-chain graph';
+  const primaryLabel = scrollState.isHandoff ? 'Open full graph' : activeStage ? 'Explore this stage' : 'Explore the Atlas';
   const dependencyStrip = scrollState.isHandoff ? stages.slice().reverse() : stages;
 
   return (
@@ -36,8 +36,8 @@ export function AtlasHeroShell({
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#030814] to-transparent" />
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 top-4 z-10 hidden justify-center xl:flex" aria-hidden="true">
-        <ol className="flex max-w-4xl items-center gap-2 rounded-lg border border-white/10 bg-[#07111f]/60 px-3 py-2 text-white/64 shadow-[0_20px_80px_rgba(2,6,23,0.28)] backdrop-blur-xl">
+      <div className="pointer-events-none absolute inset-x-0 top-4 z-10 hidden justify-center lg:flex" aria-hidden="true">
+        <ol className="flex max-w-[calc(100vw-3rem)] items-center gap-2 overflow-hidden rounded-lg border border-white/10 bg-[#07111f]/60 px-3 py-2 text-white/64 shadow-[0_20px_80px_rgba(2,6,23,0.28)] backdrop-blur-xl xl:max-w-4xl">
           {dependencyStrip.slice(0, 5).map((stage, index) => (
             <li key={stage.id} className="flex items-center gap-2">
               <span className="grid h-8 w-8 place-items-center rounded-md border border-white/12 bg-white/[0.06] text-[11px] font-semibold" style={{ color: stage.scene.accent }}>
@@ -82,7 +82,7 @@ export function AtlasHeroShell({
               to="/sources"
               className="inline-flex items-center justify-center gap-2 rounded-md border border-white/18 bg-white/[0.06] px-5 py-3 text-sm font-semibold text-white/84 transition hover:-translate-y-0.5 hover:border-white/32 hover:bg-white/[0.1] focus:outline-none focus:ring-2 focus:ring-blue-300/50"
             >
-              Read sources
+              Read the Overview
               <HelpCircle className="h-4 w-4" />
             </Link>
           </div>

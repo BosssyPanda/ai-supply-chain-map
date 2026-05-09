@@ -103,7 +103,7 @@ const stagePresentation = [
       position: [0.05, 0, 2.82],
       camera: [-0.9, 3.18, 5.96],
       target: [0.08, 0.1, 2.45],
-      cardClassName: 'left-[56%] bottom-[8%]',
+      cardClassName: 'left-[66%] bottom-[6%]',
       accent: '#cbd5e1',
       glow: '#94a3b8',
       primitive: 'materials',

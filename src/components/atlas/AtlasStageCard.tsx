@@ -54,11 +54,15 @@ export function AtlasStageCard({ stage, compact = false, linked = true }: { stag
   );
 
   if (!linked) {
-    return <article className={className}>{content}</article>;
+    return (
+      <article className={className} data-atlas-stage-card={stage.id}>
+        {content}
+      </article>
+    );
   }
 
   return (
-    <Link to={stage.href} className={className}>
+    <Link to={stage.href} className={className} data-atlas-stage-card={stage.id}>
       {content}
     </Link>
   );
